@@ -1,3 +1,4 @@
+import { PrivateRoutes } from "@/shared/enums/routes";
 import { authenticate, cleanError, logout } from "@/store/features/auth";
 import { useAppSelector } from "@/store/hook/app-selector";
 import { selectAuth } from "@/store/selectors";
@@ -5,6 +6,7 @@ import { AppDispatch } from "@/store/store";
 import { loginSchema } from "@/validations/login";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -13,6 +15,7 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, error } = useAppSelector(selectAuth);
 
   useEffect(() => {
@@ -34,6 +37,7 @@ export const useAuth = () => {
     setIsLoading(true);
     try {
       await dispatch(authenticate(data.email, data.password));
+      navigate(PrivateRoutes.Carrier);
     } catch (error) {
       console.error("Login failed", error);
     } finally {
