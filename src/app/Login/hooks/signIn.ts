@@ -1,0 +1,67 @@
+import { authenticate, cleanError, logout } from "@/store/features/auth";
+import { useAppSelector } from "@/store/hook/app-selector";
+import { selectAuth } from "@/store/selectors";
+import { AppDispatch } from "@/store/store";
+import { loginSchema } from "@/validations/login";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+import { z } from "zod";
+
+export type LoginFormValues = z.infer<typeof loginSchema>;
+
+export const useAuth = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch: AppDispatch = useDispatch();
+  const { user, error } = useAppSelector(selectAuth);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error, {
+        description: "Tente novamente",
+        action: {
+          label: "Fechar",
+          onClick: () => {
+            console.log("closing...");
+          },
+        },
+      });
+      dispatch(cleanError());
+    }
+  }, [error]);
+
+  const handleSubmit = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    try {
+      await dispatch(authenticate(data.email, data.password));
+    } catch (error) {
+      console.error("Login failed", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    setIsLoading(true);
+    try {
+      await dispatch(authenticate(email, password));
+    } catch (error) {
+      console.error("Login failed", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logoutUser = () => {
+    dispatch(logout());
+  };
+
+  return {
+    user,
+    isLoading,
+    handleSubmit,
+    error,
+    login,
+    logout: logoutUser,
+  };
+};

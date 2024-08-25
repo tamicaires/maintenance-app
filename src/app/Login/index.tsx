@@ -12,16 +12,12 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const loginSchema = z.object({
-  email: z.string().email("Email inválido").nonempty("Email é obrigatório"),
-  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { LoginFormValues, useAuth } from "./hooks/signIn";
+import { loginSchema } from "@/validations/login";
 
 export function Login() {
+  const { handleSubmit, isLoading } = useAuth();
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -29,11 +25,6 @@ export function Login() {
       password: "",
     },
   });
-
-  function onSubmit(data: LoginFormValues) {
-    console.log("Login data:", data);
-    // Implementar lógica de autenticação aqui
-  }
 
   return (
     <div className="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
@@ -46,7 +37,10 @@ export function Login() {
             </p>
           </div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="grid gap-4"
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -92,7 +86,7 @@ export function Login() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 Login
               </Button>
               <Button variant="outline" className="w-full">

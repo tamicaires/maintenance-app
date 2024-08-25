@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 
 type Theme = "dark" | "light" | "system";
 
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   const theme = useAppSelector(selectThemeSettings);
@@ -17,7 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      const systemTheme = window.matchMedia("(prefers-color-scheme: light)")
         .matches
         ? "dark"
         : "light";
@@ -38,7 +37,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       {React.cloneElement(children as React.ReactElement, {
         setTheme: handleSetTheme,
       })}
-
     </div>
   );
 }

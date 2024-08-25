@@ -13,6 +13,7 @@ export function Navigation() {
     <BrowserRouter>
       <Routes>
         <Route path={PrivateRoutes.Home} element={<MainLayout />}>
+          <Route path={PrivateRoutes.Home} element={<div>Home</div>} />
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>
             <Route path={PrivateRoutes.Account} element={<MyAccount />} />
