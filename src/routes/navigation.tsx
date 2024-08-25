@@ -1,16 +1,28 @@
-import { Carrier } from "@/app/Carrier";
-import MainLayout from "@/components/Layout/DefaultLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { PrivateRoutes, PublicRoutes } from "@/shared/enums/routes";
+import MainLayout from "@/components/Layout/DefaultLayout";
+import { SettingsLayout } from "@/app/Settings";
+import { MyAccount } from "@/app/Settings/components/MyAccount";
+import { Appearance } from "@/app/Settings/components/Appearance";
+import { Subscription } from "@/app/Settings/components/Subscription";
+import { Carrier } from "@/app/Carrier";
 
 export function Navigation() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Carrier />} />
-          {/* <Route path="/orders" element={<Orders />} /> */}
+        <Route path={PrivateRoutes.Home} element={<MainLayout />}>
+          <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
+          <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>
+            <Route path={PrivateRoutes.Account} element={<MyAccount />} />
+            <Route path={PrivateRoutes.Appearance} element={<Appearance />} />
+            <Route
+              path={PrivateRoutes.Subscription}
+              element={<Subscription />}
+            />
+          </Route>
         </Route>
-        <Route path="/" element={<Carrier />} />
+        <Route path={PublicRoutes.Login} element={<div>Login</div>} />
       </Routes>
     </BrowserRouter>
   );
