@@ -55,9 +55,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function Carrier() {
   return (
-    <ScrollArea className="flex-1 bg-red">
-      <div className="flex min-h-screen flex-col bg-muted/40">
-        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+    <ScrollArea>
+      <div className="flex min-h-screen flex-col bg-background">
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
           <header className="sticky top-0 z-30 flex justify-between h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <Sheet>
               <SheetTrigger asChild>
@@ -162,7 +162,7 @@ export function Carrier() {
           </header>
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
             <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
                 <Card
                   className="sm:col-span-2 flex flex-wrap justify-between"
                   x-chunk="dashboard-05-chunk-0"
