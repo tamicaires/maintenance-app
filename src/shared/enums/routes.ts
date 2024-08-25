@@ -1,6 +1,6 @@
 export enum PublicRoutes {
-  Login = "/auth/sign-in",
-  Register = "/auth/register",
+  Login = "/login",
+  Register = "/auth/cadastrar",
   ForgotPassword = "/password/forgot",
 }
 

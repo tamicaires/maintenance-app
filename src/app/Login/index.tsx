@@ -1,0 +1,121 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { PublicRoutes } from "@/shared/enums/routes";
+import { Link } from "react-router-dom";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email("Email inválido").nonempty("Email é obrigatório"),
+  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+
+export function Login() {
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  function onSubmit(data: LoginFormValues) {
+    console.log("Login data:", data);
+    // Implementar lógica de autenticação aqui
+  }
+
+  return (
+    <div className="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+      <div className="flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">Login</h1>
+            <p className="text-balance text-muted-foreground">
+              Preencha seus dados para login
+            </p>
+          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="m@example.com"
+                        required
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center justify-between">
+                      <FormLabel htmlFor="password">Password</FormLabel>
+                      <Link
+                        to={PublicRoutes.ForgotPassword}
+                        className="text-sm underline"
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>
+                    <FormControl>
+                      <Input
+                        id="password"
+                        type="password"
+                        required
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+              <Button variant="outline" className="w-full">
+                Login com Google
+              </Button>
+            </form>
+          </Form>
+          <div className="mt-4 text-center text-sm">
+            Não possui uma conta?{" "}
+            <Link to={PublicRoutes.Register} className="underline">
+              Registre-se
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="hidden bg-muted lg:block sm:flex sm:justify-center sm:items-center">
+        <iframe
+          src="https://lottie.host/embed/3f63ebb8-4b6f-4092-9fff-547182e857c5/LPa2cF9NRp.json"
+          height={800}
+          width={500}
+          className="m-auto"
+        ></iframe>
+      </div>
+    </div>
+  );
+}

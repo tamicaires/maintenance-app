@@ -6,6 +6,7 @@ import { MyAccount } from "@/app/Settings/components/MyAccount";
 import { Appearance } from "@/app/Settings/components/Appearance";
 import { Subscription } from "@/app/Settings/components/Subscription";
 import { Carrier } from "@/app/Carrier";
+import { Login } from "@/app/Login";
 
 export function Navigation() {
   return (
@@ -22,7 +23,12 @@ export function Navigation() {
             />
           </Route>
         </Route>
-        <Route path={PublicRoutes.Login} element={<div>Login</div>} />
+        <Route path={PublicRoutes.Login} element={<Login />} />
+        <Route path={PublicRoutes.Register} element={<div>Register</div>} />
+        <Route
+          path={PublicRoutes.ForgotPassword}
+          element={<div>Forgot Password</div>}
+        />
       </Routes>
     </BrowserRouter>
   );
