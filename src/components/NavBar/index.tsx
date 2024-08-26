@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Profile } from "../Profile";
+import ThemeToggle from "../Toggle";
 
 export default function Navbar() {
   return (
@@ -34,12 +35,12 @@ export default function Navbar() {
             </Breadcrumb>
           </div>
           <div className="flex items-center space-x-4">
+            <ThemeToggle />
             <Button variant="ghost" size="icon" className="relative">
               <BellIcon className="h-5 w-5" />
               <span className="sr-only">Notificações</span>
               <div className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full" />
             </Button>
-            {/* User Profile */}
             <Profile />
           </div>
         </div>
