@@ -7,6 +7,11 @@ export interface ICarrier {
   createdAt?: string;
 }
 
+export interface ICarrierCreate {
+  carrierName: string;
+  managerName: string;
+  managerPhone: string;
+}
 export interface ICarrierUpdate {
   id: string;
   carrierName: string;

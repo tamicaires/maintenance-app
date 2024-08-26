@@ -12,7 +12,7 @@ import { Profile } from "../Profile";
 
 export default function Navbar() {
   return (
-    <nav className="bg-background border-b w-full">
+    <nav className="fixed bg-background border-b w-full sm:pl-12">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">

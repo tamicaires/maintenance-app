@@ -31,7 +31,7 @@ export const useAuth = () => {
       });
       dispatch(cleanError());
     }
-  }, [error]);
+  }, [error, dispatch]);
 
   const handleSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
@@ -60,6 +60,8 @@ export const useAuth = () => {
     dispatch(logout());
   };
 
+  const isAuthenticated = !!user;
+
   return {
     user,
     isLoading,
@@ -67,5 +69,6 @@ export const useAuth = () => {
     error,
     login,
     logout: logoutUser,
+    isAuthenticated,
   };
 };

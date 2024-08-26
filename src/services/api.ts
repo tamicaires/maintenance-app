@@ -25,7 +25,6 @@ export const handleRequest = async <T>(
 ): Promise<IApiResponse<T>> => {
   try {
     const response = await api(request);
-    console.log("response", response);
 
     return {
       success: true,
@@ -38,9 +37,6 @@ export const handleRequest = async <T>(
 
     console.error("API Error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    throw new Error(errorMessage);
   }
 };

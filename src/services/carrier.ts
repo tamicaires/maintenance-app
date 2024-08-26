@@ -1,5 +1,18 @@
-import { ICarrier } from "@/interfaces/carrier";
+import { ICarrier, ICarrierCreate } from "@/interfaces/carrier";
 import { handleRequest, IApiResponse } from "@/services/api";
+
+const create = async (
+  data: ICarrierCreate
+): Promise<IApiResponse<ICarrier>> => {
+  const response = await handleRequest<ICarrier>({
+    method: "POST",
+    url: "/carriers",
+    data,
+  });
+
+  console.log("response", response);
+  return response;
+};
 
 const getAll = async (): Promise<IApiResponse<ICarrier[]>> => {
   const response = await handleRequest<ICarrier[]>({
@@ -11,5 +24,6 @@ const getAll = async (): Promise<IApiResponse<ICarrier[]>> => {
 };
 
 export const CarrierService = {
+  create,
   getAll,
 };

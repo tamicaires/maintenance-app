@@ -28,10 +28,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Navbar from "@/components/NavBar";
-import { useCarrier } from "./hooks/useCarrier";
+import { useCarrier } from "./hooks/use-carrier";
+import { useState } from "react";
+import { CreateCarrier } from "./CreateCarrier";
 
 export function Carrier() {
   const { data, isLoading, error } = useCarrier();
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   if (isLoading) {
     return <div>Carregando...</div>;
@@ -41,11 +44,13 @@ export function Carrier() {
     return <div>Ocorreu um erro: {error.message}</div>;
   }
 
+  const handleOpenModal = () => {
+    setIsDialogOpen(true);
+  };
   return (
     <ScrollArea>
-      <div className="flex min-h-screen flex-col bg-background">
+      <div className="flex min-h-screen flex-col bg-background mt-14">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
-          <Navbar />
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
             <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
@@ -61,7 +66,7 @@ export function Carrier() {
                   </CardHeader>
                   <CardFooter className="flex gap-5">
                     <Button variant="secondary">Exportar Relatório</Button>
-                    <Button>Cadastrar Novo</Button>
+                    <Button onClick={handleOpenModal}>Cadastrar Novo</Button>
                   </CardFooter>
                 </Card>
                 <Card className="pb-4" x-chunk="dashboard-05-chunk-1">
@@ -173,6 +178,10 @@ export function Carrier() {
             </div>
           </main>
         </div>
+        <CreateCarrier
+          isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
+        />
       </div>
     </ScrollArea>
   );

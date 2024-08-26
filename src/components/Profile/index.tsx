@@ -8,6 +8,8 @@ interface ProfileProps {
 export function Profile({ showEmail }: ProfileProps) {
   const user = getUserLocalStorage();
 
+  if (!user) return null;
+
   const getInitials = (name: string) => {
     return name
       .split(" ")
