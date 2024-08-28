@@ -10,11 +10,6 @@ import { ICarrier } from "@/interfaces/carrier";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
 
-type ErrorResponse = {
-  success: boolean;
-  error: string;
-};
-
 type CreateCarrierData = z.infer<typeof createCarrierSchema>;
 
 export function useCreateCarrier(setShowModal: (show: boolean) => void) {
@@ -41,7 +36,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     isSuccess,
     isError,
     data,
-    error, // Receba o erro da mutação
+    error,
   } = useMutation<IApiResponse<ICarrier>, Error, CreateCarrierData>({
     mutationFn: CarrierService.create,
     onSuccess: (response) => {
@@ -51,7 +46,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
       }
     },
     onError: (error) => {
-      // Exibe o erro no toast
+      
       console.error("Error in mutation:", error);
       toast.error(error.message || "Ocorreu um erro ao criar a transportadora.");
     },
@@ -73,6 +68,6 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     handleSubmit: handleSubmit(submitCarrierData),
     isSubmitting,
     isError,
-    error, // Exponha o erro
+    error, 
     data,
   }}
