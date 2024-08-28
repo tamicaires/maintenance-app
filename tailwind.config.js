@@ -18,6 +18,14 @@ module.exports = {
     },
     extend: {
       colors: {
+        pastel: {
+          pink: '#FFB7C5',
+          purple: '#D4A5FF',
+          blue: '#A7C7E7',
+          green: '#A3E4C5',
+          yellow: '#FFFACD',
+          orange: '#FFDAB9',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
