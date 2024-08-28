@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Navbar from "@/components/NavBar";
 import { useCarrier } from "./hooks/use-carrier";
 import { useState } from "react";
 import { CreateCarrier } from "./CreateCarrier";

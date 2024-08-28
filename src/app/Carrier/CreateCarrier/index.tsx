@@ -37,7 +37,10 @@ export function CreateCarrier({
       cancelText="Cancelar"
     >
       <Form {...createCarrierForm}>
-        <form onSubmit={handleSubmit} className="space-y-8 pt-2">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-8 pt-2 min-w-80 sm:min-w-96"
+        >
           <FormField
             control={createCarrierForm.control}
             name="carrierName"
