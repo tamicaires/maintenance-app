@@ -1,5 +1,5 @@
 import { useAuth } from "@/app/Login/hooks/signIn";
-import Navbar from "@/components/NavBar";
+import { NavBar } from "@/components/NavBar";
 import Sidebar from "@/components/Sidebar";
 import { PublicRoutes } from "@/shared/enums/routes";
 import React, { useEffect } from "react";
@@ -19,7 +19,7 @@ const MainLayout: React.FC = () => {
     <div className="flex bg-background">
       <div>
         <Sidebar />
-        <Navbar />
+        <NavBar />
       </div>
       <div className="w-full sm:pl-12">
         <main>
