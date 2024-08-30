@@ -14,28 +14,25 @@ import {
   CalendarCog,
   FolderPlus,
   FileAxis3D,
+  Truck,
+  Briefcase,
+  Users,
+  FileText,
+  ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-// const sidebarItems = [
-//   { icon: Home, label: "Dashboard" },
-//   { icon: BarChart2, label: "Analytics" },
-//   {
-//     icon: FileText,
-//     label: "Cadastro",
-//     subItems: [
-//       { icon: Truck, label: "Transportadoras" },
-//       { icon: Briefcase, label: "Frotas" },
-//       { icon: UsersIcon, label: "Colaboradores" },
-//       { icon: FileText, label: "Serviços" },
-//     ],
-//   },
-//   { icon: HelpCircle, label: "Help & Support" },
-// ];
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Sidebar() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex h-screen">
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r bg-background sm:flex h-screen">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
           to={"/"}
@@ -61,7 +58,7 @@ export default function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to={"/"}
+              to={PrivateRoutes.WorkShop}
               className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <Wrench className="h-5 w-5" />
@@ -109,18 +106,54 @@ export default function Sidebar() {
           </TooltipTrigger>
           <TooltipContent side="right">Planejamento</TooltipContent>
         </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={"/"}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <FolderPlus className="h-5 w-5" />
-              <span className="sr-only">Cadastros</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Cadastros</TooltipContent>
-        </Tooltip>
+
+        <DropdownMenu>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+                  <FolderPlus className="h-5 w-5" />
+                  <span className="sr-only">Cadastros</span>
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="right">Cadastros</TooltipContent>
+          </Tooltip>
+          <DropdownMenuContent side="right" className="w-56">
+            <DropdownMenuLabel>Cadastros</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link
+                to={PrivateRoutes.Carrier}
+                className="flex gap-0.5 items-center"
+              >
+                <Truck className="mr-2 h-4 w-4" />
+                <span>Transportadoras</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link
+                to={PrivateRoutes.Fleet}
+                className="flex gap-0.5 items-center"
+              >
+                <Briefcase className="mr-2 h-4 w-4" />
+                <span>Frotas</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <FileText className="mr-2 h-4 w-4" />
+              <span>Serviço</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Users className="mr-2 h-4 w-4" />
+              <span>Colaboradores</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <ChevronRight className="mr-2 h-4 w-4" />
+              <span>Cargos</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Tooltip>
           <TooltipTrigger asChild>
@@ -139,7 +172,7 @@ export default function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to={PrivateRoutes.Settings}
+              to={PrivateRoutes.Account}
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <Settings className="h-5 w-5" />
