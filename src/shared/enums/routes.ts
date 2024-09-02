@@ -16,6 +16,6 @@ export enum PrivateRoutes {
   Settings = "/configuracoes",
   Account = "/configuracoes/minha-conta",
   Appearance = "/configuracoes/aparencia",
-  Subscription = "/configuracoe/sassinatura",
+  Subscription = "/configuracoes/assinatura",
   Support = "/configuracoes/suporte",
 }

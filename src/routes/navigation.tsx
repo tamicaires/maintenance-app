@@ -8,6 +8,7 @@ import { Subscription } from "@/app/Settings/components/Subscription";
 import { Carrier } from "@/app/Carrier";
 import { Login } from "@/app/Login";
 import Order from "@/app/Order";
+import WorkShopDashboard from "@/app/WorkShopDashboard";
 
 export function Navigation() {
   return (
@@ -15,6 +16,10 @@ export function Navigation() {
       <Routes>
         <Route path={PrivateRoutes.Home} element={<MainLayout />}>
           <Route path={PrivateRoutes.Home} element={<div>Home</div>} />
+          <Route
+            path={PrivateRoutes.WorkShop}
+            element={<WorkShopDashboard />}
+          />
           <Route path={PrivateRoutes.WorkOrders} element={<Order />} />
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>
