@@ -32,7 +32,8 @@ export const Dialog: React.FC<DialogProps> = ({
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         dialogRef.current &&
-        !dialogRef.current.contains(event.target as Node)
+        !dialogRef.current.contains(event.target as Node) &&
+        !(event.target as HTMLElement).closest(".select-content")
       ) {
         onClose();
       }
