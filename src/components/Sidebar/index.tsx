@@ -1,8 +1,19 @@
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { PrivateRoutes } from "@/shared/enums/routes";
 import {
   Home,
@@ -19,20 +30,34 @@ import {
   Users,
   FileText,
   ChevronRight,
+  ChevronLeft,
+  ChevronRight as ChevronRightExpand,
+  MoreHorizontal,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export default function Sidebar() {
-  return (
-    <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r bg-background sm:flex h-screen">
+  const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const location = useLocation();
+
+  const toggleSidebar = () => setIsExpanded(!isExpanded);
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const navigationItems = [
+    { icon: Home, label: "Dashboard", path: "/" },
+    { icon: Wrench, label: "Oficina", path: PrivateRoutes.WorkShop },
+    {
+      icon: ClipboardList,
+      label: "Ordens de Serviço",
+      path: PrivateRoutes.WorkOrders,
+    },
+    { icon: ServerCog, label: "Manutenções", path: "/" },
+    { icon: CalendarCog, label: "Planejamento", path: "/" },
+  ];
+
+  const SidebarContent = ({ showLabels = false }) => (
+    <>
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
           to={"/"}
@@ -42,84 +67,53 @@ export default function Sidebar() {
           <span className="sr-only">Main Truck</span>
         </Link>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={"/"}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <Home className="h-5 w-5" />
-              <span className="sr-only">Dashboard</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Dashboard</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={PrivateRoutes.WorkShop}
-              className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <Wrench className="h-5 w-5" />
-              <span className="sr-only">Oficina</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Oficina</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={PrivateRoutes.WorkOrders}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <ClipboardList className="h-5 w-5" />
-              <span className="sr-only">Ordens de Serviço</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Ordens de Serviço</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={"/"}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <ServerCog className="h-5 w-5" />
-              <span className="sr-only">Manutenções</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Manutenções</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={"/"}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-            >
-              <CalendarCog className="h-5 w-5" />
-              <span className="sr-only">Planejamento</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">Planejamento</TooltipContent>
-        </Tooltip>
+        {navigationItems.map((item) => (
+          <Tooltip key={item.label}>
+            <TooltipTrigger asChild>
+              <Link
+                to={item.path}
+                className={`flex items-center rounded-lg transition-colors hover:text-foreground ${
+                  showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
+                } ${
+                  isActive(item.path)
+                    ? "bg-green-500 text-white"
+                    : "text-muted-foreground"
+                }`}
+              >
+                <item.icon className="h-5 w-5 shrink-0" />
+                {showLabels && <span className="ml-3">{item.label}</span>}
+                {!showLabels && <span className="sr-only">{item.label}</span>}
+              </Link>
+            </TooltipTrigger>
+            {!showLabels && (
+              <TooltipContent side="right">{item.label}</TooltipContent>
+            )}
+          </Tooltip>
+        ))}
 
         <DropdownMenu>
           <Tooltip>
             <TooltipTrigger asChild>
               <DropdownMenuTrigger asChild>
-                <button className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-                  <FolderPlus className="h-5 w-5" />
-                  <span className="sr-only">Cadastros</span>
+                <button
+                  className={`flex items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
+                    showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
+                  }`}
+                >
+                  <FolderPlus className="h-5 w-5 shrink-0" />
+                  {showLabels && <span className="ml-3">Cadastros</span>}
+                  {!showLabels && <span className="sr-only">Cadastros</span>}
                 </button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
-            <TooltipContent side="right">Cadastros</TooltipContent>
+            {!showLabels && (
+              <TooltipContent side="right">Cadastros</TooltipContent>
+            )}
           </Tooltip>
-          <DropdownMenuContent side="right" className="w-56">
+          <DropdownMenuContent
+            side={showLabels ? "bottom" : "right"}
+            className="w-56"
+          >
             <DropdownMenuLabel>Cadastros</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -159,13 +153,18 @@ export default function Sidebar() {
           <TooltipTrigger asChild>
             <Link
               to={"/"}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              className={`flex items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
+                showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
+              }`}
             >
-              <FileAxis3D className="h-5 w-5" />
-              <span className="sr-only">Relatórios</span>
+              <FileAxis3D className="h-5 w-5 shrink-0" />
+              {showLabels && <span className="ml-3">Relatórios</span>}
+              {!showLabels && <span className="sr-only">Relatórios</span>}
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Relatórios</TooltipContent>
+          {!showLabels && (
+            <TooltipContent side="right">Relatórios</TooltipContent>
+          )}
         </Tooltip>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -173,15 +172,70 @@ export default function Sidebar() {
           <TooltipTrigger asChild>
             <Link
               to={PrivateRoutes.Account}
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              className={`flex items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
+                showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
+              }`}
             >
-              <Settings className="h-5 w-5" />
-              <span className="sr-only">Configurações</span>
+              <Settings className="h-5 w-5 shrink-0" />
+              {showLabels && <span className="ml-3">Configurações</span>}
+              {!showLabels && <span className="sr-only">Configurações</span>}
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Configurações</TooltipContent>
+          {!showLabels && (
+            <TooltipContent side="right">Configurações</TooltipContent>
+          )}
         </Tooltip>
       </nav>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Bottom navigation for small screens */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around bg-background border-t border-gray-200 sm:hidden">
+        {navigationItems.slice(0, 4).map((item) => (
+          <Link
+            key={item.label}
+            to={item.path}
+            className={`flex flex-col items-center justify-center p-2 ${
+              isActive(item.path) ? "text-green-500" : "text-muted-foreground"
+            }`}
+          >
+            <item.icon className="h-5 w-5" />
+            <span className="text-xs mt-1">{item.label}</span>
+          </Link>
+        ))}
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <button className="flex flex-col items-center justify-center p-2 text-muted-foreground">
+              <MoreHorizontal className="h-5 w-5" />
+              <span className="text-xs mt-1">More</span>
+            </button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="h-[80vh]">
+            <SidebarContent showLabels={true} />
+          </SheetContent>
+        </Sheet>
+      </nav>
+
+      {/* Toggleable sidebar for larger screens */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 hidden sm:flex flex-col border-r bg-background transition-all duration-300 ${
+          isExpanded ? "w-64" : "w-14"
+        }`}
+      >
+        <SidebarContent showLabels={isExpanded} />
+        <button
+          onClick={toggleSidebar}
+          className="absolute -right-3 top-6 flex h-6 w-6 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground"
+        >
+          {isExpanded ? (
+            <ChevronLeft className="h-4 w-4" />
+          ) : (
+            <ChevronRightExpand className="h-4 w-4" />
+          )}
+        </button>
+      </aside>
+    </>
   );
 }
