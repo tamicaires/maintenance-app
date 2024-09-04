@@ -30,7 +30,6 @@ import {
   Users,
   FileText,
   ChevronRight,
-  Menu,
   ChevronLeft,
   ChevronRight as ChevronRightExpand,
   MoreHorizontal,
