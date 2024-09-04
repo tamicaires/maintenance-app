@@ -30,6 +30,7 @@ import {
   Users,
   FileText,
   ChevronRight,
+  Menu,
   ChevronLeft,
   ChevronRight as ChevronRightExpand,
   MoreHorizontal,
@@ -72,7 +73,7 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <Link
                 to={item.path}
-                className={`flex items-center rounded-lg transition-colors hover:text-foreground ${
+                className={`flex items-center justify-center rounded-lg transition-colors hover:text-foreground ${
                   showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
                 } ${
                   isActive(item.path)
@@ -96,7 +97,7 @@ export default function Sidebar() {
             <TooltipTrigger asChild>
               <DropdownMenuTrigger asChild>
                 <button
-                  className={`flex items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
+                  className={`flex items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
                     showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
                   }`}
                 >
@@ -153,7 +154,7 @@ export default function Sidebar() {
           <TooltipTrigger asChild>
             <Link
               to={"/"}
-              className={`flex items-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
+              className={`flex items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground ${
                 showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
               }`}
             >
