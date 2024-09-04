@@ -4,7 +4,7 @@ import { getTokenLocalStorage } from "@/utils/auth";
 const token = getTokenLocalStorage();
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://maintenance-control-production.up.railway.app/",
   headers: {
     Authorization: `Bearer ${token}`,
   },
