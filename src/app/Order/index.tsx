@@ -28,52 +28,20 @@ import {
 import { motion } from "framer-motion";
 import { OrderDetails } from "./OrderDetails";
 import { DailyChart } from "@/components/DailyChart/DailyChart";
+import { CreateWorkOrder } from "./CreateOrder";
+import { useWorkOrder } from "./hooks/use-work-order";
+import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { Spinner } from "@/components/Spinner";
 
 export default function Order() {
-  const [activeTab, setActiveTab] = useState("todas");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("todas");
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
+  const [selectedWorkOrder, setSelectedWorkOrder] =
+    useState<IWorkOrder | null>();
 
-  const workOrders = [
-    {
-      id: "C0001",
-      frota: "22222",
-      tipo: "Corretiva",
-      severidade: "Alta",
-      transportadora: "S&G Transportes",
-      abertura: "17/08/2024 11:33",
-      status: "MANUTENÇÃO",
-      tempoFila: "222:30",
-      tempoManu: "205:29",
-      criador: "Tamires Carvalho",
-      progresso: 75,
-    },
-    {
-      id: "C0003",
-      frota: "22501",
-      tipo: "Corretiva",
-      severidade: "Baixa",
-      transportadora: "Murat Transportes",
-      abertura: "16/08/2024 18:09",
-      status: "MANUTENÇÃO",
-      tempoFila: "270:31",
-      tempoManu: "243:29",
-      criador: "Tamires Carvalho",
-      progresso: 60,
-    },
-    {
-      id: "C0004",
-      frota: "22300",
-      tipo: "Corretiva",
-      severidade: "Alta",
-      transportadora: "Murat Transportes",
-      abertura: "16/08/2024 18:11",
-      status: "FILA",
-      tempoFila: "271:49",
-      tempoManu: "0:00",
-      criador: "Tamires Carvalho",
-      progresso: 0,
-    },
-  ];
+  const { data, isLoading } = useWorkOrder();
+  const workOrders = data?.data || [];
 
   const summaryItems = [
     {
@@ -103,14 +71,18 @@ export default function Order() {
     { numero: "22533", transportador: "Solimões LTDA", ultima: "12/03/2024" },
   ];
 
-  const handleOpenDialog = () => {
+  const handleOpenDialog = (workOrder: IWorkOrder) => {
+    setSelectedWorkOrder(workOrder);
     setIsDialogOpen(true);
   };
 
+  const handleCreateOrder = () => {
+    setIsCreateDialogOpen(true);
+  };
   return (
-    <div className="flex flex-col bg-background mt-14 p-4 md:p-6">
+    <div className="flex flex-col bg-background mt-14 p-4 md:px-6 max-h-full">
       <div className="flex flex-col lg:flex-row gap-5">
-        <main className="flex-1 bg-card p-4 md:p-6 border rounded-lg">
+        <main className="flex-1 bg-card p-4 md:p-6 shadow-lg rounded-xl">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,7 +97,10 @@ export default function Order() {
                 Gerenciamento de Ordem de Serviço abertas
               </p>
             </div>
-            <Button className="bg-primary hover:bg-green-600 text-primary-foreground transition-colors duration-200 w-full md:w-auto">
+            <Button
+              onClick={handleCreateOrder}
+              className="bg-primary hover:bg-green-600 text-primary-foreground transition-colors duration-200 w-full md:w-auto"
+            >
               <PlusCircleIcon className="mr-2 h-4 w-4" /> Abrir Ordem de Serviço
             </Button>
           </motion.div>
@@ -153,6 +128,7 @@ export default function Order() {
               transition={{ duration: 0.5 }}
               className="grid gap-6"
             >
+              {isLoading && <Spinner />}
               {workOrders.map((workOrder, index) => (
                 <motion.div
                   key={workOrder.id}
@@ -168,10 +144,10 @@ export default function Order() {
                             variant="secondary"
                             className="bg-blue-100 text-blue-700 hover:bg-blue-200"
                           >
-                            {workOrder.id}
+                            {workOrder.displayId}
                           </Badge>
                           <p className="text-xl md:text-2xl font-semibold flex items-center mt-1">
-                            Frota {workOrder.frota}
+                            Frota {workOrder.fleetNumber}
                           </p>
                         </div>
                         <Badge
@@ -196,7 +172,7 @@ export default function Order() {
                                   Plano de Manutenção
                                 </p>
                                 <p className="text-muted-foreground">
-                                  {workOrder.tipo}
+                                  {workOrder.typeOfMaintenance}
                                 </p>
                               </div>
                             </TooltipTrigger>
@@ -213,10 +189,10 @@ export default function Order() {
                                   Grau de Severidade
                                 </p>
                                 <p className="text-muted-foreground flex items-center">
-                                  {workOrder.severidade === "Alta" && (
+                                  {workOrder.severityLevel === "Alta" && (
                                     <AlertTriangleIcon className="mr-1 h-4 w-4 text-red-500" />
                                   )}
-                                  {workOrder.severidade}
+                                  {workOrder.severityLevel}
                                 </p>
                               </div>
                             </TooltipTrigger>
@@ -228,14 +204,14 @@ export default function Order() {
                         <div>
                           <p className="text-sm font-medium">Transportadora</p>
                           <p className="text-muted-foreground">
-                            {workOrder.transportadora}
+                            {workOrder.carrierName}
                           </p>
                         </div>
                         <div>
                           <p className="text-sm font-medium">Abertura OS</p>
                           <p className="text-muted-foreground flex items-center">
                             <CalendarIcon className="mr-1 h-4 w-4" />
-                            {workOrder.abertura}
+                            {workOrder.createdAt}
                           </p>
                         </div>
                       </div>
@@ -245,10 +221,10 @@ export default function Order() {
                         <Avatar className="h-8 w-8 mr-2">
                           <AvatarImage
                             src="/placeholder-avatar.jpg"
-                            alt={workOrder.criador}
+                            alt={workOrder.createdBy}
                           />
                           <AvatarFallback>
-                            {workOrder.criador
+                            {workOrder.createdBy
                               .split(" ")
                               .map((n) => n[0])
                               .join("")}
@@ -256,7 +232,7 @@ export default function Order() {
                         </Avatar>
                         <div>
                           <p className="text-sm font-medium">
-                            {workOrder.criador}
+                            {workOrder.createdBy}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             Criado por
@@ -269,7 +245,9 @@ export default function Order() {
                             <TooltipTrigger asChild>
                               <div className="flex items-center">
                                 <ClockIcon className="mr-1 h-4 w-4 text-primary" />
-                                <p className="text-sm">{workOrder.tempoFila}</p>
+                                <p className="text-sm">
+                                  {workOrder.queueDuration}
+                                </p>
                               </div>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -282,7 +260,9 @@ export default function Order() {
                             <TooltipTrigger asChild>
                               <div className="flex items-center">
                                 <WrenchIcon className="mr-1 h-4 w-4 text-primary" />
-                                <p className="text-sm">{workOrder.tempoManu}</p>
+                                <p className="text-sm">
+                                  {workOrder.maintenanceDuration}
+                                </p>
                               </div>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -293,7 +273,7 @@ export default function Order() {
                         <Button
                           variant="default"
                           size="sm"
-                          onClick={handleOpenDialog}
+                          onClick={() => handleOpenDialog(workOrder)}
                         >
                           VER DETALHES
                         </Button>
@@ -312,9 +292,9 @@ export default function Order() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <ScrollArea className="rounded-md border p-4 md:p-6 bg-card">
+            <ScrollArea className="shadow-lg rounded-xl p-4 md:p-6 bg-card">
               <div className="pb-5">
-                <h2 className="text-2xl font-semibold leading-none tracking-tight">
+                <h2 className="text-2xl font-semibold leading-tight tracking-tight">
                   Resumo do dia
                 </h2>
                 <h2 className="text-sm text-muted-foreground">
@@ -382,9 +362,16 @@ export default function Order() {
             </ScrollArea>
           </motion.div>
         </aside>
-        <OrderDetails
-          isDialogOpen={isDialogOpen}
-          setIsDialogOpen={setIsDialogOpen}
+        {selectedWorkOrder && (
+          <OrderDetails
+            workOrder={selectedWorkOrder}
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+          />
+        )}
+        <CreateWorkOrder
+          isDialogOpen={isCreateDialogOpen}
+          setIsDialogOpen={setIsCreateDialogOpen}
         />
       </div>
     </div>
