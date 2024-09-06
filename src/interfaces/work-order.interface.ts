@@ -6,6 +6,9 @@ import {
 export interface IWorkOrder {
   id: string;
   displayId: string;
+  fleetNumber: string;
+  carrierName: string;
+  plate: string;
   severityLevel: string;
   entryQueue?: string | undefined;
   entryMaintenance?: string;
@@ -17,7 +20,6 @@ export interface IWorkOrder {
   waitingPartsDuration?: number;
   exitSupervisor?: string;
   fleetId: string;
-  fleetNumber: string;
   user?: string;
   typeOfMaintenance: string;
   box: string;

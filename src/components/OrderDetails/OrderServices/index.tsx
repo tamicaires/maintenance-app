@@ -28,7 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Tag } from "@/components/Tag";
+import { IService } from "@/interfaces/service.interface";
 
 type Service = {
   id: string;
@@ -41,6 +41,9 @@ type Service = {
   employees?: { name: string; jobTitle: string }[];
 };
 
+interface ServiceProps {
+  services: IService[];
+}
 const services: Service[] = [
   {
     id: "1",
@@ -79,14 +82,14 @@ const services: Service[] = [
   },
 ];
 
-export function OrderServices() {
+export function OrderServices({ services }: ServiceProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
   const filteredServices = services.filter(
     (service) =>
       service.serviceName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (categoryFilter === "All" || service.category === categoryFilter)
+      (categoryFilter === "All" || service.serviceCategory === categoryFilter)
   );
 
   const toggleItem = (id: string) => {
@@ -161,16 +164,16 @@ export function OrderServices() {
                     <TableCell className="font-medium">
                       {service.serviceName}
                       <div className="md:hidden text-sm text-gray-500">
-                        {service.category}
+                        {service.serviceCategory}
                       </div>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {service.category}
+                      {service.serviceCategory}
                     </TableCell>
                     <TableCell className="hidden md:flex md:gap-2">
-                      {[...Array(service.rebCount)].map((_, index) => (
+                      {/* {[...Array(service.rebCount)].map((_, index) => (
                         <Tag color="blue" children={`${index + 1}º Reb`} />
-                      ))}
+                      ))} */}
                     </TableCell>
 
                     <TableCell>
@@ -275,7 +278,7 @@ export function OrderServices() {
                         onOpenChange={() => toggleItem(service.id)}
                       >
                         <CollapsibleContent className="p-4 bg-gray-100">
-                          <div className="grid grid-cols-2 gap-2">
+                          {/* <div className="grid grid-cols-2 gap-2">
                             <div>Reboques:</div>
                             <div>
                               {[...Array(service.rebCount)].map((_, index) => (
@@ -294,7 +297,7 @@ export function OrderServices() {
                             <div>R$ {service.totalAmount.toFixed(2)}</div>
                             <div>Data de Vencimento:</div>
                             <div>{service.dueDate}</div>
-                          </div>
+                          </div> */}
                         </CollapsibleContent>
                       </Collapsible>
                     </TableCell>

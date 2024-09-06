@@ -10,18 +10,24 @@ import { StatusTimelime } from "@/components/OrderDetails/StatusTimeline";
 import { OrderServices } from "@/components/OrderDetails/OrderServices";
 import { OrderHistory } from "@/components/OrderDetails/OrderHistory";
 import { OrderParts } from "@/components/OrderDetails/Parts";
+import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { useWorkOrderServices } from "../hooks/use-service-by-order";
 
 interface OrderDetailsProps {
+  workOrder: IWorkOrder;
   isDialogOpen: boolean;
   setIsDialogOpen: (isOpen: boolean) => void;
 }
 
 export function OrderDetails({
+  workOrder,
   isDialogOpen,
   setIsDialogOpen,
 }: OrderDetailsProps) {
   if (!isDialogOpen) return null;
-
+  const { data, isLoading } = useWorkOrderServices(workOrder.id);
+  console.log("services", data, "isLoading", isLoading);
+  const services = data?.data || [];
   const closeDialog = () => setIsDialogOpen(false);
 
   return (
@@ -45,16 +51,18 @@ export function OrderDetails({
                     variant="outline"
                     className="text-green-500 border-green-600 bg-green-400 bg-opacity-10 w-fit"
                   >
-                    MP0001
+                    {workOrder.displayId}
                   </Badge>
                 </div>
                 <div className="flex flex-col text-sm text-muted-foreground">
                   <span>
-                    Criada por <strong>Bruno Silva</strong>{" "}
+                    Criada por <strong>{workOrder.createdBy}</strong>
                   </span>
-                  <span>
-                    Liberada por <strong>João Silva</strong>
-                  </span>
+                  {workOrder.exitSupervisor && (
+                    <span>
+                      Liberada por <strong>{workOrder.exitSupervisor}</strong>
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -105,21 +113,23 @@ export function OrderDetails({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-muted-foreground">Frota</p>
-                      <p className="font-medium">22510</p>
+                      <p className="font-medium">{workOrder.fleetNumber}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">
                         Transportadora
                       </p>
-                      <p className="font-medium">Transportes ABC Ltda</p>
+                      <p className="font-medium">{workOrder.carrierName}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Plano</p>
-                      <p className="font-medium">Preventiva</p>
+                      <p className="font-medium">
+                        {workOrder.typeOfMaintenance}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Placa</p>
-                      <p className="font-medium">XYZ-9876</p>
+                      <p className="font-medium">{workOrder.plate}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -136,7 +146,7 @@ export function OrderDetails({
               </TabsList>
 
               <TabsContent value="servicos" className="mt-4 space-y-4">
-                <OrderServices />
+                <OrderServices services={services} />
               </TabsContent>
 
               <TabsContent value="pecas" className="mt-4">
