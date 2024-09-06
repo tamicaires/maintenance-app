@@ -17,7 +17,7 @@ export function NavBar() {
 
   if (!user) return null;
   return (
-    <nav className="fixed bg-background border-b w-full sm:pl-12 z-40">
+    <nav className="fixed bg-card border-b w-full sm:pl-12 z-40">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="hidden sm:flex sm:items-center">

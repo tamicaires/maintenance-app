@@ -192,7 +192,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Bottom navigation for small screens */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around bg-background border-t border-gray-200 sm:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around bg-card border-t border-gray-200 sm:hidden">
         {navigationItems.slice(0, 4).map((item) => (
           <Link
             key={item.label}
@@ -220,7 +220,7 @@ export default function Sidebar() {
 
       {/* Toggleable sidebar for larger screens */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 hidden sm:flex flex-col border-r bg-background transition-all duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 hidden sm:flex flex-col border-r bg-card transition-all duration-300 ${
           isExpanded ? "w-64" : "w-14"
         }`}
       >
