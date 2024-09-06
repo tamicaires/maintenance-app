@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Spinner } from "../Spinner";
 
 interface Option {
   value: string;
@@ -10,6 +11,7 @@ interface ComboboxProps {
   placeholder?: string;
   emptyText?: string;
   onChange: (value: string) => void;
+  isLoading?: boolean;
 }
 
 export const Combobox: React.FC<ComboboxProps> = ({
@@ -17,6 +19,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   placeholder = "Select an option",
   emptyText = "Nenhuma opção encontrada",
   onChange,
+  isLoading = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -113,20 +116,26 @@ export const Combobox: React.FC<ComboboxProps> = ({
               />
             </div>
           </div>
-          <ul className="max-h-60 overflow-auto py-1">
-            {filteredOptions.map((option) => (
-              <li
-                key={option.value}
-                className="pl-8 pr-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
-                onClick={() => handleOptionSelect(option)}
-              >
-                {option.label}
-              </li>
-            ))}
-            {filteredOptions.length === 0 && (
-              <li className="px-3 py-2 text-sm text-gray-500">{emptyText}</li>
-            )}
-          </ul>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-4">
+              <Spinner size="small" color="primary" />
+            </div>
+          ) : (
+            <ul className="max-h-60 overflow-auto py-1">
+              {filteredOptions.map((option) => (
+                <li
+                  key={option.value}
+                  className="pl-8 pr-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleOptionSelect(option)}
+                >
+                  {option.label}
+                </li>
+              ))}
+              {filteredOptions.length === 0 && (
+                <li className="px-3 py-2 text-sm text-gray-500">{emptyText}</li>
+              )}
+            </ul>
+          )}
         </div>
       )}
     </div>
