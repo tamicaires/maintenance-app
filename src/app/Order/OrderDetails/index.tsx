@@ -12,6 +12,7 @@ import { OrderHistory } from "@/components/OrderDetails/OrderHistory";
 import { OrderParts } from "@/components/OrderDetails/Parts";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { useWorkOrderServices } from "../hooks/use-service-by-order";
+import { Spinner } from "@/components/Spinner";
 
 interface OrderDetailsProps {
   workOrder: IWorkOrder;
@@ -26,7 +27,7 @@ export function OrderDetails({
 }: OrderDetailsProps) {
   if (!isDialogOpen) return null;
   const { data, isLoading } = useWorkOrderServices(workOrder.id);
-  console.log("services", data, "isLoading", isLoading);
+
   const services = data?.data || [];
   const closeDialog = () => setIsDialogOpen(false);
 
@@ -38,6 +39,7 @@ export function OrderDetails({
       onClose={closeDialog}
       header={false}
     >
+      {isLoading && <Spinner />}
       <ScrollArea className="h-full">
         <div className="max-w-4xl p-4">
           <div className="p-4 md:p-6 bg-card rounded-lg border">
