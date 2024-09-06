@@ -23,13 +23,13 @@ import {
   RefreshCwIcon,
 } from "lucide-react";
 import { MaintenanceCard } from "@/components/WorkShopDashboard/MaintenanceCard";
-import { workOrders } from "@/mock";
 import { MaintenanceTable } from "@/components/WorkShopDashboard/MaintenanceTable";
 import { AnalyticsCard } from "@/components/WorkShopDashboard/AnalyticsCard";
 import { QueueChart } from "./Charts/QueueChart";
 import { TypeMaintenanceChart } from "./Charts/TypeMaintenaceChart";
 import { ServiceChart } from "./Charts/ServicesChart";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { useWorkOrder } from "../Order/hooks/use-work-order";
 
 // Simulated real-time data
 const generateRandomData = () => ({
@@ -50,6 +50,9 @@ export default function MaintenanceDashboard() {
   const [viewMode, setViewMode] = useState("grid");
   const [dashboardData, setDashboardData] = useState(generateRandomData());
 
+  const { data } = useWorkOrder();
+  const workOrders = data?.data || [];
+  
   const handleStatusChange = (id: string, newStatus: string) => {
     console.log("estado mudou", id, newStatus);
   };
