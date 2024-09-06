@@ -30,61 +30,13 @@ import {
 } from "@/components/ui/popover";
 import { IService } from "@/interfaces/service.interface";
 
-type Service = {
-  id: string;
-  serviceName: string;
-  category: string;
-  rebCount: number;
-  noOfItems: number;
-  totalAmount: number;
-  dueDate: string;
-  employees?: { name: string; jobTitle: string }[];
-};
-
 interface ServiceProps {
   services: IService[];
 }
-const services: Service[] = [
-  {
-    id: "1",
-    serviceName: "Retirar vazamento de ar da válvula do suspensor",
-    category: "ELÉTRICA",
-    rebCount: 3,
-    noOfItems: 1,
-    totalAmount: 150.0,
-    dueDate: "28 Feb 2024",
-    employees: [
-      { name: "Bruno Silva", jobTitle: "Mecânico" },
-      { name: "João Silva", jobTitle: "Mecânico" },
-    ],
-  },
-  {
-    id: "2",
-    serviceName: "Verificação de Suspensão",
-    category: "SUSPENSÃO",
-    rebCount: 2,
-    noOfItems: 2,
-    totalAmount: 300.0,
-    dueDate: "01 Mar 2024",
-    employees: [
-      { name: "Ana Souza", jobTitle: "Mecânico" },
-      { name: "Maria Oliveira", jobTitle: "Auxiliar" },
-    ],
-  },
-  {
-    id: "3",
-    serviceName: "Trocar Cuíca 24H LD",
-    category: "SISTEMA DE FREIO",
-    rebCount: 3,
-    noOfItems: 1,
-    totalAmount: 500.0,
-    dueDate: "15 Mar 2024",
-  },
-];
 
 export function OrderServices({ services }: ServiceProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("All");
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
   const filteredServices = services.filter(
     (service) =>
