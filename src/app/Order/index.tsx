@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,6 +32,8 @@ import { CreateWorkOrder } from "./CreateOrder";
 import { useWorkOrder } from "./hooks/use-work-order";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { Spinner } from "@/components/Spinner";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
+import { EmptyState } from "@/components/EmptyState";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -43,23 +45,45 @@ export default function Order() {
   const { data, isLoading } = useWorkOrder();
   const workOrders = data?.data || [];
 
+  const filteredWorkOrders = useMemo(() => {
+    if (activeTab === "todas") return workOrders;
+    return workOrders.filter((order) => {
+      switch (activeTab) {
+        case "fila":
+          return order.status === MaintenanceStatus.FILA;
+        case "manutencao":
+          return order.status === MaintenanceStatus.MANUTENCAO;
+        case "aguard-peca":
+          return order.status === MaintenanceStatus.AGUARDANDO_PECA;
+        default:
+          return true;
+      }
+    });
+  }, [activeTab, workOrders]);
+
   const summaryItems = [
     {
       icon: ClockIcon,
       label: "Frotas em fila",
-      value: "02",
+      value: workOrders
+        .filter((order) => order.status === MaintenanceStatus.FILA)
+        .length.toString(),
       color: "yellow",
     },
     {
       icon: WrenchIcon,
       label: "Frotas em Manutenção",
-      value: "02",
+      value: workOrders
+        .filter((order) => order.status === MaintenanceStatus.MANUTENCAO)
+        .length.toString(),
       color: "blue",
     },
     {
       icon: CheckCircleIcon,
       label: "Frotas Finalizado",
-      value: "10",
+      value: workOrders
+        .filter((order) => order.status === MaintenanceStatus.FINALIZADA)
+        .length.toString(),
       color: "green",
     },
   ];
@@ -79,6 +103,20 @@ export default function Order() {
   const handleCreateOrder = () => {
     setIsCreateDialogOpen(true);
   };
+
+  const getEmptyStateMessage = () => {
+    switch (activeTab) {
+      case "fila":
+        return "Não há ordens de serviço em fila no momento.";
+      case "manutencao":
+        return "Não há ordens de serviço em manutenção no momento.";
+      case "aguard-peca":
+        return "Não há ordens de serviço aguardando peças no momento.";
+      default:
+        return "Não há ordens de serviço disponíveis.";
+    }
+  };
+
   return (
     <div className="flex flex-col bg-background mt-14 p-4 md:px-6 max-h-full">
       <div className="flex flex-col lg:flex-row gap-5">
@@ -121,7 +159,7 @@ export default function Order() {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          <div className="overflow-y-auto max-h-[calc(90vh-200px)]">
+          <div className="overflow-y-auto max-h-screen">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -129,7 +167,10 @@ export default function Order() {
               className="grid gap-6"
             >
               {isLoading && <Spinner />}
-              {workOrders.map((workOrder, index) => (
+              {!isLoading && filteredWorkOrders.length === 0 && (
+                <EmptyState message={getEmptyStateMessage()} />
+              )}
+              {filteredWorkOrders.map((workOrder, index) => (
                 <motion.div
                   key={workOrder.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -152,7 +193,7 @@ export default function Order() {
                         </div>
                         <Badge
                           variant={
-                            workOrder.status === "MANUTENÇÃO"
+                            workOrder.status === MaintenanceStatus.MANUTENCAO
                               ? "secondary"
                               : "default"
                           }
