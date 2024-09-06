@@ -1,6 +1,4 @@
-import { IWorkOrder } from "./interfaces/work-order.interface";
-
-export const workOrders: IWorkOrder[] = [
+export const workOrders = [
   {
     id: "1",
     displayId: "WO-001",
@@ -66,5 +64,5 @@ export const workOrders: IWorkOrder[] = [
     createdBy: "Sistema",
     status: "Aguardando Peças",
     createdAt: "2024-08-27T09:00:00Z",
-  }
+  },
 ];
