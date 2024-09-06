@@ -17,6 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 import {
   ClockIcon,
   WrenchIcon,
@@ -24,8 +25,10 @@ import {
   PlusCircleIcon,
   AlertTriangleIcon,
   CalendarIcon,
+  SearchIcon,
+  XIcon,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { OrderDetails } from "./OrderDetails";
 import { DailyChart } from "@/components/DailyChart/DailyChart";
 import { CreateWorkOrder } from "./CreateOrder";
@@ -41,25 +44,28 @@ export default function Order() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const [selectedWorkOrder, setSelectedWorkOrder] =
     useState<IWorkOrder | null>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { data, isLoading } = useWorkOrder();
   const workOrders = data?.data || [];
 
   const filteredWorkOrders = useMemo(() => {
-    if (activeTab === "todas") return workOrders;
     return workOrders.filter((order) => {
-      switch (activeTab) {
-        case "fila":
-          return order.status === MaintenanceStatus.FILA;
-        case "manutencao":
-          return order.status === MaintenanceStatus.MANUTENCAO;
-        case "aguard-peca":
-          return order.status === MaintenanceStatus.AGUARDANDO_PECA;
-        default:
-          return true;
-      }
+      const matchesTab =
+        activeTab === "todas" ||
+        (activeTab === "fila" && order.status === MaintenanceStatus.FILA) ||
+        (activeTab === "manutencao" &&
+          order.status === MaintenanceStatus.MANUTENCAO) ||
+        (activeTab === "aguard-peca" &&
+          order.status === MaintenanceStatus.AGUARDANDO_PECA);
+
+      const matchesSearch = order.fleetNumber
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+
+      return matchesTab && matchesSearch;
     });
-  }, [activeTab, workOrders]);
+  }, [activeTab, workOrders, searchQuery]);
 
   const summaryItems = [
     {
@@ -105,6 +111,9 @@ export default function Order() {
   };
 
   const getEmptyStateMessage = () => {
+    if (searchQuery) {
+      return `Nenhuma ordem de serviço encontrada para "${searchQuery}".`;
+    }
     switch (activeTab) {
       case "fila":
         return "Não há ordens de serviço em fila no momento.";
@@ -115,6 +124,24 @@ export default function Order() {
       default:
         return "Não há ordens de serviço disponíveis.";
     }
+  };
+
+  const highlightMatch = (text: string) => {
+    if (!searchQuery) return text;
+    const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <span key={index} className="bg-yellow-200 font-semibold">
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
   };
 
   return (
@@ -159,13 +186,30 @@ export default function Order() {
               </TabsTrigger>
             </TabsList>
           </Tabs>
+
+          <div className="mb-4 relative">
+            <Input
+              type="text"
+              placeholder="Buscar por número da frota..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-10"
+            />
+            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                onClick={() => setSearchQuery("")}
+              >
+                <XIcon className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+
           <div className="overflow-y-auto max-h-screen">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="grid gap-6"
-            >
+            <AnimatePresence>
               {isLoading && <Spinner />}
               {!isLoading && filteredWorkOrders.length === 0 && (
                 <EmptyState message={getEmptyStateMessage()} />
@@ -175,9 +219,10 @@ export default function Order() {
                   key={workOrder.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
-                  <Card className="overflow-hidden">
+                  <Card className="overflow-hidden mb-4">
                     <CardHeader className="bg-muted">
                       <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                         <div className="mb-2 md:mb-0">
@@ -188,7 +233,10 @@ export default function Order() {
                             {workOrder.displayId}
                           </Badge>
                           <p className="text-xl md:text-2xl font-semibold flex items-center mt-1">
-                            Frota {workOrder.fleetNumber}
+                            Frota{" "}
+                            <span className="ml-2">
+                              {highlightMatch(workOrder.fleetNumber)}
+                            </span>
                           </p>
                         </div>
                         <Badge
@@ -323,7 +371,7 @@ export default function Order() {
                   </Card>
                 </motion.div>
               ))}
-            </motion.div>
+            </AnimatePresence>
           </div>
         </main>
 
