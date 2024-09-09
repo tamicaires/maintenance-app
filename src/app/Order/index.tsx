@@ -8,7 +8,6 @@ import {
   ClockIcon,
   WrenchIcon,
   CheckCircleIcon,
-  PlusCircleIcon,
   SearchIcon,
   XIcon,
   CalendarIcon,
@@ -27,7 +26,6 @@ import WorkOrderCard from "@/components/WorkOrderCard";
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const [selectedWorkOrder, setSelectedWorkOrder] =
     useState<IWorkOrder | null>();
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -87,13 +85,21 @@ export default function Order() {
     { numero: "22533", transportador: "Solimões LTDA", ultima: "12/03/2024" },
   ];
 
+  // const handleStatusChange = (
+  //   workOrder: IWorkOrder,
+  //   newStatus: MaintenanceStatus,
+  //   timestamp: string
+  // ) => {
+  //   // Update the work order status in your state or send to backend
+  //   console.log(
+  //     `Updating work order ${workOrder.id} to status ${newStatus} at ${timestamp}`
+  //   );
+  //   // You would typically update your state or make an API call here
+  // };
+
   const handleOpenDialog = (workOrder: IWorkOrder) => {
     setSelectedWorkOrder(workOrder);
     setIsDialogOpen(true);
-  };
-
-  const handleCreateOrder = () => {
-    setIsCreateDialogOpen(true);
   };
 
   const getEmptyStateMessage = () => {
@@ -148,12 +154,7 @@ export default function Order() {
                 Gerenciamento de Ordem de Serviço abertas
               </p>
             </div>
-            <Button
-              onClick={handleCreateOrder}
-              className="bg-primary hover:bg-green-600 text-primary-foreground transition-colors duration-200 w-full md:w-auto"
-            >
-              <PlusCircleIcon className="mr-2 h-4 w-4" /> Abrir Ordem de Serviço
-            </Button>
+            <CreateWorkOrder />
           </motion.div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="my-6">
@@ -295,10 +296,6 @@ export default function Order() {
             setIsDialogOpen={setIsDialogOpen}
           />
         )}
-        <CreateWorkOrder
-          isDialogOpen={isCreateDialogOpen}
-          setIsDialogOpen={setIsCreateDialogOpen}
-        />
       </div>
     </div>
   );
