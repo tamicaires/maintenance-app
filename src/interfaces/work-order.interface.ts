@@ -24,7 +24,7 @@ export interface IWorkOrder {
   typeOfMaintenance: string;
   box: string;
   createdBy: string;
-  status: string;
+  status: MaintenanceStatus;
   createdAt: string;
 }
 
@@ -55,14 +55,14 @@ export interface IWorkOrder {
   typeOfMaintenance: string;
   box: string;
   createdBy: string;
-  status: string;
+  status: MaintenanceStatus;
   createdAt: string;
 }
 
 export interface IWorkOrderUpdate {
   id: string;
-  displayId: string;
-  severityLevel: string;
+  displayId?: string;
+  severityLevel?: string;
   entryQueue?: Date;
   entryMaintenance?: Date;
   exitMaintenance?: Date;
@@ -78,6 +78,6 @@ export interface IWorkOrderUpdate {
   box: string;
   createdBy?: string;
   updatedBy?: string;
-  status?: string;
+  status?: MaintenanceStatus;
   updatedAt?: string;
 }

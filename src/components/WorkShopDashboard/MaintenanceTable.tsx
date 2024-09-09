@@ -18,6 +18,7 @@ import {
 } from "../ui/tooltip";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { calculateMaintenanceDuration } from "@/utils/work-order";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
 
 interface MaintenanceTableProps {
   workOrders: IWorkOrder[];
@@ -62,10 +63,10 @@ export function MaintenanceTable({
             <TableCell>
               <Badge
                 variant={
-                  workOrder.status === "Em Manutenção" ? "default" : "secondary"
+                  workOrder.status === MaintenanceStatus.MANUTENCAO ? "default" : "secondary"
                 }
                 className={`${
-                  workOrder.status === "Em Manutenção"
+                  workOrder.status === MaintenanceStatus.MANUTENCAO
                     ? "bg-blue-500 bg-opacity-15 text-blue-500"
                     : "secondary"
                 }`}
@@ -82,7 +83,7 @@ export function MaintenanceTable({
                 >
                   Detalhes
                 </Button>
-                {workOrder.status === "Em Manutenção" && (
+                {workOrder.status === MaintenanceStatus.MANUTENCAO && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
