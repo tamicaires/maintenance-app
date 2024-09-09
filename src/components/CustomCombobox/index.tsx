@@ -81,7 +81,6 @@ export function Select({
         )}
         {isLoading ? (
           <div className="flex justify-center items-center py-4">
-            {/* Aqui você pode substituir por um spinner do shadcn */}
             <Spinner size="small" color="primary" />
           </div>
         ) : (
@@ -89,6 +88,7 @@ export function Select({
             {(isFiltered ? filteredOptions : options).map((option) => (
               <DropdownMenuItem
                 key={option.value}
+                className="flex gap-3"
                 onSelect={() => handleOptionSelect(option)}
               >
                 <span>{option.label}</span>

@@ -81,5 +81,6 @@ export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void) {
     isError,
     error,
     data,
+    reset,
   };
 }

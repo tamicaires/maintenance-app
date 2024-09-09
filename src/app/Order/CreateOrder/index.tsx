@@ -45,11 +45,15 @@ export function CreateWorkOrder() {
   const { data, isLoading } = useFleet();
   const fleets = data?.data || [];
 
-  const { createWorkOrderForm, handleSubmit, isSubmitting } =
+  const { createWorkOrderForm, handleSubmit, isSubmitting, reset } =
     useCreateWorkOrder(setIsOpen);
 
   const openDialog = () => setIsOpen(true);
-  const closeDialog = () => setIsOpen(false);
+  const closeDialog = () => {
+    setIsOpen(false);
+    reset();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -82,8 +86,9 @@ export function CreateWorkOrder() {
                     }))}
                     placeholder="Selecione a frota..."
                     isFiltered
-                    onChange={(value) => field.onChange(value)}
+                    onChange={field.onChange}
                     isLoading={isLoading}
+                    value={field.value}
                   />
                   <FormMessage />
                 </FormItem>
@@ -95,10 +100,7 @@ export function CreateWorkOrder() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tipo de Manutenção</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o tipo" />
@@ -126,10 +128,7 @@ export function CreateWorkOrder() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Grau de Severidade</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o grau de severidade" />
@@ -160,7 +159,7 @@ export function CreateWorkOrder() {
                       field.onChange(value);
                       setStatus(value as MaintenanceStatus);
                     }}
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -275,7 +274,7 @@ export function CreateWorkOrder() {
                 Cancelar
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                Abrir Ordem de Serviço
+                {isSubmitting ? "Carregando..." : "Abrir Ordem de Serviço"}
               </Button>
             </DialogFooter>
           </form>
