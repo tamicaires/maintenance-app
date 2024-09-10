@@ -1,6 +1,7 @@
 export interface IFleet {
   id: string;
   fleetNumber: string;
+  plate: string;
   firstTrailerPlate: string;
   secondTrailerPlate: string;
   thirdTrailerPlate: string;
