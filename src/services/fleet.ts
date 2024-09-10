@@ -1,7 +1,7 @@
-import { IFleet } from "@/interfaces/fleet.interface";
+import { IFleet, IFleetCreate } from "@/interfaces/fleet.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
-const create = async (data: IFleet): Promise<IApiResponse<IFleet>> => {
+const create = async (data: IFleetCreate): Promise<IApiResponse<IFleet>> => {
   const response = await handleRequest<IFleet>({
     method: "POST",
     url: "/fleets",
