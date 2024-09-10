@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import {
   Dialog,
   DialogContent,
@@ -33,95 +30,49 @@ import {
   ChevronLeftIcon,
   CheckCircleIcon,
 } from "lucide-react";
+import { FormFields, useCreateFleet } from "../hooks/use-create-fleet";
+import { useCarrier } from "@/app/Carrier/hooks/use-carrier";
 
-const schema = z.object({
-  fleetNumber: z.string().min(1, "Número da frota é obrigatório"),
-  plate: z.string().regex(/^[A-Z]{3}-\d{4}$/, "Formato de placa inválido"),
-  firstTrailerPlate: z
-    .string()
-    .regex(/^[A-Z]{3}-\d{4}$/, "Formato de placa inválido")
-    .optional()
-    .or(z.literal("")),
-  secondTrailerPlate: z
-    .string()
-    .regex(/^[A-Z]{3}-\d{4}$/, "Formato de placa inválido")
-    .optional()
-    .or(z.literal("")),
-  thirdTrailerPlate: z
-    .string()
-    .regex(/^[A-Z]{3}-\d{4}$/, "Formato de placa inválido")
-    .optional()
-    .or(z.literal("")),
-  km: z.string().refine((val) => val === "" || Number(val) >= 0, {
-    message: "KM deve ser maior ou igual a 0",
-  }),
-  carrierName: z.string().min(1, "Transportadora é obrigatória"),
-});
-
-type FormData = z.infer<typeof schema>;
-
-const carriers = [
-  { value: "carrier1", label: "Carrier 1" },
-  { value: "carrier2", label: "Carrier 2" },
-  { value: "carrier3", label: "Carrier 3" },
+const steps: Array<{
+  title: string;
+  fields: FormFields[];
+  labels: string[];
+}> = [
+  {
+    title: "Informações da Frota",
+    fields: ["fleetNumber", "plate", "km"],
+    labels: ["Frota", "Placa", "KM"],
+  },
+  {
+    title: "Reboques",
+    fields: ["firstTrailerPlate", "secondTrailerPlate", "thirdTrailerPlate"],
+    labels: ["1º Reboque", "2º Reboque", "3º Reboque"],
+  },
+  {
+    title: "Transportadora",
+    fields: ["carrierId"],
+    labels: ["Transportadora"],
+  },
 ];
-
-const defaultValues: FormData = {
-  fleetNumber: "",
-  plate: "",
-  firstTrailerPlate: "",
-  secondTrailerPlate: "",
-  thirdTrailerPlate: "",
-  km: "",
-  carrierName: "",
-};
 
 export default function FleetCreationDialog() {
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
-    mode: "onTouched",
-    defaultValues,
-  });
+  const { createFleetForm, handleSubmit, isSubmitting, formatPlate } =
+    useCreateFleet(setOpen);
 
-  const {
-    formState: { isValid },
-    reset,
-  } = form;
+  const { data: fleetData } = useCarrier();
+  const carriers =
+    fleetData?.data?.map((carrier) => ({
+      value: carrier.id,
+      label: carrier.carrierName,
+    })) || [];
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted with data:", data);
-    setStep(4);
-  };
-
-  const formatPlate = (value: string) => {
-    const cleaned = value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-    if (cleaned.length <= 3) return cleaned;
-    return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}`;
-  };
-
-  const steps = [
-    {
-      title: "Informações da Frota",
-      fields: ["fleetNumber", "plate", "km"],
-      labels: ["Frota", "Placa", "KM"],
-    },
-    {
-      title: "Reboques",
-      fields: ["firstTrailerPlate", "secondTrailerPlate", "thirdTrailerPlate"],
-      labels: ["1º Reboque", "2º Reboque", "3º Reboque"],
-    },
-    {
-      title: "Transportadora",
-      fields: ["carrierName"],
-      labels: ["Transportadora"],
-    },
-  ];
+  const { control, trigger } = createFleetForm;
 
   const handleNext = async () => {
-    const fieldsToValidate = steps[step - 1].fields as (keyof FormData)[];
-    const isStepValid = await form.trigger(fieldsToValidate);
+    const fieldsToValidate = steps[step - 1].fields;
+    const isStepValid = await trigger(fieldsToValidate);
     if (isStepValid) {
       setStep(step + 1);
     }
@@ -133,15 +84,9 @@ export default function FleetCreationDialog() {
 
   const handleClose = () => {
     setOpen(false);
-    reset(defaultValues);
+    createFleetForm.reset();
     setStep(1);
   };
-
-  useEffect(() => {
-    if (!open) {
-      handleClose();
-    }
-  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -155,8 +100,8 @@ export default function FleetCreationDialog() {
         <DialogHeader>
           <DialogTitle>Adicionar Nova Frota</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <Form {...createFleetForm}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex justify-between mb-4">
               {steps.map((_, i) => (
                 <div
@@ -182,19 +127,19 @@ export default function FleetCreationDialog() {
                   {steps[step - 1].fields.map((field, index) => (
                     <FormField
                       key={field}
-                      control={form.control}
-                      name={field as keyof FormData}
+                      control={control}
+                      name={field}
                       render={({ field: formField }) => (
                         <FormItem>
                           <FormLabel>{steps[step - 1].labels[index]}</FormLabel>
                           <FormControl>
-                            {field === "carrierName" ? (
+                            {field === "carrierId" ? (
                               <Select
                                 onValueChange={formField.onChange}
-                                value={formField.value as string}
+                                value={formField.value}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select carrier" />
+                                  <SelectValue placeholder="Selecione uma transportadora" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {carriers.map((carrier) => (
@@ -218,8 +163,6 @@ export default function FleetCreationDialog() {
                                     );
                                     formField.onChange(formattedValue);
                                     e.target.value = formattedValue;
-                                  } else if (field === "km") {
-                                    formField.onChange(e.target.value);
                                   } else {
                                     formField.onChange(e.target.value);
                                   }
@@ -268,7 +211,11 @@ export default function FleetCreationDialog() {
                   </Button>
                 )}
                 {step === 3 && (
-                  <Button type="submit" className="ml-auto" disabled={!isValid}>
+                  <Button
+                    type="submit"
+                    className="ml-auto"
+                    disabled={isSubmitting}
+                  >
                     Criar Frota
                   </Button>
                 )}
