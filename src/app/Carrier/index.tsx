@@ -43,6 +43,10 @@ export function Carrier() {
     return <div>Ocorreu um erro: {error.message}</div>;
   }
 
+  const activeCarriers = data?.data
+    ?.filter((carrier) => carrier.status === "ATIVO")
+    .length.toString();
+
   const handleOpenModal = () => {
     setIsDialogOpen(true);
   };
@@ -71,7 +75,7 @@ export function Carrier() {
                 <Card className="pb-4" x-chunk="dashboard-05-chunk-1">
                   <CardHeader className="pb-2">
                     <CardDescription>Ativos</CardDescription>
-                    <CardTitle className="text-4xl">34</CardTitle>
+                    <CardTitle className="text-4xl">{activeCarriers}</CardTitle>
                   </CardHeader>
                 </Card>
               </div>
