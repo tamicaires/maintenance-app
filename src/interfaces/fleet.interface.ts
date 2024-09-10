@@ -12,6 +12,16 @@ export interface IFleet {
   createdAt?: string;
 }
 
+export interface IFleetCreate {
+  fleetNumber: string;
+  plate: string;
+  firstTrailerPlate: string;
+  secondTrailerPlate: string;
+  thirdTrailerPlate: string;
+  km: string;
+  status?: string;
+  carrierId: string;
+}
 export interface IFleetUpdate {
   id: string;
   fleetNumber: string;
