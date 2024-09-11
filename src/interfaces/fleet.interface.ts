@@ -6,7 +6,7 @@ export interface IFleet {
   secondTrailerPlate: string;
   thirdTrailerPlate: string;
   km: string;
-  status?: string;
+  status: "ATIVO" | "INATIVO";
   carrierId: string;
   carrierName: string;
   createdAt?: string;
@@ -19,17 +19,17 @@ export interface IFleetCreate {
   secondTrailerPlate: string;
   thirdTrailerPlate: string;
   km: string;
-  status?: string;
+  status: "ATIVO" | "INATIVO";
   carrierId: string;
 }
+
 export interface IFleetUpdate {
-  id: string;
-  fleetNumber: string;
-  firstTrailerPlate: string;
-  secondTrailerPlate: string;
-  thirdTrailerPlate: string;
-  km: string;
-  status?: string;
-  carrierId: string;
-  carrierName: string;
+  fleetNumber?: string;
+  plate?: string;
+  firstTrailerPlate?: string;
+  secondTrailerPlate?: string;
+  thirdTrailerPlate?: string;
+  km?: string;
+  carrierId?: string;
+  status?: "ATIVO" | "INATIVO";
 }

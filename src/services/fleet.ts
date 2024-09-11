@@ -1,4 +1,8 @@
-import { IFleet, IFleetCreate } from "@/interfaces/fleet.interface";
+import {
+  IFleet,
+  IFleetCreate,
+  IFleetUpdate,
+} from "@/interfaces/fleet.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (data: IFleetCreate): Promise<IApiResponse<IFleet>> => {
@@ -8,7 +12,28 @@ const create = async (data: IFleetCreate): Promise<IApiResponse<IFleet>> => {
     data,
   });
 
-  console.log("response", response);
+  return response;
+};
+
+const update = async (
+  fleetId: string,
+  data: IFleetUpdate
+): Promise<IApiResponse<IFleet>> => {
+  const response = await handleRequest<IFleet>({
+    method: "PUT",
+    url: `/fleets/${fleetId}`,
+    data,
+  });
+
+  return response;
+};
+
+const deleteFleet = async (id: string): Promise<IApiResponse<void>> => {
+  const response = await handleRequest<void>({
+    method: "DELETE",
+    url: `/fleets/${id}`,
+  });
+
   return response;
 };
 
@@ -17,11 +42,13 @@ const getAll = async (): Promise<IApiResponse<IFleet[]>> => {
     method: "GET",
     url: "/fleets",
   });
-  console.log("response", response);
+
   return response;
 };
 
 export const FleetService = {
   create,
+  update,
+  deleteFleet,
   getAll,
 };
