@@ -68,7 +68,7 @@ export default function FleetEditDialog({
     handleSubmit,
     isSubmitting,
     formatPlate,
-    errors,
+
     handleEdit,
     editingFleet,
   } = useUpdateFleet(onClose);
@@ -81,7 +81,7 @@ export default function FleetEditDialog({
       label: carrier.carrierName,
     })) || [];
 
-  const { control, trigger, reset } = form;
+  const { control, trigger } = form;
 
   useEffect(() => {
     if (fleet && !editingFleet) {
