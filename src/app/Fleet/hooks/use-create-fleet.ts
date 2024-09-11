@@ -12,19 +12,6 @@ import { createFleetSchema } from "@/validations/create-fleet";
 
 export type CreateFleetData = z.infer<typeof createFleetSchema>;
 
-const adaptCreateFleetDataToIFleetCreate = (
-  data: CreateFleetData
-): IFleetCreate => ({
-  fleetNumber: data.fleetNumber,
-  plate: data.plate,
-  firstTrailerPlate: data.firstTrailerPlate || "",
-  secondTrailerPlate: data.secondTrailerPlate || "",
-  thirdTrailerPlate: data.thirdTrailerPlate || "",
-  km: data.km,
-  status: data.status,
-  carrierId: data.carrierId,
-});
-
 export function useCreateFleet(setShowModal: (show: boolean) => void) {
   const defaultValues: CreateFleetData = {
     fleetNumber: "",
@@ -70,8 +57,7 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
   });
 
   const submitFleetData = (data: CreateFleetData) => {
-    const adaptedData = adaptCreateFleetDataToIFleetCreate(data);
-    mutateCreate(adaptedData);
+    mutateCreate(data);
     reset();
   };
 
@@ -97,11 +83,5 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
     formatPlate,
   };
 }
-
-export const carriers = [
-  { value: "carrier1", label: "Carrier 1" },
-  { value: "carrier2", label: "Carrier 2" },
-  { value: "carrier3", label: "Carrier 3" },
-];
 
 export type FormFields = keyof CreateFleetData;
