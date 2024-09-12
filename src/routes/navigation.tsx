@@ -10,6 +10,7 @@ import { Login } from "@/app/Login";
 import Order from "@/app/Order";
 import WorkShopDashboard from "@/app/WorkShopDashboard";
 import { Fleet } from "@/app/Fleet";
+import { Employee } from "@/app/Employee";
 
 export function Navigation() {
   return (
@@ -24,6 +25,7 @@ export function Navigation() {
           <Route path={PrivateRoutes.WorkOrders} element={<Order />} />
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
+          <Route path={PrivateRoutes.Employees} element={<Employee />} />
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>
             <Route path={PrivateRoutes.Account} element={<MyAccount />} />
             <Route path={PrivateRoutes.Appearance} element={<Appearance />} />

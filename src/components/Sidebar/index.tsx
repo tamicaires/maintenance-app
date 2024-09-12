@@ -137,8 +137,13 @@ export default function Sidebar() {
               <span>Serviço</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Users className="mr-2 h-4 w-4" />
-              <span>Colaboradores</span>
+              <Link
+                to={PrivateRoutes.Employees}
+                className="flex gap-0.5 items-center"
+              >
+                <Users className="mr-2 h-4 w-4" />
+                <span>Colaboradores</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <ChevronRight className="mr-2 h-4 w-4" />
