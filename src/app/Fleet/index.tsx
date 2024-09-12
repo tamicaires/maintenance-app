@@ -232,8 +232,8 @@ export function Fleet() {
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
             <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
-                <Card className="sm:col-span-2 flex flex-wrap justify-between">
-                  <CardHeader className="pb-3">
+                <Card className="sm:col-span-2 flex flex-wrap justify-between items-center">
+                  <CardHeader>
                     <CardTitle>Frotas</CardTitle>
                     <CardDescription className="max-w-lg text-balance leading-relaxed">
                       Cadastro de Frotas
