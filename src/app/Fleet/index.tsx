@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
+  Search,
   File,
   ListFilter,
   MoreHorizontal,
@@ -34,7 +35,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFleet } from "./hooks/use-fleet";
 import { useSortableTable } from "@/hooks/use-sortable-table";
@@ -51,6 +51,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Input } from "@/components/ui/input";
 
 export function Fleet() {
   const [page, setPage] = useState(1);
@@ -61,12 +62,21 @@ export function Fleet() {
   const { sortedData, sortField, sortOrder, handleSort } =
     useSortableTable<IFleet>(data?.data || [], "fleetNumber");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState<IFleet[]>([]);
+
+  useEffect(() => {
+    const filtered = sortedData.filter((fleet) =>
+      fleet.fleetNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [sortedData, searchTerm]);
 
   if (error) {
     return <div>Ocorreu um erro: {error.message}</div>;
   }
 
-  const activeFleets = sortedData
+  const activeFleets = filteredData
     .filter((fleet) => fleet.status === "ATIVO")
     .length.toString();
 
@@ -188,7 +198,7 @@ export function Fleet() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {sortedData.map((fleet) => (
+        {filteredData.map((fleet) => (
           <TableRow key={fleet.id}>
             <TableCell>{fleet.fleetNumber}</TableCell>
             <TableCell>{fleet.plate}</TableCell>
@@ -240,7 +250,7 @@ export function Fleet() {
   };
 
   const handleNextPage = () => {
-    if (sortedData.length === perPage) {
+    if (filteredData.length === perPage) {
       setPage((p) => p + 1);
     }
   };
@@ -274,88 +284,80 @@ export function Fleet() {
                     </CardHeader>
                   </Card>
                 </div>
-                <Tabs defaultValue="week">
-                  <div className="flex items-center">
-                    <TabsList>
-                      <TabsTrigger value="week">Semana</TabsTrigger>
-                      <TabsTrigger value="month">Mês</TabsTrigger>
-                      <TabsTrigger value="year">Ano</TabsTrigger>
-                    </TabsList>
-                    <div className="ml-auto flex items-center gap-2">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-7 gap-1 text-sm"
-                          >
-                            <ListFilter className="h-3.5 w-3.5" />
-                            <span className="sr-only sm:not-sr-only">
-                              Filtrar
-                            </span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Filtrar</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuCheckboxItem checked>
-                            Ativos
-                          </DropdownMenuCheckboxItem>
-                          <DropdownMenuCheckboxItem>
-                            Inativos
-                          </DropdownMenuCheckboxItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-7 gap-1 text-sm"
-                      >
-                        <File className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <div className="relative w-64">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Buscar frota"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-8 h-9"
+                    />
                   </div>
-                  <TabsContent value="week">
-                    <Card className="pt-4">
-                      <CardContent>
-                        <div className="hidden md:block">
-                          {renderDesktopTable()}
-                        </div>
-                        <div className="md:hidden">
-                          {sortedData.map(renderMobileCard)}
-                        </div>
-                        <Pagination className="mt-4">
-                          <PaginationContent>
-                            <PaginationItem>
-                              <PaginationPrevious
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handlePreviousPage();
-                                }}
-                              />
-                            </PaginationItem>
-                            <PaginationItem>
-                              <PaginationLink href="#" isActive>
-                                {page}
-                              </PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                              <PaginationNext
-                                href="#"
-                                title="Próxima"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleNextPage();
-                                }}
-                              />
-                            </PaginationItem>
-                          </PaginationContent>
-                        </Pagination>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                </Tabs>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-10 w-10"
+                      >
+                        <ListFilter className="h-4 w-4" />
+                        <span className="sr-only">Filtrar</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Filtrar</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuCheckboxItem checked>
+                        Ativos
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem>
+                        Inativos
+                      </DropdownMenuCheckboxItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Button size="icon" variant="outline" className="h-10 w-10">
+                    <File className="h-4 w-4" />
+                    <span className="sr-only">Exportar</span>
+                  </Button>
+                </div>
+                <Card className="pt-4">
+                  <CardContent>
+                    <div className="hidden md:block">
+                      {renderDesktopTable()}
+                    </div>
+                    <div className="md:hidden">
+                      {filteredData.map(renderMobileCard)}
+                    </div>
+                    <Pagination className="mt-4">
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handlePreviousPage();
+                            }}
+                          />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink href="#" isActive>
+                            {page}
+                          </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationNext
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleNextPage();
+                            }}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  </CardContent>
+                </Card>
               </div>
             </main>
           </div>
