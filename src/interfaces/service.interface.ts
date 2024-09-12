@@ -1,4 +1,5 @@
-import { EmployeeBasicInfo } from "@/services/employee";
+import { EmployeeBasicInfo } from "./employee.interface";
+
 
 export interface IService {
   id: string;
