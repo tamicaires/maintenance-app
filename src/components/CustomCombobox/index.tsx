@@ -81,7 +81,7 @@ export function Select({
         )}
         {isLoading ? (
           <div className="flex justify-center items-center py-4">
-            <Spinner size="small" color="primary" />
+            <Spinner size="small" />
           </div>
         ) : (
           <ul className="py-1">
