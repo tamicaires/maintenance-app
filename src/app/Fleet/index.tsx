@@ -42,11 +42,10 @@ import { SortableHeader } from "@/components/SortableHeader";
 import FleetCreationDialog from "./CreateFleet";
 import FleetEditDialog from "./EditFleet";
 import { IFleet } from "@/interfaces/fleet.interface";
-import { Spinner } from "@/components/Spinner";
 import { useUpdateFleet } from "./hooks/use-update-fleet";
 
-export default function Fleet() {
-  const { data, isLoading, error } = useFleet();
+export function Fleet() {
+  const { data, error } = useFleet();
   const { handleEdit, handleDelete, editingFleet, setEditingFleet } =
     useUpdateFleet(() => setEditingFleet(null));
   const { sortedData, sortField, sortOrder, handleSort } =
@@ -228,7 +227,6 @@ export default function Fleet() {
 
   return (
     <ScrollArea>
-      {isLoading && <Spinner />}
       <div className="flex min-h-screen flex-col bg-background mt-14">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
