@@ -43,9 +43,19 @@ import FleetCreationDialog from "./CreateFleet";
 import FleetEditDialog from "./EditFleet";
 import { IFleet } from "@/interfaces/fleet.interface";
 import { useUpdateFleet } from "./hooks/use-update-fleet";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export function Fleet() {
-  const { data, error } = useFleet();
+  const [page, setPage] = useState(1);
+  const perPage = 20;
+  const { data, error, isLoading } = useFleet(page, perPage);
   const { handleEdit, handleDelete, editingFleet, setEditingFleet } =
     useUpdateFleet(() => setEditingFleet(null));
   const { sortedData, sortField, sortOrder, handleSort } =
@@ -225,90 +235,132 @@ export function Fleet() {
     </Table>
   );
 
+  const handlePreviousPage = () => {
+    setPage((p) => Math.max(1, p - 1));
+  };
+
+  const handleNextPage = () => {
+    if (sortedData.length === perPage) {
+      setPage((p) => p + 1);
+    }
+  };
+
   return (
     <ScrollArea>
-      <div className="flex min-h-screen flex-col bg-background mt-14">
-        <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
-          <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
-            <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
-                <Card className="sm:col-span-2 flex flex-wrap justify-between items-center">
-                  <CardHeader>
-                    <CardTitle>Frotas</CardTitle>
-                    <CardDescription className="max-w-lg text-balance leading-relaxed">
-                      Cadastro de Frotas
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex gap-5">
-                    <Button variant="secondary">Exportar Relatório</Button>
-                    <FleetCreationDialog />
-                  </CardContent>
-                </Card>
-                <Card className="pb-4">
-                  <CardHeader className="pb-2">
-                    <CardDescription>Ativos</CardDescription>
-                    <CardTitle className="text-4xl">{activeFleets}</CardTitle>
-                  </CardHeader>
-                </Card>
-              </div>
-              <Tabs defaultValue="week">
-                <div className="flex items-center">
-                  <TabsList>
-                    <TabsTrigger value="week">Semana</TabsTrigger>
-                    <TabsTrigger value="month">Mês</TabsTrigger>
-                    <TabsTrigger value="year">Ano</TabsTrigger>
-                  </TabsList>
-                  <div className="ml-auto flex items-center gap-2">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-7 gap-1 text-sm"
-                        >
-                          <ListFilter className="h-3.5 w-3.5" />
-                          <span className="sr-only sm:not-sr-only">
-                            Filtrar
-                          </span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Filtrar</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuCheckboxItem checked>
-                          Ativos
-                        </DropdownMenuCheckboxItem>
-                        <DropdownMenuCheckboxItem>
-                          Inativos
-                        </DropdownMenuCheckboxItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-7 gap-1 text-sm"
-                    >
-                      <File className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                </div>
-                <TabsContent value="week">
-                  <Card className="pt-4">
-                    <CardContent>
-                      <div className="hidden md:block">
-                        {renderDesktopTable()}
-                      </div>
-                      <div className="md:hidden">
-                        {sortedData.map(renderMobileCard)}
-                      </div>
+      {isLoading ? (
+        <div>Carregando...</div>
+      ) : (
+        <div className="flex min-h-screen flex-col bg-background mt-14">
+          <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
+            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
+              <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
+                  <Card className="sm:col-span-2 flex flex-wrap justify-between items-center">
+                    <CardHeader>
+                      <CardTitle>Frotas</CardTitle>
+                      <CardDescription className="max-w-lg text-balance leading-relaxed">
+                        Cadastro de Frotas
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex gap-5">
+                      <Button variant="secondary">Exportar Relatório</Button>
+                      <FleetCreationDialog />
                     </CardContent>
                   </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </main>
+                  <Card className="pb-4">
+                    <CardHeader className="pb-2">
+                      <CardDescription>Ativos</CardDescription>
+                      <CardTitle className="text-4xl">{activeFleets}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </div>
+                <Tabs defaultValue="week">
+                  <div className="flex items-center">
+                    <TabsList>
+                      <TabsTrigger value="week">Semana</TabsTrigger>
+                      <TabsTrigger value="month">Mês</TabsTrigger>
+                      <TabsTrigger value="year">Ano</TabsTrigger>
+                    </TabsList>
+                    <div className="ml-auto flex items-center gap-2">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-7 gap-1 text-sm"
+                          >
+                            <ListFilter className="h-3.5 w-3.5" />
+                            <span className="sr-only sm:not-sr-only">
+                              Filtrar
+                            </span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Filtrar</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuCheckboxItem checked>
+                            Ativos
+                          </DropdownMenuCheckboxItem>
+                          <DropdownMenuCheckboxItem>
+                            Inativos
+                          </DropdownMenuCheckboxItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 gap-1 text-sm"
+                      >
+                        <File className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+                  <TabsContent value="week">
+                    <Card className="pt-4">
+                      <CardContent>
+                        <div className="hidden md:block">
+                          {renderDesktopTable()}
+                        </div>
+                        <div className="md:hidden">
+                          {sortedData.map(renderMobileCard)}
+                        </div>
+                        <Pagination className="mt-4">
+                          <PaginationContent>
+                            <PaginationItem>
+                              <PaginationPrevious
+                                href="#"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handlePreviousPage();
+                                }}
+                              />
+                            </PaginationItem>
+                            <PaginationItem>
+                              <PaginationLink href="#" isActive>
+                                {page}
+                              </PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                              <PaginationNext
+                                href="#"
+                                title="Próxima"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleNextPage();
+                                }}
+                              />
+                            </PaginationItem>
+                          </PaginationContent>
+                        </Pagination>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
+      )}
       {editingFleet && (
         <FleetEditDialog
           fleet={editingFleet}

@@ -3,12 +3,10 @@ import { IApiResponse } from "@/services/api";
 import { FleetService } from "@/services/fleet";
 import { useQuery } from "@tanstack/react-query";
 
-export function useFleet() {
-  const data = useQuery<IApiResponse<IFleet[]>>({
-    queryKey: ["fleets"],
-    queryFn: FleetService.getAll,
+export function useFleet(page: number = 1, perPage: number = 10) {
+  return useQuery<IApiResponse<IFleet[]>>({
+    queryKey: ["fleets", page, perPage],
+    queryFn: () => FleetService.getAll(page, perPage),
     staleTime: 60 * 5 * 1000,
   });
-
-  return data;
 }

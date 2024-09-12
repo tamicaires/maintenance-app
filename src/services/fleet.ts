@@ -37,10 +37,14 @@ const deleteFleet = async (id: string): Promise<IApiResponse<void>> => {
   return response;
 };
 
-const getAll = async (): Promise<IApiResponse<IFleet[]>> => {
+const getAll = async (
+  page: number = 1,
+  perPage: number = 3
+): Promise<IApiResponse<IFleet[]>> => {
   const response = await handleRequest<IFleet[]>({
     method: "GET",
     url: "/fleets",
+    params: { page, perPage },
   });
 
   return response;
