@@ -75,9 +75,7 @@ export default function Sidebar() {
                 className={`flex items-center justify-center rounded-lg transition-colors hover:text-foreground ${
                   showLabels ? "w-full px-3 py-2" : "h-9 w-9 md:h-8 md:w-8"
                 } ${
-                  isActive(item.path)
-                    ? "bg-green-500 text-white"
-                    : "text-muted-foreground"
+                  isActive(item.path) ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 <item.icon className="h-5 w-5 shrink-0" />
