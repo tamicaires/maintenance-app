@@ -133,8 +133,13 @@ export default function Sidebar() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <FileText className="mr-2 h-4 w-4" />
-              <span>Serviço</span>
+              <Link
+                to={PrivateRoutes.Services}
+                className="flex gap-0.5 items-center"
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                <span>Serviços</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
@@ -195,13 +200,15 @@ export default function Sidebar() {
   return (
     <>
       {/* Bottom navigation for small screens */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around bg-card border-t border-gray-200 sm:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-around bg-primary border-t border-gray-200 sm:hidden rounded-t-2xl">
         {navigationItems.slice(0, 4).map((item) => (
           <Link
             key={item.label}
             to={item.path}
             className={`flex flex-col items-center justify-center p-2 ${
-              isActive(item.path) ? "text-green-500" : "text-muted-foreground"
+              isActive(item.path)
+                ? " bg-muted rounded-lg text-primary/80"
+                : "text-muted"
             }`}
           >
             <item.icon className="h-5 w-5" />
