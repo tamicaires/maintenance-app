@@ -28,10 +28,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { IService } from "@/interfaces/service.interface";
+import { IServiceWithEmployee } from "@/interfaces/service.interface";
 
 interface ServiceProps {
-  services: IService[];
+  services: IServiceWithEmployee[];
 }
 
 export function OrderServices({ services }: ServiceProps) {
