@@ -1,24 +1,50 @@
-import { IService } from "@/interfaces/service.interface";
-import { ICreateWorkOrder } from "@/interfaces/work-order.interface";
+import {
+  IService,
+  IServiceCreateAndUpdate,
+  IServiceWithEmployee,
+} from "@/interfaces/service.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (
-  data: ICreateWorkOrder
+  data: IServiceCreateAndUpdate
 ): Promise<IApiResponse<IService>> => {
   const response = await handleRequest<IService>({
     method: "POST",
-    url: "/work-orders",
+    url: "/services",
     data,
   });
 
-  console.log("response", response);
+  return response;
+};
+
+const update = async (
+  serviceId: string,
+  data: IServiceCreateAndUpdate
+): Promise<IApiResponse<IService>> => {
+  const response = await handleRequest<IService>({
+    method: "PUT",
+    url: `/services/${serviceId}`,
+    data,
+  });
+
+  return response;
+};
+
+const deleteService = async (
+  serviceId: string
+): Promise<IApiResponse<void>> => {
+  const response = await handleRequest<void>({
+    method: "DELETE",
+    url: `/services/${serviceId}`,
+  });
+
   return response;
 };
 
 const getByWorkOrder = async (
   workOrderId: string
-): Promise<IApiResponse<IService[]>> => {
-  const response = await handleRequest<IService[]>({
+): Promise<IApiResponse<IServiceWithEmployee[]>> => {
+  const response = await handleRequest<IServiceWithEmployee[]>({
     method: "GET",
     url: `/services/${workOrderId}/services`,
   });
@@ -26,7 +52,19 @@ const getByWorkOrder = async (
   return response;
 };
 
+const getAll = async (): Promise<IApiResponse<IService[]>> => {
+  const response = await handleRequest<IService[]>({
+    method: "GET",
+    url: "/services",
+  });
+
+  return response;
+};
+
 export const ServicesService = {
   create,
+  update,
+  deleteService,
   getByWorkOrder,
+  getAll,
 };
