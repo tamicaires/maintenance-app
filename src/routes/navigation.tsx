@@ -12,6 +12,7 @@ import WorkShopDashboard from "@/app/WorkShopDashboard";
 import { Fleet } from "@/app/Fleet";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
+import NotFound from "@/components/NotFound";
 
 export function Navigation() {
   return (
@@ -43,6 +44,7 @@ export function Navigation() {
           path={PublicRoutes.ForgotPassword}
           element={<div>Forgot Password</div>}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
