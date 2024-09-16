@@ -1,40 +1,46 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface ProfileProps {
-  name: string;
-  showAvatar?: boolean;
+  companyName: string;
+  isCollapsed?: boolean;
   description?: string;
-  showHello?: boolean;
+  showAvatar?: boolean;
+  size?: "small" | "large";
 }
 
 export function Profile({
-  name,
+  companyName,
   description,
-  showAvatar,
-  showHello = false,
+  isCollapsed = false,
+  showAvatar = false,
+  size = "small",
 }: ProfileProps) {
-  const getInitials = (name: string) => {
-    return name
+  const getInitials = (companyName: string) => {
+    return companyName
       .split(" ")
       .map((n) => n[0])
       .join("")
       .toUpperCase();
   };
+
+  const textSizeClass = size === "large" ? "text-md" : "text-sm";
+  const descriptionSizeClass = size === "large" ? "text-xs" : "text-xs";
+
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-2">
       {showAvatar && (
-        <Avatar>
-          <AvatarFallback>{getInitials(name)}</AvatarFallback>
+        <Avatar className="h-8 w-8">
+          <AvatarFallback>{getInitials(companyName)}</AvatarFallback>
         </Avatar>
       )}
-      <div className="hidden md:flex flex-col">
-        <span className="text-sm font-medium leading-3">
-          {showHello && "Olá,"} {name}
-        </span>
-        {description && (
-          <span className="text-xs text-muted-foreground">{description}</span>
-        )}
-      </div>
+      {!isCollapsed && (
+        <div className="flex-1 text-left">
+          <p className={`font-medium ${textSizeClass}`}>{companyName}</p>
+          <p className={`text-muted-foreground ${descriptionSizeClass}`}>
+            {description}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
