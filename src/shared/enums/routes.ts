@@ -18,4 +18,11 @@ export enum PrivateRoutes {
   Appearance = "/configuracoes/aparencia",
   Subscription = "/configuracoes/assinatura",
   Support = "/configuracoes/suporte",
+  MaintenancePlanner = "/planejamento/manutencao",
+  PartsManagement = "/planejamento/pecas",
+  MaintenanceReports = "/relatorios/manutencao",
+  CarrierReports = "/relatorios/transportadoras",
+  FleetReports = "/relatorios/frota",
+  ServicesReports = "/relatorios/servicos",
+  EmployeesReports = "/relatorios/colaboradores",
 }
