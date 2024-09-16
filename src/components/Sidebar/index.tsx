@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { PrivateRoutes } from "@/shared/enums/routes";
 import { getUserLocalStorage } from "@/utils/auth";
+import { getInitials } from "@/utils/utils";
 
 interface SidebarProps {
   onCollapse: (isCollapsed: boolean) => void;
@@ -282,14 +283,12 @@ const Sidebar = ({ onCollapse }: SidebarProps) => {
                     src="/placeholder-avatar.jpg"
                     alt="Sophia Munn"
                   />
-                  <AvatarFallback>TM</AvatarFallback>
+                  <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
                 {!isCollapsed && (
                   <div className="flex-1 text-left">
-                    <p className="text-sm font-medium">Sophia Munn</p>
-                    <p className="text-xs text-muted-foreground">
-                      sophia@untitledui.com
-                    </p>
+                    <p className="text-sm font-medium">{user.name}</p>
+                    <p className="text-xs text-muted-foreground">{user.email}</p>
                   </div>
                 )}
               </div>
