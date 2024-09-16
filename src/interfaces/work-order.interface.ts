@@ -1,6 +1,7 @@
 import {
   MaintenanceStatus,
   TypeOfMaintenance,
+  Box,
 } from "@/shared/enums/work-order";
 
 export interface IWorkOrder {
@@ -37,11 +38,12 @@ export interface ICreateWorkOrder {
   typeOfMaintenance: TypeOfMaintenance;
   box?: string;
 }
-export interface IWorkOrder {
-  id: string;
-  displayId: string;
-  severityLevel: string;
-  entryQueue?: string | undefined;
+
+export interface IWorkOrderUpdate {
+  id?: string;
+  displayId?: string;
+  severityLevel?: string;
+  entryQueue?: string;
   entryMaintenance?: string;
   exitMaintenance?: string;
   startWaitingParts?: string;
@@ -50,32 +52,10 @@ export interface IWorkOrder {
   maintenanceDuration?: number;
   waitingPartsDuration?: number;
   exitSupervisor?: string;
-  fleetId: string;
+  fleetId?: string;
   user?: string;
-  typeOfMaintenance: string;
-  box: string;
-  createdBy: string;
-  status: MaintenanceStatus;
-  createdAt: string;
-}
-
-export interface IWorkOrderUpdate {
-  id: string;
-  displayId?: string;
-  severityLevel?: string;
-  entryQueue?: Date;
-  entryMaintenance?: Date;
-  exitMaintenance?: Date;
-  startWaitingParts?: Date;
-  endWaitingParts?: Date;
-  queueDuration?: number;
-  maintenanceDuration?: number;
-  waitingPartsDuration?: number;
-  exitSupervisor?: string;
-  fleetId: string;
-  user?: string;
-  typeOfMaintenance: string;
-  box: string;
+  typeOfMaintenance?: TypeOfMaintenance;
+  box?: Box;
   createdBy?: string;
   updatedBy?: string;
   status?: MaintenanceStatus;

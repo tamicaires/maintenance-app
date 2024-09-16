@@ -17,6 +17,16 @@ const create = async (
   return response;
 };
 
+const update = async (workOrderId: string, data: Partial<IWorkOrder>) => {
+  const response = await handleRequest<IWorkOrder>({
+    method: "PUT",
+    url: `/work-orders/${workOrderId}`,
+    data,
+  });
+  console.log("response", response);
+  return response;
+};
+
 const getAll = async (): Promise<IApiResponse<IWorkOrder[]>> => {
   const response = await handleRequest<IWorkOrder[]>({
     method: "GET",
@@ -28,5 +38,6 @@ const getAll = async (): Promise<IApiResponse<IWorkOrder[]>> => {
 
 export const WorkOrderService = {
   create,
+  update,
   getAll,
 };

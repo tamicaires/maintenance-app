@@ -22,7 +22,7 @@ import {
   CalendarIcon,
 } from "lucide-react";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
-import { MaintenanceStatus } from "@/shared/enums/work-order";
+import { WorkOrderStatusBadge } from "../WorkOrderStatusBadge";
 
 interface WorkOrderCardProps {
   workOrder: IWorkOrder;
@@ -43,7 +43,7 @@ export default function WorkOrderCard({
       transition={{ duration: 0.3 }}
     >
       <Card className="overflow-hidden mb-4">
-        <CardHeader className="bg-muted">
+        <CardHeader className="bg-muted/80">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div className="mb-2 md:mb-0">
               <Badge
@@ -59,16 +59,8 @@ export default function WorkOrderCard({
                 </span>
               </p>
             </div>
-            <Badge
-              variant={
-                workOrder.status === MaintenanceStatus.MANUTENCAO
-                  ? "secondary"
-                  : "default"
-              }
-              className="text-sm px-3 py-1"
-            >
-              {workOrder.status}
-            </Badge>
+
+            <WorkOrderStatusBadge workOrder={workOrder} />
           </div>
         </CardHeader>
         <CardContent className="pt-6">
