@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getInitials } from "@/utils/utils";
 
 interface ProfileProps {
   companyName: string;
@@ -15,14 +16,6 @@ export function Profile({
   showAvatar = false,
   size = "small",
 }: ProfileProps) {
-  const getInitials = (companyName: string) => {
-    return companyName
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
-
   const textSizeClass = size === "large" ? "text-md" : "text-sm";
   const descriptionSizeClass = size === "large" ? "text-xs" : "text-xs";
 
