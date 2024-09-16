@@ -27,6 +27,7 @@ export default function ThemeToggle() {
       size="icon"
       onClick={toggleTheme}
       aria-label="Alternar tema"
+      className="text-muted-foreground"
     >
       {isDark ? (
         <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />

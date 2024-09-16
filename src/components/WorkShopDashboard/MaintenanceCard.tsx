@@ -27,7 +27,7 @@ export function MaintenanceCard({
   const progress = 65;
   return (
     <Card className="relative h-full">
-      <div className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 text-sm font-bold rounded-bl-lg rounded-tr-lg">
+      <div className="absolute top-0 right-0 bg-primary/60 text-white px-2 py-1 text-sm font-bold rounded-bl-lg rounded-tr-lg">
         Box {workOrder.box}
       </div>
       <CardHeader className="pb-2">

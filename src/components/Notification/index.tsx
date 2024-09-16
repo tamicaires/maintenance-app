@@ -18,7 +18,7 @@ export function Notification() {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full relative">
-          <Bell className="h-5 w-5" />
+          <Bell className="h-5 w-5 text-muted-foreground" />
           <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500" />
           <span className="sr-only">Abrir notificações</span>
         </Button>
