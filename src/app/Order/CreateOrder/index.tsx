@@ -57,10 +57,7 @@ export function CreateWorkOrder() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="bg-primary hover:bg-green-600 text-primary-foreground transition-colors duration-200"
-          onClick={openDialog}
-        >
+        <Button onClick={openDialog}>
           <Plus className="mr-2 h-4 w-4" /> Abrir Ordem de Serviço
         </Button>
       </DialogTrigger>
