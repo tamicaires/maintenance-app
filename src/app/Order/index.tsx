@@ -22,6 +22,8 @@ import { Spinner } from "@/components/Spinner";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { EmptyState } from "@/components/EmptyState";
 import WorkOrderCard from "@/components/WorkOrderCard";
+import { ptBR } from "date-fns/locale";
+import { format } from "date-fns";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -84,18 +86,6 @@ export default function Order() {
     { numero: "22455", transportador: "Truck Diesel", ultima: "12/03/2024" },
     { numero: "22533", transportador: "Solimões LTDA", ultima: "12/03/2024" },
   ];
-
-  // const handleStatusChange = (
-  //   workOrder: IWorkOrder,
-  //   newStatus: MaintenanceStatus,
-  //   timestamp: string
-  // ) => {
-  //   // Update the work order status in your state or send to backend
-  //   console.log(
-  //     `Updating work order ${workOrder.id} to status ${newStatus} at ${timestamp}`
-  //   );
-  //   // You would typically update your state or make an API call here
-  // };
 
   const handleOpenDialog = (workOrder: IWorkOrder) => {
     setSelectedWorkOrder(workOrder);
@@ -225,7 +215,9 @@ export default function Order() {
                   Resumo do dia
                 </h2>
                 <h2 className="text-sm text-muted-foreground">
-                  Quarta-feira 27/08/2024
+                  {format(new Date(), "EEEE dd/MM/yyyy", {
+                    locale: ptBR,
+                  }).replace(/^\w/, (c) => c.toUpperCase())}
                 </h2>
               </div>
 
@@ -255,7 +247,8 @@ export default function Order() {
               <Separator className="my-6" />
 
               <h2 className="text-lg font-semibold mb-4">
-                Planejamento para 26 agosto 2024
+                Planejamento para{" "}
+                {format(new Date(), "dd/MM/yyyy", { locale: ptBR })}
               </h2>
               <ScrollArea className="h-[300px] rounded-md border p-4">
                 {planejamento.map((frota, index) => (
