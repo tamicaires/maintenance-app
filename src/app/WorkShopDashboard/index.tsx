@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -30,35 +30,132 @@ import { TypeMaintenanceChart } from "./Charts/TypeMaintenaceChart";
 import { ServiceChart } from "./Charts/ServicesChart";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { useWorkOrder } from "../Order/hooks/use-work-order";
+import {
+  MaintenanceStatus,
+  TypeOfMaintenance,
+} from "@/shared/enums/work-order";
 
-// Simulated real-time data
-const generateRandomData = () => ({
-  queueCount: Math.floor(Math.random() * 20),
-  avgQueueTime: `${Math.floor(Math.random() * 12)}:${Math.floor(
-    Math.random() * 60
-  )}:${Math.floor(Math.random() * 60)}`,
-  avgPVTime: `${Math.floor(Math.random() * 24)}:${Math.floor(
-    Math.random() * 60
-  )}:${Math.floor(Math.random() * 60)}`,
-  avgCOTime: `${Math.floor(Math.random() * 12)}:${Math.floor(
-    Math.random() * 60
-  )}:${Math.floor(Math.random() * 60)}`,
-  releasedCount: Math.floor(Math.random() * 30),
-});
+const calculateAverageTime = (
+  workOrders: IWorkOrder[],
+  status: MaintenanceStatus,
+  type?: TypeOfMaintenance
+) => {
+  const filteredOrders = workOrders.filter(
+    (order) =>
+      order.status === status && (!type || order.typeOfMaintenance === type)
+  );
+
+  if (filteredOrders.length === 0) return "00:00:00";
+
+  const totalMinutes = filteredOrders.reduce((acc, order) => {
+    const startTime =
+      status === MaintenanceStatus.FILA
+        ? order.entryQueue
+        : order.entryMaintenance;
+    if (!startTime) return acc;
+    const duration =
+      (new Date().getTime() - new Date(startTime).getTime()) / (1000 * 60);
+    return acc + duration;
+  }, 0);
+
+  const avgMinutes = totalMinutes / filteredOrders.length;
+  const hours = Math.floor(avgMinutes / 60);
+  const minutes = Math.floor(avgMinutes % 60);
+  const seconds = Math.floor((avgMinutes * 60) % 60);
+
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
+const calculateChange = (currentValue: number, pastValue: number) => {
+  if (pastValue === 0) return currentValue > 0 ? 100 : 0;
+  return ((currentValue - pastValue) / pastValue) * 100;
+};
 
 export default function MaintenanceDashboard() {
   const [viewMode, setViewMode] = useState("grid");
-  const [dashboardData, setDashboardData] = useState(generateRandomData());
-
-  const { data } = useWorkOrder();
+  const { data, refetch } = useWorkOrder();
   const workOrders = data?.data || [];
-  
+
+  const dashboardData = useMemo(() => {
+    const now = new Date();
+    const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+
+    const calculateMetrics = (orders: IWorkOrder[]) => {
+      const queueCount = orders.filter(
+        (order) => order.status === MaintenanceStatus.FILA
+      ).length;
+      const avgQueueTime = calculateAverageTime(orders, MaintenanceStatus.FILA);
+      const avgPVTime = calculateAverageTime(
+        orders,
+        MaintenanceStatus.MANUTENCAO,
+        TypeOfMaintenance.PREVENTIVA
+      );
+      const avgCOTime = calculateAverageTime(
+        orders,
+        MaintenanceStatus.MANUTENCAO,
+        TypeOfMaintenance.CORRETIVA
+      );
+      const releasedCount = orders.filter(
+        (order) => order.status === MaintenanceStatus.FINALIZADA
+      ).length;
+
+      return { queueCount, avgQueueTime, avgPVTime, avgCOTime, releasedCount };
+    };
+
+    const currentMetrics = calculateMetrics(workOrders);
+    const pastMetrics = calculateMetrics(
+      workOrders.filter((order) => new Date(order.createdAt) < twoHoursAgo)
+    );
+
+    return {
+      queueCount: {
+        value: currentMetrics.queueCount,
+        change: calculateChange(
+          currentMetrics.queueCount,
+          pastMetrics.queueCount
+        ),
+      },
+      avgQueueTime: {
+        value: currentMetrics.avgQueueTime,
+        change: calculateChange(
+          parseFloat(currentMetrics.avgQueueTime.replace(/:/g, "")),
+          parseFloat(pastMetrics.avgQueueTime.replace(/:/g, ""))
+        ),
+      },
+      avgPVTime: {
+        value: currentMetrics.avgPVTime,
+        change: calculateChange(
+          parseFloat(currentMetrics.avgPVTime.replace(/:/g, "")),
+          parseFloat(pastMetrics.avgPVTime.replace(/:/g, ""))
+        ),
+      },
+      avgCOTime: {
+        value: currentMetrics.avgCOTime,
+        change: calculateChange(
+          parseFloat(currentMetrics.avgCOTime.replace(/:/g, "")),
+          parseFloat(pastMetrics.avgCOTime.replace(/:/g, ""))
+        ),
+      },
+      releasedCount: {
+        value: currentMetrics.releasedCount,
+        change: calculateChange(
+          currentMetrics.releasedCount,
+          pastMetrics.releasedCount
+        ),
+      },
+    };
+  }, [workOrders]);
+
   const handleStatusChange = (id: string, newStatus: string) => {
     console.log("estado mudou", id, newStatus);
+    // Implement status change logic here
   };
 
   const handleShowDetails = (workOrder: IWorkOrder) => {
     console.log("Details for work order", workOrder);
+    // Implement show details logic here
   };
 
   return (
@@ -73,11 +170,7 @@ export default function MaintenanceDashboard() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setDashboardData(generateRandomData())}
-              >
+              <Button variant="outline" size="icon" onClick={() => refetch()}>
                 <RefreshCwIcon className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
@@ -91,35 +184,35 @@ export default function MaintenanceDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <AnalyticsCard
           title="Qtd. em Fila"
-          value={dashboardData.queueCount}
-          change={11.5}
+          value={dashboardData.queueCount.value}
+          change={dashboardData.queueCount.change}
           icon={TruckIcon}
         />
         <AnalyticsCard
           title="Média Tempo Fila"
-          value={dashboardData.avgQueueTime}
-          change={-3.2}
+          value={dashboardData.avgQueueTime.value}
+          change={dashboardData.avgQueueTime.change}
           icon={ClockIcon}
           expectedTime="02:00:00"
         />
         <AnalyticsCard
           title="Média Tempo PV"
-          value={dashboardData.avgPVTime}
-          change={-7.5}
+          value={dashboardData.avgPVTime.value}
+          change={dashboardData.avgPVTime.change}
           icon={ClockIcon}
           expectedTime="08:00:00"
         />
         <AnalyticsCard
           title="Média Tempo CO"
-          value={dashboardData.avgCOTime}
-          change={3.2}
+          value={dashboardData.avgCOTime.value}
+          change={dashboardData.avgCOTime.change}
           icon={ClockIcon}
           expectedTime="04:00:00"
         />
         <AnalyticsCard
           title="Qtd. Liberadas"
-          value={dashboardData.releasedCount}
-          change={5.7}
+          value={dashboardData.releasedCount.value}
+          change={dashboardData.releasedCount.change}
           icon={TruckIcon}
         />
       </div>
@@ -129,7 +222,6 @@ export default function MaintenanceDashboard() {
         <TypeMaintenanceChart />
         <ServiceChart />
       </div>
-
       <Tabs defaultValue="maintenance" className="space-y-4">
         <TabsList>
           <TabsTrigger value="maintenance">Em Manutenção</TabsTrigger>
@@ -157,20 +249,26 @@ export default function MaintenanceDashboard() {
             </div>
           </div>
           {viewMode === "grid" ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {workOrders.map((workOrder) => (
-                <MaintenanceCard
-                  key={workOrder.id}
-                  workOrder={workOrder}
-                  onStatusChange={handleStatusChange}
-                  onShowDetails={handleShowDetails}
-                />
-              ))}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+              {workOrders
+                .filter(
+                  (order) => order.status === MaintenanceStatus.MANUTENCAO
+                )
+                .map((workOrder) => (
+                  <MaintenanceCard
+                    key={workOrder.id}
+                    workOrder={workOrder}
+                    onStatusChange={handleStatusChange}
+                    onShowDetails={handleShowDetails}
+                  />
+                ))}
             </div>
           ) : (
             <ScrollArea className="h-[600px] rounded-md border">
               <MaintenanceTable
-                workOrders={workOrders}
+                workOrders={workOrders.filter(
+                  (order) => order.status === MaintenanceStatus.MANUTENCAO
+                )}
                 onStatusChange={handleStatusChange}
                 onShowDetails={handleShowDetails}
               />
@@ -188,7 +286,9 @@ export default function MaintenanceDashboard() {
             <CardContent>
               <ScrollArea className="h-[600px] rounded-md border">
                 <MaintenanceTable
-                  workOrders={workOrders}
+                  workOrders={workOrders.filter(
+                    (order) => order.status === MaintenanceStatus.FILA
+                  )}
                   onStatusChange={handleStatusChange}
                   onShowDetails={handleShowDetails}
                 />
@@ -207,7 +307,9 @@ export default function MaintenanceDashboard() {
             <CardContent>
               <ScrollArea className="h-[600px] rounded-md border">
                 <MaintenanceTable
-                  workOrders={workOrders}
+                  workOrders={workOrders.filter(
+                    (order) => order.status === MaintenanceStatus.FINALIZADA
+                  )}
                   onStatusChange={handleStatusChange}
                   onShowDetails={handleShowDetails}
                 />
