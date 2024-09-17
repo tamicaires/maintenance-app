@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { WorkOrderStatusBadge } from "../WorkOrderStatusBadge";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface WorkOrderCardProps {
   workOrder: IWorkOrder;
@@ -106,7 +108,9 @@ export default function WorkOrderCard({
               <p className="text-sm font-medium">Abertura OS</p>
               <p className="text-muted-foreground flex items-center">
                 <CalendarIcon className="mr-1 h-4 w-4" />
-                {workOrder.createdAt}
+                {format(new Date(workOrder.createdAt), "dd/MM/yyyy HH:mm", {
+                  locale: ptBR,
+                })}
               </p>
             </div>
           </div>
