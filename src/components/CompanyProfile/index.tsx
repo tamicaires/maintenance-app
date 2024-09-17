@@ -30,7 +30,7 @@ export function CompanyProfile({
             {currentCompany.companyName.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="flex-grow">
+        <div className="hidden sm:flex sm:flex-col sm:flex-grow">
           <h3 className="font-semibold text-sm">
             {currentCompany.companyName}
           </h3>
