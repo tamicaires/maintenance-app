@@ -27,4 +27,6 @@ export enum Box {
   SEIS = "Seis",
   SETE = "Sete",
   OITO = "Oito",
+  NOVE = "Nove",
+  DEZ = "Dez",
 }

@@ -23,7 +23,7 @@ export interface IWorkOrder {
   fleetId: string;
   user?: string;
   typeOfMaintenance: string;
-  box: string;
+  box: Box;
   createdBy: string;
   status: MaintenanceStatus;
   createdAt: string;
@@ -36,7 +36,7 @@ export interface ICreateWorkOrder {
   status: MaintenanceStatus;
   fleetId: string;
   typeOfMaintenance: TypeOfMaintenance;
-  box?: string;
+  box?: Box;
 }
 
 export interface IWorkOrderUpdate {

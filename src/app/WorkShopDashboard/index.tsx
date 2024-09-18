@@ -33,45 +33,11 @@ import { useWorkOrder } from "../Order/hooks/use-work-order";
 import {
   MaintenanceStatus,
   TypeOfMaintenance,
+  Box,
 } from "@/shared/enums/work-order";
-
-const calculateAverageTime = (
-  workOrders: IWorkOrder[],
-  status: MaintenanceStatus,
-  type?: TypeOfMaintenance
-) => {
-  const filteredOrders = workOrders.filter(
-    (order) =>
-      order.status === status && (!type || order.typeOfMaintenance === type)
-  );
-
-  if (filteredOrders.length === 0) return "00:00:00";
-
-  const totalMinutes = filteredOrders.reduce((acc, order) => {
-    const startTime =
-      status === MaintenanceStatus.FILA
-        ? order.entryQueue
-        : order.entryMaintenance;
-    if (!startTime) return acc;
-    const duration =
-      (new Date().getTime() - new Date(startTime).getTime()) / (1000 * 60);
-    return acc + duration;
-  }, 0);
-
-  const avgMinutes = totalMinutes / filteredOrders.length;
-  const hours = Math.floor(avgMinutes / 60);
-  const minutes = Math.floor(avgMinutes % 60);
-  const seconds = Math.floor((avgMinutes * 60) % 60);
-
-  return `${hours.toString().padStart(2, "0")}:${minutes
-    .toString()
-    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-};
-
-const calculateChange = (currentValue: number, pastValue: number) => {
-  if (pastValue === 0) return currentValue > 0 ? 100 : 0;
-  return ((currentValue - pastValue) / pastValue) * 100;
-};
+import { EmptyCard } from "@/components/EmptyCard";
+import { boxToNumber } from "@/utils/utils";
+import { calculateAverageTime, calculateChange } from "@/utils/time";
 
 export default function MaintenanceDashboard() {
   const [viewMode, setViewMode] = useState("grid");
@@ -157,6 +123,19 @@ export default function MaintenanceDashboard() {
     console.log("Details for work order", workOrder);
     // Implement show details logic here
   };
+
+  const boxesWithWorkOrders = useMemo(() => {
+    const boxes = Object.values(Box);
+    return boxes
+      .map((box) => {
+        const workOrder = workOrders.find(
+          (order) =>
+            order.status === MaintenanceStatus.MANUTENCAO && order.box === box
+        );
+        return { box, workOrder, boxNumber: boxToNumber(box) };
+      })
+      .sort((a, b) => a.boxNumber - b.boxNumber);
+  }, [workOrders]);
 
   return (
     <div className="container mx-auto p-6 space-y-8 bg-background pt-20">
@@ -250,18 +229,18 @@ export default function MaintenanceDashboard() {
           </div>
           {viewMode === "grid" ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              {workOrders
-                .filter(
-                  (order) => order.status === MaintenanceStatus.MANUTENCAO
-                )
-                .map((workOrder) => (
-                  <MaintenanceCard
-                    key={workOrder.id}
-                    workOrder={workOrder}
-                    onStatusChange={handleStatusChange}
-                    onShowDetails={handleShowDetails}
-                  />
-                ))}
+              {boxesWithWorkOrders.map(({ box, workOrder, boxNumber }) => (
+                <div key={box} className="h-full">
+                  {workOrder ? (
+                    <MaintenanceCard
+                      workOrder={workOrder}
+                      onShowDetails={handleShowDetails}
+                    />
+                  ) : (
+                    <EmptyCard boxNumber={boxNumber.toString()} />
+                  )}
+                </div>
+              ))}
             </div>
           ) : (
             <ScrollArea className="h-[600px] rounded-md border">
