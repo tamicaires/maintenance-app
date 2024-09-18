@@ -54,6 +54,13 @@ export function CreateWorkOrder() {
     reset();
   };
 
+  const formatDateTimeForInput = (date: Date | null | undefined): string => {
+    if (!date) return "";
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 16);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -189,11 +196,7 @@ export function CreateWorkOrder() {
                     <FormControl>
                       <Input
                         type="datetime-local"
-                        value={
-                          field.value
-                            ? new Date(field.value).toISOString().slice(0, -1)
-                            : ""
-                        }
+                        value={formatDateTimeForInput(field.value)}
                         onChange={(e) => {
                           const value = e.target.value
                             ? new Date(e.target.value)
@@ -218,11 +221,7 @@ export function CreateWorkOrder() {
                       <FormControl>
                         <Input
                           type="datetime-local"
-                          value={
-                            field.value
-                              ? new Date(field.value).toISOString().slice(0, -1)
-                              : ""
-                          }
+                          value={formatDateTimeForInput(field.value)}
                           onChange={(e) => {
                             const value = e.target.value
                               ? new Date(e.target.value)
