@@ -197,8 +197,8 @@ export default function MaintenanceDashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <QueueChart />
-        <TypeMaintenanceChart />
+        <QueueChart workOrders={workOrders} />
+        <TypeMaintenanceChart workOrders={workOrders} />
         <ServiceChart />
       </div>
       <Tabs defaultValue="maintenance" className="space-y-4">

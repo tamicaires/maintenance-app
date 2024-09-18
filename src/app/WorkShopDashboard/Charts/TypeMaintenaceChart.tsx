@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -12,10 +13,55 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Cell, Legend, Pie, PieChart } from "recharts";
+import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { TypeOfMaintenance } from "@/shared/enums/work-order";
 
-export function TypeMaintenanceChart() {
+interface TypeMaintenanceChartProps {
+  workOrders: IWorkOrder[];
+}
+
+export function TypeMaintenanceChart({
+  workOrders,
+}: TypeMaintenanceChartProps) {
+  const pieChartData = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const todayOrders = workOrders.filter(
+      (order) => new Date(order.createdAt) >= today
+    );
+
+    const counts = {
+      [TypeOfMaintenance.PREVENTIVA]: 0,
+      [TypeOfMaintenance.CORRETIVA]: 0,
+      [TypeOfMaintenance.PREDITIVA]: 0,
+    };
+
+    todayOrders.forEach((order) => {
+      counts[order.typeOfMaintenance as TypeOfMaintenance]++;
+    });
+
+    return [
+      {
+        type: "Preventiva",
+        value: counts[TypeOfMaintenance.PREVENTIVA],
+        fill: "hsl(var(--primary))",
+      },
+      {
+        type: "Corretiva",
+        value: counts[TypeOfMaintenance.CORRETIVA],
+        fill: "hsl(var(--chart-3))",
+      },
+      {
+        type: "Preditiva",
+        value: counts[TypeOfMaintenance.PREDITIVA],
+        fill: "hsl(var(--chart-5))",
+      },
+    ];
+  }, [workOrders]);
+
   const pieChartConfig = {
     value: {
       label: "Quantidade",
@@ -28,12 +74,35 @@ export function TypeMaintenanceChart() {
       label: "Corretiva",
       color: "hsl(var(--chart-3))",
     },
+    preditiva: {
+      label: "Preditiva",
+      color: "hsl(var(--chart-5))",
+    },
   } satisfies ChartConfig;
 
-  const pieChartData = [
-    { type: "Preventiva", value: 27, fill: "hsl(var(--primary))" },
-    { type: "Corretiva", value: 20, fill: "hsl(var(--chart-5))" },
-  ];
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
+  const yesterdayOrders = workOrders.filter((order) => {
+    const orderDate = new Date(order.createdAt);
+    return orderDate >= yesterday && orderDate < new Date();
+  });
+
+  const yesterdayPreventiveCount = yesterdayOrders.filter(
+    (order) => order.typeOfMaintenance === TypeOfMaintenance.PREVENTIVA
+  ).length;
+
+  const todayPreventiveCount =
+    pieChartData.find((data) => data.type === "Preventiva")?.value || 0;
+
+  const percentageChange =
+    yesterdayPreventiveCount > 0
+      ? ((todayPreventiveCount - yesterdayPreventiveCount) /
+          yesterdayPreventiveCount) *
+        100
+      : 0;
+
   return (
     <Card>
       <CardHeader>
@@ -65,7 +134,17 @@ export function TypeMaintenanceChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Preventivas aumentaram 3.1% <TrendingUp className="h-4 w-4" />
+          {percentageChange >= 0 ? (
+            <>
+              Preventivas aumentaram {percentageChange.toFixed(1)}%
+              <TrendingUp className="h-4 w-4" />
+            </>
+          ) : (
+            <>
+              Preventivas diminuíram {Math.abs(percentageChange).toFixed(1)}%
+              <TrendingDown className="h-4 w-4" />
+            </>
+          )}
         </div>
         <div className="leading-none text-muted-foreground">
           Comparado a ontem

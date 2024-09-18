@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -12,34 +13,76 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
 
-export function QueueChart() {
-  const areaChartData = [
-    { day: "08:00", maintenance: 18 },
-    { day: "09:00", maintenance: 25 },
-    { day: "10:00", maintenance: 23 },
-    { day: "11:00", maintenance: 17 },
-    { day: "12:00", maintenance: 20 },
-    { day: "13:00", maintenance: 15 },
-    { day: "14:00", maintenance: 10 },
-  ];
+interface QueueChartProps {
+  workOrders: IWorkOrder[];
+}
+
+export function QueueChart({ workOrders }: QueueChartProps) {
+  const areaChartData = useMemo(() => {
+    const now = new Date();
+    const sevenHoursAgo = new Date(now.getTime() - 7 * 60 * 60 * 1000);
+
+    const hourlyData = new Array(7).fill(0).map((_, index) => {
+      const hour = new Date(now.getTime() - (6 - index) * 60 * 60 * 1000);
+      return {
+        hour: hour.getHours().toString().padStart(2, "0") + ":00",
+        count: 0,
+      };
+    });
+
+    workOrders.forEach((order) => {
+      if (order.status === MaintenanceStatus.FILA && order.entryQueue) {
+        const entryTime = new Date(order.entryQueue);
+        if (entryTime >= sevenHoursAgo && entryTime <= now) {
+          const index = hourlyData.findIndex(
+            (data) =>
+              data.hour ===
+              entryTime.getHours().toString().padStart(2, "0") + ":00"
+          );
+          if (index !== -1) {
+            hourlyData[index].count++;
+          }
+        }
+      }
+    });
+
+    return hourlyData;
+  }, [workOrders]);
+
+  const totalQueueCount = areaChartData.reduce(
+    (sum, data) => sum + data.count,
+    0
+  );
+  const previousTotalQueueCount = workOrders.filter(
+    (order) =>
+      order.status === MaintenanceStatus.FILA &&
+      new Date(order.entryQueue!) <
+        new Date(new Date().getTime() - 14 * 60 * 60 * 1000)
+  ).length;
+
+  const percentageChange =
+    ((totalQueueCount - previousTotalQueueCount) / previousTotalQueueCount) *
+    100;
 
   const areaChartConfig = {
-    maintenance: {
-      label: "Manutenções",
+    queue: {
+      label: "Em Fila",
       color: "hsl(var(--primary))",
     },
   } satisfies ChartConfig;
 
   return (
-    <Card>
+    <Card className="w-auto">
       <CardHeader>
         <CardTitle>Fluxo de Frotas em Fila</CardTitle>
         <CardDescription>Frotas em fila nas últimas 7 horas</CardDescription>
       </CardHeader>
-      <CardContent className="w-[400px]">
+      <CardContent className="w-60 sm:w-[408px]">
         <ChartContainer config={areaChartConfig}>
           <AreaChart
             accessibilityLayer
@@ -53,7 +96,7 @@ export function QueueChart() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="day"
+              dataKey="hour"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -61,7 +104,7 @@ export function QueueChart() {
             <YAxis hide />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
-              <linearGradient id="fillMaintenance" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillQueue" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="hsl(var(--primary))"
@@ -75,9 +118,9 @@ export function QueueChart() {
               </linearGradient>
             </defs>
             <Area
-              dataKey="maintenance"
+              dataKey="count"
               type="monotone"
-              fill="url(#fillMaintenance)"
+              fill="url(#fillQueue)"
               fillOpacity={0.4}
               stroke="hsl(var(--primary))"
               strokeWidth={2}
@@ -87,10 +130,22 @@ export function QueueChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Aumento de 5.2% em relação a ontem <TrendingUp className="h-4 w-4" />
+          {percentageChange >= 0 ? (
+            <>
+              Aumento de {percentageChange.toFixed(1)}% em relação às 7 horas
+              anteriores
+              <TrendingUp className="h-4 w-4" />
+            </>
+          ) : (
+            <>
+              Diminuição de {Math.abs(percentageChange).toFixed(1)}% em relação
+              às 7 horas anteriores
+              <TrendingDown className="h-4 w-4" />
+            </>
+          )}
         </div>
         <div className="leading-none text-muted-foreground">
-          Baseado nos dados dos últimos 7 dias
+          Baseado nos dados das últimas 14 horas
         </div>
       </CardFooter>
     </Card>
