@@ -249,7 +249,12 @@ const Sidebar = () => {
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           <Webhook className="h-6 w-6 text-primary" />
-          {!isCollapsed && <span className="ml-2 text-xl">zetta truck</span>}
+          {!isCollapsed && (
+            <div className="flex items-center">
+              <Webhook className="h-6 w-6 text-primary" />
+              <span className="ml-2 text-xl">zetta truck</span>
+            </div>
+          )}
         </Button>
       </div>
       <ScrollArea className="flex-1">
