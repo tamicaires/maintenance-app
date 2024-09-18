@@ -1,105 +1,110 @@
-import { CheckCircleIcon, ClockIcon } from "lucide-react";
-import { Badge } from "../ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Progress } from "../ui/progress";
-import { Button } from "../ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { CheckCircleIcon, ClockIcon, Eye, Truck } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { calculateMaintenanceDuration } from "@/utils/work-order";
+import { boxToNumber, formatDuration } from "@/utils/utils";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { motion } from "framer-motion";
 
 interface MaintenanceCardProps {
   workOrder: IWorkOrder;
-  onStatusChange: (id: string, status: string) => void;
   onShowDetails: (workOrder: IWorkOrder) => void;
 }
 
 export function MaintenanceCard({
   workOrder,
-  onStatusChange,
   onShowDetails,
 }: MaintenanceCardProps) {
   const maintenanceDuration = calculateMaintenanceDuration(workOrder);
   const progress = 65;
+
   return (
-    <Card className="relative h-full">
-      <div className="absolute top-0 right-0 bg-primary/60 text-white px-2 py-1 text-sm font-bold rounded-bl-lg rounded-tr-lg">
-        Box {workOrder.box}
-      </div>
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-lg">
-              Frota {workOrder.fleetNumber}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {workOrder.typeOfMaintenance}
-            </p>
-          </div>
-          <Badge
-            variant={
-              workOrder.status === "Manutencao" ? "destructive" : "secondary"
-            }
-            className={`mt-4 ${
-              workOrder.status === "Manutencao"
-                ? "bg-blue-500 bg-opacity-15 text-blue-500"
-                : "secondary"
-            }`}
-          >
-            {workOrder.status}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          <div className="flex items-center text-sm">
-            <ClockIcon className="mr-2 h-4 w-4 opacity-70" /> Entrada:{" "}
-            {workOrder.entryMaintenance}
-          </div>
-          <div className="flex items-center text-sm">
-            <ClockIcon className="mr-2 h-4 w-4 opacity-70" /> Duração:{" "}
-            {maintenanceDuration}
-          </div>
-          <div className="space-y-1">
-            <div className="flex justify-between text-sm">
-              <span>Progresso</span>
-              <span>{progress}%</span>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Card className="relative h-full flex flex-col overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-primary-foreground" />
+        <CardContent className="pt-8 px-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <div className="p-2 bg-primary text-primary-foreground rounded-full">
+                <Truck className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Frota {workOrder.fleetNumber}</h3>
+                <p className="text-xs text-muted-foreground">
+                  {workOrder.typeOfMaintenance}
+                </p>
+              </div>
             </div>
-            <Progress value={progress} className="w-full" />
           </div>
-        </div>
-        <div className="flex justify-between mt-4">
+
+          <div className="relative mb-4">
+            <div className="absolute -top-12 -right-4 text-8xl font-bold text-primary opacity-10 select-none">
+              {boxToNumber(workOrder.box)}
+            </div>
+            <div className="text-3xl font-bold text-primary">
+              Box {boxToNumber(workOrder.box)}
+            </div>
+          </div>
+
+          <div className="space-y-2 text-sm mb-4">
+            <div>
+              <span className="text-xs font-medium text-muted-foreground">
+                Entrada
+              </span>
+              <div className="flex items-center space-x-2">
+                <ClockIcon className="h-4 w-4 text-muted-foreground" />
+                <span>
+                  {workOrder.entryMaintenance
+                    ? format(
+                        new Date(workOrder.entryMaintenance),
+                        "dd/MM HH:mm",
+                        { locale: ptBR }
+                      )
+                    : "N/A"}
+                </span>
+              </div>
+            </div>
+            {maintenanceDuration && (
+              <div>
+                <span className="text-xs font-medium text-muted-foreground">
+                  Tempo de Manutenção
+                </span>
+                <div className="flex items-center space-x-2">
+                  <CheckCircleIcon className="h-4 w-4 text-muted-foreground" />
+                  <span>
+                    {formatDuration(maintenanceDuration, { format: "hm" })}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2 mb-4">
+            <div className="flex justify-between text-xs">
+              <span className="font-medium">Progresso</span>
+              <span className="text-muted-foreground">{progress}%</span>
+            </div>
+            <Progress value={progress} className="h-1" />
+          </div>
+
           <Button
             variant="outline"
             size="sm"
             onClick={() => onShowDetails(workOrder)}
+            className="w-full transition-all hover:bg-primary hover:text-primary-foreground"
           >
+            <Eye className="h-4 w-4 mr-2" />
             Detalhes
           </Button>
-          {workOrder.status === "Manutencao" && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onStatusChange(workOrder.id, "Liberado")}
-                  >
-                    <CheckCircleIcon className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Marcar como Liberado</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
