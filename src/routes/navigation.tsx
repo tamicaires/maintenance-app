@@ -13,6 +13,8 @@ import { Fleet } from "@/app/Fleet";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
 import NotFound from "@/components/NotFound";
+import GestaoReboque from "@/app/TireManager";
+import { PartsManager } from "@/app/PartsManager";
 
 export function Navigation() {
   return (
@@ -29,6 +31,11 @@ export function Navigation() {
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
           <Route path={PrivateRoutes.Employees} element={<Employee />} />
           <Route path={PrivateRoutes.Services} element={<Service />} />
+          <Route
+            path={PrivateRoutes.PartsManagement}
+            element={<PartsManager />}
+          />
+          <Route path={"pneu"} element={<GestaoReboque />} />
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>
             <Route path={PrivateRoutes.Account} element={<MyAccount />} />
             <Route path={PrivateRoutes.Appearance} element={<Appearance />} />
