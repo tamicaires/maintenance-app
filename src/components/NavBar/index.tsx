@@ -12,8 +12,13 @@ import { Notification } from "../Notification";
 import { CompanyProfile } from "../CompanyProfile";
 import { ICompany } from "@/interfaces/company.interface";
 import { Webhook } from "lucide-react";
+import { MyAccountAvatar } from "../MyAccount";
 
-export function NavBar() {
+interface NavBarProps {
+  isCompanySelection?: boolean;
+}
+
+export function NavBar({ isCompanySelection = false }: NavBarProps) {
   const currentCompany = {
     companyName: "Vale das Carretas",
     cnpj: "12.345.678/0001-90",
@@ -33,21 +38,25 @@ export function NavBar() {
       <div className="h-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-full">
           <div className="hidden sm:flex sm:items-center">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">Cadastros</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Transportadoras</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            {isCompanySelection ? (
+              ""
+            ) : (
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/dashboard">Cadastros</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Transportadoras</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            )}
           </div>
           <div className="sm:hidden flex items-center">
             <Webhook className="h-5 w-5 text-primary" />
@@ -60,11 +69,15 @@ export function NavBar() {
               <span className="sr-only">Notificações</span>
               <div className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full" />
             </Button>
-            <CompanyProfile
-              currentCompany={currentCompany}
-              linkedCompanies={linkedCompanies}
-              onCompanyChange={handleCompanyChange}
-            />
+            {isCompanySelection ? (
+              <MyAccountAvatar />
+            ) : (
+              <CompanyProfile
+                currentCompany={currentCompany}
+                linkedCompanies={linkedCompanies}
+                onCompanyChange={handleCompanyChange}
+              />
+            )}
           </div>
         </div>
       </div>
