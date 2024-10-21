@@ -14,26 +14,22 @@ import { ICompany } from "@/interfaces/company.interface";
 import { Webhook } from "lucide-react";
 import { MyAccountAvatar } from "../MyAccount";
 import { useCompany } from "@/app/SelectCompany/hooks/useCompany";
+import { setCookie } from "@/services/cookie";
+import { StorageEnum } from "@/shared/enums/storageEnum";
+import { useNavigate } from "react-router-dom";
 
 interface NavBarProps {
   isCompanySelection?: boolean;
 }
 
 export function NavBar({ isCompanySelection = false }: NavBarProps) {
-  const { data, isLoading } = useCompany();
+  const navigate = useNavigate();
+  const { data } = useCompany();
   const companyData = data?.data || [];
 
-  const currentCompany = {
-    companyName: "Vale das Carretas",
-    cnpj: "12.345.678/0001-90",
-  };
-  const linkedCompanies = [
-    { companyName: "Julio Simões JSL", cnpj: "98.765.432/0001-10" },
-    { companyName: "TSM Manutenuções", cnpj: "11.223.344/0001-55" },
-  ];
-
   const handleCompanyChange = (newCompany: ICompany) => {
-    console.log("Switching to:", newCompany);
+    setCookie(StorageEnum.CompanyId, newCompany.id, { path: "/" });
+    navigate(0);
   };
   return (
     <nav

@@ -12,15 +12,18 @@ import { Separator } from "@/components/ui/separator";
 import { ICompany } from "@/interfaces/company.interface";
 import { getCookie } from "@/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
+import { Spinner } from "../Spinner";
 
 interface CompanyProfileProps {
   linkedCompanies: ICompany[];
   onCompanyChange: (company: ICompany) => void;
+  isLoading?: boolean;
 }
 
 export function CompanyProfile({
   linkedCompanies,
   onCompanyChange,
+  isLoading = false,
 }: CompanyProfileProps) {
   const currentCompanyId = getCookie(StorageEnum.CompanyId);
   const currentCompany = linkedCompanies.find(
@@ -61,6 +64,7 @@ export function CompanyProfile({
             </div>
             <ScrollArea className="h-64">
               <div className="p-4">
+                {isLoading && <Spinner />}
                 {linkedCompanies.map((company, index) => (
                   <React.Fragment key={company.cnpj}>
                     <Button
