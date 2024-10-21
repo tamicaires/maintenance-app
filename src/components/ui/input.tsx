@@ -2,12 +2,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value'> {
+  value?: string | number | readonly string[] | null;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, value, onChange, ...props }, ref) => {
     const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (type === "datetime-local" && props.onChange) {
+      if (type === "datetime-local" && onChange) {
         const date = new Date(e.target.value);
         const isoString = new Date(
           date.getTime() - date.getTimezoneOffset() * 60000
@@ -19,11 +21,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             value: isoString,
           },
         };
-        props.onChange(event as React.ChangeEvent<HTMLInputElement>);
-      } else if (props.onChange) {
-        props.onChange(e);
+        onChange(event as React.ChangeEvent<HTMLInputElement>);
+      } else if (onChange) {
+        onChange(e);
       }
     };
+
+    // Convert boolean, null, and undefined values to appropriate string representations
+    const inputValue = value === null || value === undefined
+      ? ''
+      // : typeof value === 'boolean'
+      // ? value.toString()
+      : value;
 
     return (
       <input
@@ -33,12 +42,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className
         )}
         ref={ref}
+        value={inputValue}
         onChange={handleDateTimeChange}
         {...props}
       />
     );
   }
 );
+
 Input.displayName = "Input";
 
 export { Input };

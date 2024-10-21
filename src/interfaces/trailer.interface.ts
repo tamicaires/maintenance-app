@@ -1,7 +1,7 @@
 export interface ITrailer {
   id: string;
   plate: string;
-  position: string | null;
+  position: number | null;
   isActive: boolean;
   companyId: string
   fleetId: string | null;
@@ -11,7 +11,7 @@ export interface ITrailer {
 
 export interface ITrailerCreateAndUpdate {
   plate: string;
-  position?: string | null;
+  position?: number | null;
   isActive: boolean;
   fleetId?: string | null;
 }
