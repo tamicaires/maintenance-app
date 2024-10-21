@@ -7,6 +7,8 @@ import {
   setUserLocalStorage,
 } from "@/utils/auth";
 import { AuthService } from "@/services/auth";
+import { setCookie } from "@/services/cookie";
+import { StorageEnum } from "@/shared/enums/storageEnum";
 
 interface AuthState {
   user: IUser | null;
@@ -44,21 +46,22 @@ export const { setUser, logout, setError, cleanError } = authSlice.actions;
 
 export const authenticate =
   (email: string, password: string): AppThunk =>
-  async (dispatch) => {
-    const response = await AuthService.signIn(email, password);
-    if (response.success && response.data) {
-      if (!response.data.access_token) {
-        throw new Error("Token não encontrado");
+    async (dispatch) => {
+      const response = await AuthService.signIn(email, password);
+      if (response.success && response.data) {
+        if (!response.data.access_token) {
+          throw new Error("Token não encontrado");
+        }
+
+        const decodedToken = decodeToken(response.data.access_token);
+        setCookie(StorageEnum.Token, response.data.access_token);
+        dispatch(setUser(decodedToken));
       }
 
-      const decodedToken = decodeToken(response.data.access_token);
-      dispatch(setUser(decodedToken));
-    }
-
-    if (!response.success) {
-      dispatch(setError(response.error || "Login falhou!"));
-      throw new Error(response.error || "Login falhou!");
-    }
-  };
+      if (!response.success) {
+        dispatch(setError(response.error || "Login falhou!"));
+        throw new Error(response.error || "Login falhou!");
+      }
+    };
 
 export const authReducer = authSlice.reducer;

@@ -82,16 +82,16 @@ export function CreateCarrier({
           />
           <FormField
             control={createCarrierForm.control}
-            name="status"
+            name="isActive"
             render={({ field }) => (
               <FormItem className="flex items-center justify-end space-x-2">
                 <FormControl className="mt-2">
                   <Checkbox
                     id="status"
                     size="small"
-                    checked={field.value === "ATIVO"}
+                    checked={field.value}
                     onCheckedChange={(checked) => {
-                      field.onChange(checked ? "ATIVO" : "INATIVO");
+                      field.onChange(checked ? true : false);
                     }}
                   />
                 </FormControl>

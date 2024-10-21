@@ -17,7 +17,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     carrierName: "",
     managerName: "",
     managerPhone: "",
-    status: "ATIVO",
+    isActive: true,
   };
 
   const createCarrierForm = useForm<CreateCarrierData>({
@@ -36,7 +36,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     isSuccess,
     isError,
     data,
-    error, 
+    error,
   } = useMutation<IApiResponse<ICarrier>, Error, CreateCarrierData>({
     mutationFn: CarrierService.create,
     onSuccess: (response) => {
@@ -51,8 +51,8 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     },
   });
 
-  const submitCarrierData = (data: CreateCarrierData) => {
-    mutateCreate(data);
+  const submitCarrierData = (carrier: CreateCarrierData) => {
+    mutateCreate(carrier);
     reset();
   };
 
@@ -67,6 +67,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     handleSubmit: handleSubmit(submitCarrierData),
     isSubmitting,
     isError,
-    error, 
+    error,
     data,
-  }}
+  };
+}

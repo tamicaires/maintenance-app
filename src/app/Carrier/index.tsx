@@ -44,7 +44,7 @@ export function Carrier() {
   }
 
   const activeCarriers = data?.data
-    ?.filter((carrier) => carrier.status === "ATIVO")
+    ?.filter((carrier) => carrier.isActive)
     .length.toString();
 
   const handleOpenModal = () => {
@@ -162,12 +162,10 @@ export function Carrier() {
                                 <Badge
                                   className="text-xs"
                                   variant={
-                                    carrier.status === "ATIVO"
-                                      ? "secondary"
-                                      : "outline"
+                                    carrier.isActive ? "secondary" : "outline"
                                   }
                                 >
-                                  {carrier.status}
+                                  {carrier.isActive ? "Ativo" : "Inativo"}
                                 </Badge>
                               </TableCell>
                             </TableRow>

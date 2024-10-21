@@ -1,9 +1,10 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { themeReducer } from "./features/theme-settings";
 import { authReducer } from "./features/auth";
+import { membershipReducer } from "./features/membership";
 
 const store = configureStore({
-  reducer: { themeSettings: themeReducer, auth: authReducer },
+  reducer: { themeSettings: themeReducer, auth: authReducer, membership: membershipReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

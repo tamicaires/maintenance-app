@@ -6,6 +6,7 @@ export enum PublicRoutes {
 
 export enum PrivateRoutes {
   Home = "/",
+  CompanySelection = "/selecao-empresa",
   Carrier = "/cadastros/transportadoras",
   Fleet = "/cadastros/frota",
   Maintenance = "/cadastros/manutencao",

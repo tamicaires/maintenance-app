@@ -13,3 +13,11 @@ export const selectAuth = createDraftSafeSelector(
     error: auth.error,
   })
 );
+
+export const selectMembership = createDraftSafeSelector(
+  (state: RootState) => state.membership,
+  (membership) => ({
+    membership: membership.currentMembership,
+    loading: membership.status === "loading",
+  })
+);
