@@ -21,7 +21,7 @@ export const createEmployeeSchema = z.object({
       invalid_type_error: "ID do cargo deve ser uma string",
     })
     .min(1, "ID do cargo não pode ser vazio"),
-  status: z.enum(["ATIVO", "INATIVO"]),
+  isActive: z.boolean().default(true),
 });
 
 export type CreateEmployeeData = z.infer<typeof createEmployeeSchema>;

@@ -7,8 +7,8 @@ export const createCarrierSchema = z.object({
   managerName: z.string().min(2, {
     message: "O nome do responsável deve ter pelo menos 2 caracteres.",
   }),
-  managerPhone: z.string().min(10, {
+  managerPhone: z.string().min(6, {
     message: "O telefone deve ter pelo menos 10 dígitos.",
   }),
-  status: z.string().default("ATIVO"),
+  isActive: z.boolean().default(true),
 });
