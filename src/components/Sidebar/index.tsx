@@ -41,7 +41,7 @@ import {
 } from "lucide-react";
 import { PrivateRoutes } from "@/shared/enums/routes";
 import { getUserLocalStorage } from "@/utils/auth";
-import { getInitials } from "@/utils/utils";
+import { MyAccountAvatar } from "../MyAccount";
 
 interface MenuItem {
   icon: LucideIcon;
@@ -62,18 +62,24 @@ const Sidebar = () => {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
-        setIsCollapsed(true);
-      }
+    const handleMouseEnter = () => {
+      setIsCollapsed(false);
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    const handleMouseLeave = () => {
+      setIsCollapsed(true);
+    };
+
+    if (sidebarRef.current) {
+      sidebarRef.current.addEventListener("mouseenter", handleMouseEnter);
+      sidebarRef.current.addEventListener("mouseleave", handleMouseLeave);
+    }
+
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      if (sidebarRef.current) {
+        sidebarRef.current.removeEventListener("mouseenter", handleMouseEnter);
+        sidebarRef.current.removeEventListener("mouseleave", handleMouseLeave);
+      }
     };
   }, []);
 
@@ -146,9 +152,6 @@ const Sidebar = () => {
   };
 
   const handleItemClick = (item: MenuItem) => {
-    if (isCollapsed) {
-      setIsCollapsed(false);
-    }
     if (item.hasSubmenu) {
       toggleSection(item.label);
     }
@@ -217,7 +220,6 @@ const Sidebar = () => {
                   : "text-muted-foreground"
               )}
               onClick={() => {
-                setIsCollapsed(false);
                 if (isMobile) {
                   setIsSheetOpen(false);
                 }
@@ -268,47 +270,7 @@ const Sidebar = () => {
         </nav>
       </ScrollArea>
       <div className="p-2 border-t">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="ghost" className="w-full justify-start p-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="/placeholder-avatar.jpg" alt={user?.name} />
-                <AvatarFallback>
-                  {user?.name ? getInitials(user.name) : "U"}
-                </AvatarFallback>
-              </Avatar>
-              {!isCollapsed && (
-                <div className="ml-2 text-left">
-                  <p className="text-sm font-medium">{user?.name}</p>
-                  <p className="text-xs text-muted-foreground">{user?.email}</p>
-                </div>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-56 p-2">
-            <div className="space-y-1">
-              <Button variant="ghost" className="w-full justify-start text-sm">
-                <User className="mr-2 h-4 w-4" />
-                Ver Perfil
-              </Button>
-              <Button variant="ghost" className="w-full justify-start text-sm">
-                <Settings className="mr-2 h-4 w-4" />
-                Configurações
-              </Button>
-              <Button variant="ghost" className="w-full justify-start text-sm">
-                <Bell className="mr-2 h-4 w-4" />
-                Atualizações
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-sm text-red-500"
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Sair
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
+        <MyAccountAvatar isCollapsed={isCollapsed} />
       </div>
     </div>
   );

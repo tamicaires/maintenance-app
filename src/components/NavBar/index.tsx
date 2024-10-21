@@ -13,12 +13,16 @@ import { CompanyProfile } from "../CompanyProfile";
 import { ICompany } from "@/interfaces/company.interface";
 import { Webhook } from "lucide-react";
 import { MyAccountAvatar } from "../MyAccount";
+import { useCompany } from "@/app/SelectCompany/hooks/useCompany";
 
 interface NavBarProps {
   isCompanySelection?: boolean;
 }
 
 export function NavBar({ isCompanySelection = false }: NavBarProps) {
+  const { data, isLoading } = useCompany();
+  const companyData = data?.data || [];
+
   const currentCompany = {
     companyName: "Vale das Carretas",
     cnpj: "12.345.678/0001-90",
@@ -73,8 +77,7 @@ export function NavBar({ isCompanySelection = false }: NavBarProps) {
               <MyAccountAvatar />
             ) : (
               <CompanyProfile
-                currentCompany={currentCompany}
-                linkedCompanies={linkedCompanies}
+                linkedCompanies={companyData}
                 onCompanyChange={handleCompanyChange}
               />
             )}

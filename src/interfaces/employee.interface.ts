@@ -4,7 +4,7 @@ export interface IEmployee {
   workShift: string;
   jobTitleId: string;
   jobTitle: string;
-  status?: string;
+  isActive: boolean;
   createdAt?: string;
 }
 
@@ -18,5 +18,5 @@ export interface IEmployeeCreateAndUpdate {
   name: string;
   workShift: string;
   jobTitleId: string;
-  status: "ATIVO" | "INATIVO";
+  isActive: boolean;
 }

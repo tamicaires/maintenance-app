@@ -3,7 +3,8 @@ export interface ICarrier {
   carrierName: string;
   managerName: string;
   managerPhone: string;
-  status?: string;
+  companyId: string;
+  isActive: boolean;
   createdAt?: string;
 }
 
@@ -11,11 +12,13 @@ export interface ICarrierCreate {
   carrierName: string;
   managerName: string;
   managerPhone: string;
+  isActive: boolean;
 }
 export interface ICarrierUpdate {
   id: string;
   carrierName: string;
   managerName: string;
   managerPhone: string;
-  status?: string;
+  companyId: string;
+  isActive: boolean;
 }
