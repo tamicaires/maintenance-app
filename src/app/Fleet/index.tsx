@@ -77,7 +77,7 @@ export function Fleet() {
   }
 
   const activeFleets = filteredData
-    .filter((fleet) => fleet.status === "ATIVO")
+    .filter((fleet) => fleet.isActive)
     .length.toString();
 
   const toggleRowExpansion = (id: string) => {
@@ -91,9 +91,9 @@ export function Fleet() {
           <span>Frota {fleet.fleetNumber}</span>
           <Badge
             className="text-xs"
-            variant={fleet.status === "ATIVO" ? "secondary" : "outline"}
+            variant={fleet.isActive ? "secondary" : "outline"}
           >
-            {fleet.status}
+            {fleet.isActive ? "Ativo" : "Inativo"}
           </Badge>
         </CardTitle>
         <CardDescription>{fleet.plate}</CardDescription>
@@ -135,15 +135,15 @@ export function Fleet() {
         </div>
         {expandedRows[fleet.id] && (
           <div className="mt-2 space-y-2">
-            <p>
-              <strong>1º Reboque:</strong> {fleet.firstTrailerPlate}
-            </p>
-            <p>
-              <strong>2º Reboque:</strong> {fleet.secondTrailerPlate}
-            </p>
-            <p>
-              <strong>3º Reboque:</strong> {fleet.thirdTrailerPlate}
-            </p>
+            {fleet.trailers ? (
+              fleet.trailers.map((trailer, index) => (
+                <p key={index}>
+                  <strong>{index + 1}º Reboque:</strong> {trailer.plate}
+                </p>
+              ))
+            ) : (
+              <p>Nenhum reboque cadastrado.</p>
+            )}
             <p>
               <strong>KM:</strong> {fleet.km}
             </p>
@@ -173,9 +173,9 @@ export function Fleet() {
             Número Frota
           </SortableHeader>
           <TableHead>Placa</TableHead>
-          <TableHead>1º Reboque</TableHead>
-          <TableHead>2º Reboque</TableHead>
-          <TableHead>3º Reboque</TableHead>
+          <TableHead>SR1</TableHead>
+          <TableHead>SR2</TableHead>
+          <TableHead>SR3</TableHead>
           <SortableHeader<IFleet>
             field="km"
             sortField={sortField}
@@ -202,9 +202,18 @@ export function Fleet() {
           <TableRow key={fleet.id}>
             <TableCell>{fleet.fleetNumber}</TableCell>
             <TableCell>{fleet.plate}</TableCell>
-            <TableCell>{fleet.firstTrailerPlate}</TableCell>
-            <TableCell>{fleet.secondTrailerPlate}</TableCell>
-            <TableCell>{fleet.thirdTrailerPlate}</TableCell>
+            {fleet.trailers ? (
+              fleet.trailers.map((trailer, index) => (
+                <TableCell>
+                  <div key={index}>
+                    {index > 0 && <hr />} <strong>{index + 1}</strong>{" "}
+                    {trailer.plate}
+                  </div>
+                </TableCell>
+              ))
+            ) : (
+              <p>Nenhum reboque cadastrado.</p>
+            )}
             <TableCell>{fleet.km}</TableCell>
             <TableCell>{fleet.carrierName}</TableCell>
             <TableCell>
@@ -213,9 +222,9 @@ export function Fleet() {
             <TableCell>
               <Badge
                 className="text-xs"
-                variant={fleet.status === "ATIVO" ? "secondary" : "outline"}
+                variant={fleet.isActive ? "secondary" : "outline"}
               >
-                {fleet.status}
+                {fleet.isActive ? "Ativo" : "Inativo"}
               </Badge>
             </TableCell>
             <TableCell>
