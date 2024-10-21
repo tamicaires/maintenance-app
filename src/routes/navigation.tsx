@@ -13,13 +13,18 @@ import { Fleet } from "@/app/Fleet";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
 import NotFound from "@/components/NotFound";
-// import GestaoReboque from "@/app/TireManager";
 import { PartsManager } from "@/app/PartsManager";
+import CompanySelection from "@/app/SelectCompany";
+import { Trailer } from "@/app/Trailer";
 
 export function Navigation() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route
+          path={PrivateRoutes.CompanySelection}
+          element={<CompanySelection />}
+        />
         <Route path={PrivateRoutes.Home} element={<MainLayout />}>
           <Route path={PrivateRoutes.Home} element={<div>Home</div>} />
           <Route
@@ -31,6 +36,7 @@ export function Navigation() {
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
           <Route path={PrivateRoutes.Employees} element={<Employee />} />
           <Route path={PrivateRoutes.Services} element={<Service />} />
+          <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route
             path={PrivateRoutes.PartsManagement}
             element={<PartsManager />}

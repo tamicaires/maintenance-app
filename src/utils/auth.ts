@@ -10,9 +10,9 @@ export const Api = () => {
 
 export const decodeToken = (token: string): IUser | null => {
   try {
-    console.log("token", token);
+
     const decoded = jwtDecode<ITokenPayload>(token);
-    console.log("decoded do util", decoded);
+
     const user = {
       name: decoded.name,
       email: decoded.email,

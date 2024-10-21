@@ -10,13 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Wrench,
   ClipboardList,
@@ -25,11 +19,7 @@ import {
   FileAxis3D,
   Package2,
   ChevronRight,
-  LogOut,
-  User,
-  Bell,
   Webhook,
-  Settings,
   LucideIcon,
   Home,
   MoreHorizontal,
@@ -102,6 +92,7 @@ const Sidebar = () => {
         { icon: Briefcase, label: "Frotas", path: PrivateRoutes.Fleet },
         { icon: FileText, label: "Serviços", path: PrivateRoutes.Services },
         { icon: Users, label: "Colaboradores", path: PrivateRoutes.Employees },
+        { icon: Users, label: "Reboques", path: PrivateRoutes.Trailer },
       ],
     },
     {
