@@ -32,6 +32,8 @@ import {
 } from "lucide-react";
 import { FormFields, useCreateEmployee } from "../hooks/use-create-employee";
 import { useJobTitle } from "@/app/JobTitle/hooks/use-job";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const steps: Array<{
   title: string;
@@ -45,20 +47,21 @@ const steps: Array<{
   },
   {
     title: "Informações Profissionais",
-    fields: ["workShift", "jobTitleId"],
-    labels: ["Turno de Trabalho", "Cargo"],
-  },
-  {
-    title: "Status",
-    fields: ["status"],
-    labels: ["Status"],
+    fields: ["workShift", "jobTitleId", "isActive"],
+    labels: ["Turno de Trabalho", "Cargo", "Status"],
   },
 ];
 
 export default function EmployeeCreationDialog() {
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
-  const { createEmployeeForm, handleSubmit, isSubmitting, isSuccess, resetForm } = useCreateEmployee();
+  const {
+    createEmployeeForm,
+    handleSubmit,
+    isSubmitting,
+    isSuccess,
+    resetForm,
+  } = useCreateEmployee();
 
   const { data: jobTitlesData } = useJobTitle();
   const jobTitles =
@@ -118,7 +121,7 @@ export default function EmployeeCreationDialog() {
               ))}
             </div>
             <AnimatePresence mode="wait">
-              {step <= 3 && (
+              {step <= 2 && (
                 <motion.div
                   key={step}
                   initial={{ opacity: 0, x: 50 }}
@@ -140,8 +143,10 @@ export default function EmployeeCreationDialog() {
                           <FormControl>
                             {field === "jobTitleId" ? (
                               <Select
-                                onValueChange={formField.onChange}
-                                value={formField.value}
+                                onValueChange={(value) =>
+                                  formField.onChange(value)
+                                }
+                                value={formField.value as string}
                               >
                                 <SelectTrigger>
                                   <SelectValue placeholder="Selecione um cargo" />
@@ -157,25 +162,21 @@ export default function EmployeeCreationDialog() {
                                   ))}
                                 </SelectContent>
                               </Select>
-                            ) : field === "status" ? (
-                              <Select
-                                onValueChange={formField.onChange}
-                                value={formField.value}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Selecione o status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="ATIVO">ATIVO</SelectItem>
-                                  <SelectItem value="INATIVO">
-                                    INATIVO
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
+                            ) : field === "isActive" ? (
+                              <div className="flex items-center">
+                                <Checkbox
+                                  checked={formField.value as boolean}
+                                  onCheckedChange={(checked) =>
+                                    formField.onChange(checked)
+                                  }
+                                />
+                                <Label className="ml-2">Ativo</Label>
+                              </div>
                             ) : (
-                              <Input {...formField} />
+                              <Input {...formField} type="text" />
                             )}
                           </FormControl>
+
                           <FormMessage />
                         </FormItem>
                       )}
@@ -183,7 +184,7 @@ export default function EmployeeCreationDialog() {
                   ))}
                 </motion.div>
               )}
-              {step === 4 && (
+              {step === 3 && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -202,12 +203,12 @@ export default function EmployeeCreationDialog() {
             </AnimatePresence>
             <DialogFooter>
               <div className="flex justify-between w-full">
-                {step > 1 && step <= 3 && (
+                {step > 1 && step <= 2 && (
                   <Button type="button" onClick={handleBack} variant="outline">
                     <ChevronLeftIcon className="mr-2 h-4 w-4" /> Voltar
                   </Button>
                 )}
-                {step < 3 && (
+                {step < 2 && (
                   <Button
                     type="button"
                     onClick={handleNext}
@@ -216,7 +217,7 @@ export default function EmployeeCreationDialog() {
                     Próximo <ChevronRightIcon className="ml-2 h-4 w-4" />
                   </Button>
                 )}
-                {step === 3 && (
+                {step === 2 && (
                   <Button
                     type="submit"
                     className="ml-auto"
@@ -225,7 +226,7 @@ export default function EmployeeCreationDialog() {
                     Criar Colaborador
                   </Button>
                 )}
-                {step === 4 && (
+                {step === 3 && (
                   <Button
                     type="button"
                     onClick={handleClose}

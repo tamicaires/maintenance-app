@@ -38,8 +38,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSortableTable } from "@/hooks/use-sortable-table";
 import { SortableHeader } from "@/components/SortableHeader";
-
-// import FleetEditDialog from "./EditFleet";
 import {
   Pagination,
   PaginationContent,
@@ -83,7 +81,7 @@ export function Employee() {
   }
 
   const activeFleets = filteredData
-    .filter((employee) => employee.status === "ATIVO")
+    .filter((employee) => employee.isActive === true)
     .length.toString();
 
   const toggleRowExpansion = (id: string) => {
@@ -97,9 +95,9 @@ export function Employee() {
           <span>{employee.name}</span>
           <Badge
             className="text-xs"
-            variant={employee.status === "ATIVO" ? "secondary" : "outline"}
+            variant={employee.isActive ? "secondary" : "outline"}
           >
-            {employee.status}
+            {employee.isActive ? "Ativo" : "Inativo"}
           </Badge>
         </CardTitle>
         <CardDescription>{employee.jobTitle}</CardDescription>
@@ -186,9 +184,9 @@ export function Employee() {
             <TableCell>
               <Badge
                 className="text-xs"
-                variant={employee.status === "ATIVO" ? "secondary" : "outline"}
+                variant={employee.isActive ? "secondary" : "outline"}
               >
-                {employee.status}
+                {employee.isActive ? "Ativo" : "Inativo"}
               </Badge>
             </TableCell>
             <TableCell>
