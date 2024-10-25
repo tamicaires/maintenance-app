@@ -25,7 +25,7 @@ interface CustomSelectProps {
 
 export function Select({
   options,
-  placeholder = "Select an option",
+  placeholder = "Selecione uma opção",
   emptyText = "Nenhuma opção encontrada",
   onChange,
   isLoading = false,
