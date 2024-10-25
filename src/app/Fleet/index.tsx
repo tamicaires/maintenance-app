@@ -96,7 +96,6 @@ export function Fleet() {
             {fleet.isActive ? "Ativo" : "Inativo"}
           </Badge>
         </CardTitle>
-        <CardDescription>{fleet.plate}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex justify-between items-center">
@@ -135,18 +134,6 @@ export function Fleet() {
         </div>
         {expandedRows[fleet.id] && (
           <div className="mt-2 space-y-2">
-            {fleet.trailers ? (
-              fleet.trailers.map((trailer, index) => (
-                <p key={index}>
-                  <strong>{index + 1}º Reboque:</strong> {trailer.plate}
-                </p>
-              ))
-            ) : (
-              <p>Nenhum reboque cadastrado.</p>
-            )}
-            <p>
-              <strong>KM:</strong> {fleet.km}
-            </p>
             <p>
               <strong>Transportadora:</strong> {fleet.carrierName}
             </p>
@@ -172,18 +159,6 @@ export function Fleet() {
           >
             Número Frota
           </SortableHeader>
-          <TableHead>Placa</TableHead>
-          <TableHead>SR1</TableHead>
-          <TableHead>SR2</TableHead>
-          <TableHead>SR3</TableHead>
-          <SortableHeader<IFleet>
-            field="km"
-            sortField={sortField}
-            sortOrder={sortOrder}
-            onSort={handleSort}
-          >
-            KM
-          </SortableHeader>
           <TableHead>Transportadora</TableHead>
           <SortableHeader<IFleet>
             field="createdAt"
@@ -201,20 +176,6 @@ export function Fleet() {
         {filteredData.map((fleet) => (
           <TableRow key={fleet.id}>
             <TableCell>{fleet.fleetNumber}</TableCell>
-            <TableCell>{fleet.plate}</TableCell>
-            {fleet.trailers ? (
-              fleet.trailers.map((trailer, index) => (
-                <TableCell>
-                  <div key={index}>
-                    {index > 0 && <hr />} <strong>{index + 1}</strong>{" "}
-                    {trailer.plate}
-                  </div>
-                </TableCell>
-              ))
-            ) : (
-              <p>Nenhum reboque cadastrado.</p>
-            )}
-            <TableCell>{fleet.km}</TableCell>
             <TableCell>{fleet.carrierName}</TableCell>
             <TableCell>
               {new Date(fleet.createdAt ?? "").toLocaleDateString()}

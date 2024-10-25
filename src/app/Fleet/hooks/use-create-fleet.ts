@@ -1,27 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useState } from "react";
 import { queryClient } from "@/services/query-client";
 import { FleetService } from "@/services/fleet";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
 import { IFleet, IFleetCreate } from "@/interfaces/fleet.interface";
-import { createFleetSchema } from "@/validations/create-fleet";
+import { CreateFleetData, createFleetSchema } from "@/validations/create-fleet";
 
-export type CreateFleetData = z.infer<typeof createFleetSchema>;
-
-export function useCreateFleet(setShowModal: (show: boolean) => void) {
+export function useCreateFleet() {
+  const [step, setStep] = useState<number>(1);
+  const [open, setOpen] = useState<boolean>(false);
   const defaultValues: CreateFleetData = {
     fleetNumber: "",
-    plate: "",
-    firstTrailerPlate: "",
-    secondTrailerPlate: "",
-    thirdTrailerPlate: "",
-    km: "",
     carrierId: "",
-    status: "ATIVO",
+    isActive: true,
   };
 
   const createFleetForm = useForm<CreateFleetData>({
@@ -32,6 +26,7 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
   const {
     handleSubmit,
     reset,
+    control,
     formState: { isSubmitting },
   } = createFleetForm;
 
@@ -39,6 +34,7 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
     mutate: mutateCreate,
     isSuccess,
     isError,
+    isPending,
     data,
     error,
   } = useMutation<IApiResponse<IFleet>, Error, IFleetCreate>({
@@ -46,7 +42,7 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["fleets"] });
       if (response.success && response.data) {
-        console.log("Fleet created:", response.data);
+        setStep(2)
         toast.success("Frota criada com sucesso!");
       }
     },
@@ -59,13 +55,8 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
   const submitFleetData = (data: CreateFleetData) => {
     mutateCreate(data);
     reset();
+    
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setShowModal(false);
-    }
-  }, [isSuccess, setShowModal]);
 
   const formatPlate = (value: string) => {
     const cleaned = value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
@@ -77,9 +68,17 @@ export function useCreateFleet(setShowModal: (show: boolean) => void) {
     createFleetForm,
     handleSubmit: handleSubmit(submitFleetData),
     isSubmitting,
+    isSuccess,
     isError,
+    isPending,
     error,
     data,
+    open,
+    setOpen,
+    control,
+    reset,
+    step,
+    setStep,
     formatPlate,
   };
 }
