@@ -28,7 +28,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
   const {
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isLoading },
   } = createCarrierForm;
 
   const {
@@ -66,6 +66,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
     createCarrierForm,
     handleSubmit: handleSubmit(submitCarrierData),
     isSubmitting,
+    isLoading,
     isError,
     error,
     data,

@@ -16,6 +16,8 @@ import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/app/PartsManager";
 import CompanySelection from "@/app/SelectCompany";
 import { Trailer } from "@/app/Trailer";
+import MaintenanceChecklist from "@/app/Checklist";
+import { Vehicle } from "@/app/Vehicles";
 
 export function Navigation() {
   return (
@@ -37,9 +39,14 @@ export function Navigation() {
           <Route path={PrivateRoutes.Employees} element={<Employee />} />
           <Route path={PrivateRoutes.Services} element={<Service />} />
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
+          <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
           <Route
             path={PrivateRoutes.PartsManagement}
             element={<PartsManager />}
+          />
+          <Route
+            path={PrivateRoutes.MaintenanceChecklist}
+            element={<MaintenanceChecklist />}
           />
           {/* <Route path={"pneu"} element={<GestaoReboque />} /> */}
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>

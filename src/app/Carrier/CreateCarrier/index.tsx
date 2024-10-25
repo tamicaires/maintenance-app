@@ -22,7 +22,7 @@ export function CreateCarrier({
   isDialogOpen,
   setIsDialogOpen,
 }: CreateCarrierProps) {
-  const { createCarrierForm, handleSubmit, isSubmitting } =
+  const { createCarrierForm, handleSubmit, isSubmitting, isLoading } =
     useCreateCarrier(setIsDialogOpen);
 
   const closeDialog = () => setIsDialogOpen(false);
@@ -109,7 +109,7 @@ export function CreateCarrier({
               Cancelar
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              Cadastrar
+              {isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>
           </DialogFooter>
         </form>

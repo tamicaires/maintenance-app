@@ -30,7 +30,6 @@ import {
   Users,
 } from "lucide-react";
 import { PrivateRoutes } from "@/shared/enums/routes";
-import { getUserLocalStorage } from "@/utils/auth";
 import { MyAccountAvatar } from "../MyAccount";
 
 interface MenuItem {
@@ -47,7 +46,6 @@ const Sidebar = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<MenuItem | null>(null);
   const location = useLocation();
-  const user = getUserLocalStorage();
   const sheetRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +75,7 @@ const Sidebar = () => {
     { icon: Home, label: "Home", path: "/" },
     { icon: Wrench, label: "Oficina", path: PrivateRoutes.WorkShop },
     { icon: ClipboardList, label: "Ordens", path: PrivateRoutes.WorkOrders },
+    { icon: ClipboardList, label: "Checklist", path: PrivateRoutes.MaintenanceChecklist },
     {
       icon: CalendarCog,
       label: "Planejamento",
@@ -85,7 +84,7 @@ const Sidebar = () => {
     { icon: Package2, label: "Peças", path: PrivateRoutes.PartsManagement },
     {
       icon: FolderPlus,
-      label: "Cadastros",
+      label: "Gestão",
       hasSubmenu: true,
       children: [
         { icon: Truck, label: "Transportadoras", path: PrivateRoutes.Carrier },
@@ -93,6 +92,7 @@ const Sidebar = () => {
         { icon: FileText, label: "Serviços", path: PrivateRoutes.Services },
         { icon: Users, label: "Colaboradores", path: PrivateRoutes.Employees },
         { icon: Users, label: "Reboques", path: PrivateRoutes.Trailer },
+        { icon: Users, label: "Veículos", path: PrivateRoutes.Vehicle },
       ],
     },
     {
