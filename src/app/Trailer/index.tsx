@@ -51,6 +51,7 @@ import { useTrailer } from "./hooks/use-trailer";
 import { useUpdateTrailer } from "./hooks/use-update-trailer";
 import { Spinner } from "@/components/Spinner";
 import { ITrailer } from "@/interfaces/trailer.interface";
+import TrailerCreationDialog from "./CreateTrailer";
 
 export function Trailer() {
   const [page, setPage] = useState(1);
@@ -240,7 +241,7 @@ export function Trailer() {
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-5">
                     <Button variant="secondary">Exportar Relatório</Button>
-                    {/* <EmployeeCreationDialog /> */}
+                    <TrailerCreationDialog />
                   </CardContent>
                 </Card>
                 <Card className="pb-4">

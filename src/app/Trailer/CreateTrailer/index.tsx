@@ -31,8 +31,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useFleet } from "@/app/Fleet/hooks/use-fleet";
 import { IFleet } from "@/interfaces/fleet.interface";
 
-export default function TrailerCreationDialog() {
-  const [open, setOpen] = useState(false);
+interface ITrailerCreationDialogProps {
+  isOpen?: boolean;
+}
+
+export default function TrailerCreationDialog({ isOpen = false }: ITrailerCreationDialogProps) {
+  const [open, setOpen] = useState(isOpen);
   const [fleetSelected, setFleetSelected] = useState(false);
   const {
     createTrailerForm,
