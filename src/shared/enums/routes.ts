@@ -14,6 +14,7 @@ export enum PrivateRoutes {
   Services = "/gestao/servicos",
   Trailer = "/gestao/reboques",
   Vehicle = "/gestao/veiculos",
+  Box = "/gestao/boxes",
   WorkShop = "/oficina",
   WorkOrders = "/ordem-de-servico",
   Settings = "/configuracoes",

@@ -9,7 +9,6 @@ import { Carrier } from "@/app/Carrier";
 import { Login } from "@/app/Login";
 import Order from "@/app/Order";
 import WorkShopDashboard from "@/app/WorkShopDashboard";
-import { Fleet } from "@/app/Fleet";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
 import NotFound from "@/components/NotFound";
@@ -18,6 +17,8 @@ import CompanySelection from "@/app/SelectCompany";
 import { Trailer } from "@/app/Trailer";
 import MaintenanceChecklist from "@/app/Checklist";
 import { Vehicle } from "@/app/Vehicles";
+import { Fleet } from "@/app/Fleet";
+import { BoxManagement } from "@/app/Box";
 
 export function Navigation() {
   return (
@@ -40,6 +41,7 @@ export function Navigation() {
           <Route path={PrivateRoutes.Services} element={<Service />} />
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
+          <Route path={PrivateRoutes.Box} element={<BoxManagement />} />
           <Route
             path={PrivateRoutes.PartsManagement}
             element={<PartsManager />}

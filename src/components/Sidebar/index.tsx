@@ -93,6 +93,7 @@ const Sidebar = () => {
         { icon: Users, label: "Colaboradores", path: PrivateRoutes.Employees },
         { icon: Users, label: "Reboques", path: PrivateRoutes.Trailer },
         { icon: Users, label: "Veículos", path: PrivateRoutes.Vehicle },
+        { icon: Users, label: "Boxes", path: PrivateRoutes.Box },
       ],
     },
     {
