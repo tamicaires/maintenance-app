@@ -18,7 +18,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { SuccessMessage } from "@/components/SucessMessage";
 
-export default function FleetManagement() {
+export function FleetCreationDialog() {
   const {
     createFleetForm,
     handleSubmit,

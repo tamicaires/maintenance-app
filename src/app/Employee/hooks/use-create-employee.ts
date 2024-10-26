@@ -22,7 +22,7 @@ export function useCreateEmployee() {
     name: "",
     workShift: "",
     jobTitleId: "",
-    status: "ATIVO",
+    isActive: true,
   };
 
   const createEmployeeForm = useForm<CreateEmployeeData>({

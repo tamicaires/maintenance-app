@@ -39,10 +39,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFleet } from "./hooks/use-fleet";
 import { useSortableTable } from "@/hooks/use-sortable-table";
 import { SortableHeader } from "@/components/SortableHeader";
-import FleetCreationDialog from "./CreateFleet";
-import FleetEditDialog from "./EditFleet";
 import { IFleet } from "@/interfaces/fleet.interface";
-import { useUpdateFleet } from "./hooks/use-update-fleet";
 import {
   Pagination,
   PaginationContent,
@@ -52,13 +49,16 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
+import UpdateFleetDialog from "./EditFleet";
+import { FleetCreationDialog } from "./CreateFleet";
+import { useUpdateFleet } from "./hooks/use-update-fleet";
 
 export function Fleet() {
   const [page, setPage] = useState(1);
   const perPage = 20;
   const { data, error, isLoading } = useFleet(page, perPage);
-  const { handleEdit, handleDelete, editingFleet, setEditingFleet } =
-    useUpdateFleet(() => setEditingFleet(null));
+  const { handleEdit, handleDelete, editingFleet, setOpen } =
+    useUpdateFleet(() => setOpen(false));
   const { sortedData, sortField, sortOrder, handleSort } =
     useSortableTable<IFleet>(data?.data || [], "fleetNumber");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
@@ -334,9 +334,9 @@ export function Fleet() {
         </div>
       )}
       {editingFleet && (
-        <FleetEditDialog
+        <UpdateFleetDialog
           fleet={editingFleet}
-          onClose={() => setEditingFleet(null)}
+          // onClose={() => setEditingFleet(null)}
         />
       )}
     </ScrollArea>

@@ -9,20 +9,17 @@ import { IFleet, IFleetUpdate } from "@/interfaces/fleet.interface";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
 
+
 const fleetSchema = z.object({
   fleetNumber: z.string().min(1, "Fleet number is required"),
-  plate: z.string().min(1, "Plate is required"),
-  km: z.coerce.number().min(0, "KM must be a positive number"),
-  firstTrailerPlate: z.string().optional(),
-  secondTrailerPlate: z.string().optional(),
-  thirdTrailerPlate: z.string().optional(),
   carrierId: z.string().min(1, "Carrier is required"),
-  status: z.enum(["ATIVO", "INATIVO"]),
+  isActive: z.boolean().default(true),
 });
 
 export type FormFields = z.infer<typeof fleetSchema>;
 
 export function useUpdateFleet(onClose: () => void) {
+  const [open, setOpen] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingFleet, setEditingFleet] = useState<IFleet | null>(null);
 
@@ -30,13 +27,8 @@ export function useUpdateFleet(onClose: () => void) {
     resolver: zodResolver(fleetSchema),
     defaultValues: {
       fleetNumber: "",
-      plate: "",
-      km: 0,
-      firstTrailerPlate: "",
-      secondTrailerPlate: "",
-      thirdTrailerPlate: "",
       carrierId: "",
-      status: "ATIVO",
+      isActive: true,
     },
   });
 
@@ -58,7 +50,7 @@ export function useUpdateFleet(onClose: () => void) {
         console.error("Error updating fleet:", error);
         toast.error(
           error.message ||
-            "Ocorreu um erro ao atualizar a frota. Tente novamente."
+          "Ocorreu um erro ao atualizar a frota. Tente novamente."
         );
       },
       onSettled: () => {
@@ -88,30 +80,21 @@ export function useUpdateFleet(onClose: () => void) {
       console.log("editingFleet:", editingFleet);
       const updateData: IFleetUpdate = {
         fleetNumber: data.fleetNumber,
-        plate: data.plate,
-        km: data.km.toString(),
-        firstTrailerPlate: data.firstTrailerPlate || "",
-        secondTrailerPlate: data.secondTrailerPlate || "",
-        thirdTrailerPlate: data.thirdTrailerPlate || "",
+        isActive: data.isActive,
         carrierId: data.carrierId,
-        status: data.status,
+
       };
       updateMutation.mutate(updateData);
     }
   });
 
   const handleEdit = (fleet: IFleet) => {
-    console.log("Editing fleet:", fleet);
+    console.log("open ", open);
     setEditingFleet(fleet);
     form.reset({
       fleetNumber: fleet.fleetNumber,
-      plate: fleet.plate,
-      km: parseFloat(fleet.km) || 0,
-      firstTrailerPlate: fleet.firstTrailerPlate || "",
-      secondTrailerPlate: fleet.secondTrailerPlate || "",
-      thirdTrailerPlate: fleet.thirdTrailerPlate || "",
       carrierId: fleet.carrierId.toString(),
-      status: fleet.status as "ATIVO" | "INATIVO",
+      isActive: fleet.isActive,
     });
   };
 
@@ -132,13 +115,8 @@ export function useUpdateFleet(onClose: () => void) {
     if (editingFleet) {
       form.reset({
         fleetNumber: editingFleet.fleetNumber,
-        plate: editingFleet.plate,
-        km: parseFloat(editingFleet.km) || 0,
-        firstTrailerPlate: editingFleet.firstTrailerPlate || "",
-        secondTrailerPlate: editingFleet.secondTrailerPlate || "",
-        thirdTrailerPlate: editingFleet.thirdTrailerPlate || "",
         carrierId: editingFleet.carrierId.toString(),
-        status: editingFleet.status as "ATIVO" | "INATIVO",
+        isActive: editingFleet.isActive,
       });
     }
   }, [editingFleet, form]);
@@ -151,6 +129,8 @@ export function useUpdateFleet(onClose: () => void) {
     formatPlate,
     handleEdit,
     handleDelete,
+    open,
+    setOpen,
     editingFleet,
     setEditingFleet,
   };

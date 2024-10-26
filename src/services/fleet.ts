@@ -46,7 +46,7 @@ const getAll = async (
     url: "/fleets",
     params: { page, perPage },
   });
-
+  console.log("response", response);  
   return response;
 };
 
