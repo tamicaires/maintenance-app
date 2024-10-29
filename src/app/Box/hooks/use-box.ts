@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useBoxes() {
   return useQuery<IApiResponse<IBox[]>>({
-    queryKey: ["fleets"],
+    queryKey: ["boxes"],
     queryFn: () => BoxService.getAll(),
     staleTime: 60 * 5 * 1000,
   });

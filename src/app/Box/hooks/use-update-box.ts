@@ -10,7 +10,7 @@ import { queryClient } from "@/services/query-client";
 import { IBox, IBoxCreateAndUpdate } from "@/interfaces/box";
 
 const boxSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Identificação do box é obrigatória"),
   description: z.string().nullable(),
   isActive: z.boolean().default(true),
 });
@@ -40,8 +40,7 @@ export function useUpdateBox(onClose: () => void) {
       onSuccess: (response) => {
         queryClient.invalidateQueries({ queryKey: ["boxes"] });
         if (response.success && response.data) {
-          console.log("Box updated:", response.data);
-          toast.success("Box updated successfully!");
+          toast.success("Box atualizado com sucesso!");
         }
         onClose();
       },
@@ -49,7 +48,7 @@ export function useUpdateBox(onClose: () => void) {
         console.error("Error updating box:", error);
         toast.error(
           error.message ||
-          "An error occurred while updating the box. Please try again."
+          "Aconteceu um erro durante a alteração do box. Tente novamente."
         );
       },
       onSettled: () => {
@@ -62,12 +61,12 @@ export function useUpdateBox(onClose: () => void) {
     mutationFn: BoxService.deleteBox,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["boxes"] });
-      toast.success("Box deleted successfully!");
+      toast.success("Box deletado com sucesso!");
     },
     onError: (error) => {
       console.error("Error deleting box:", error);
       toast.error(
-        error.message || "An error occurred while deleting the box. Please try again."
+        error.message || "Aconteceu um erro durante a exclusão do box. Tente novamente."
       );
     },
   });
@@ -76,7 +75,6 @@ export function useUpdateBox(onClose: () => void) {
     console.log("Submitting form:", data);
     setIsSubmitting(true);
     if (editingBox) {
-      console.log("editingBox:", editingBox);
       const updateData: IBoxCreateAndUpdate = {
         name: data.name,
         description: data.description,
