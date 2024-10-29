@@ -9,6 +9,6 @@ export function useWorkOrder() {
     queryFn: WorkOrderService.getAll,
     staleTime: 60 * 5 * 1000,
   });
-  console.log("react work", data);
+
   return data;
 }

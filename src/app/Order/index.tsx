@@ -15,7 +15,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { OrderDetails } from "./OrderDetails";
 import { DailyChart } from "@/components/DailyChart/DailyChart";
-import { CreateWorkOrder } from "./CreateOrder";
+import { WorkOrderCreationDialog } from "./CreateOrder";
 import { useWorkOrder } from "./hooks/use-work-order";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { Spinner } from "@/components/Spinner";
@@ -24,6 +24,7 @@ import { EmptyState } from "@/components/EmptyState";
 import WorkOrderCard from "@/components/WorkOrderCard";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
+import { PartRequestCreationDialog } from "../PartRequest/create-part-request";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -144,7 +145,9 @@ export default function Order() {
                 Gerenciamento de Ordem de Serviço abertas
               </p>
             </div>
-            <CreateWorkOrder />
+            {/* <CreateWorkOrder /> */}
+            <WorkOrderCreationDialog />
+            <PartRequestCreationDialog />
           </motion.div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="my-6">

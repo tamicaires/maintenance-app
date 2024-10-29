@@ -27,6 +27,7 @@ export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void) {
     fleetId: "",
     typeOfMaintenance: TypeOfMaintenance.CORRETIVA,
     box: undefined,
+    isCancelled: false
   };
 
   const createWorkOrderForm = useForm<CreateWorkOrderData>({
