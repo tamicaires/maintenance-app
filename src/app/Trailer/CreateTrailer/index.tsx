@@ -35,7 +35,9 @@ interface ITrailerCreationDialogProps {
   isOpen?: boolean;
 }
 
-export default function TrailerCreationDialog({ isOpen = false }: ITrailerCreationDialogProps) {
+export default function TrailerCreationDialog({
+  isOpen = false,
+}: ITrailerCreationDialogProps) {
   const [open, setOpen] = useState(isOpen);
   const [fleetSelected, setFleetSelected] = useState(false);
   const {
@@ -156,7 +158,13 @@ export default function TrailerCreationDialog({ isOpen = false }: ITrailerCreati
                       <FormItem>
                         <FormLabel>Posição na Frota</FormLabel>
                         <FormControl>
-                          <Input {...field} type="number" />
+                          <Input
+                            {...field}
+                            type="number"
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
