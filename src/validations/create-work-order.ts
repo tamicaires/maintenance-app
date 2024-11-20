@@ -22,6 +22,7 @@ export const createWorkOrderSchema = z
       errorMap: () => ({ message: "Tipo de manutenção é obrigatório" }),
     }),
     box: z.nativeEnum(Box).optional(),
+    isCancelled: z.boolean().default(false),
   })
   .refine(
     (data) => {
