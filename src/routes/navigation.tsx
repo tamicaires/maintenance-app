@@ -29,9 +29,8 @@ export function Navigation() {
           element={<CompanySelection />}
         />
         <Route path={PrivateRoutes.Home} element={<MainLayout />}>
-          <Route path={PrivateRoutes.Home} element={<div>Home</div>} />
           <Route
-            path={PrivateRoutes.WorkShop}
+            path={PrivateRoutes.Home}
             element={<WorkShopDashboard />}
           />
           <Route path={PrivateRoutes.WorkOrders} element={<Order />} />
