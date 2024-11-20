@@ -15,6 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { PartRequestCreationDialog } from "@/app/PartRequest/create-part-request";
 
 type Part = {
   id: string;
@@ -51,6 +52,9 @@ const parts: Part[] = [
 export function OrderParts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+  const [isPartRequestDialogOpen, setIsPartRequestDialogOpen] =
+    useState<boolean>(false);
+
   console.log(setOpenItems);
   const filteredParts = parts.filter(
     (part) =>
@@ -63,13 +67,21 @@ export function OrderParts() {
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-bold mb-4 sm:mb-0">Peças</h1>
         <div className="flex flex-wrap gap-2">
-          <Button
-            variant="ghost"
-            className="text-primary flex items-center gap-1"
-          >
-            <Plus size={15} />
-            Solicitar Peça
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              className="text-primary flex items-center gap-1"
+              onClick={() => setIsPartRequestDialogOpen(true)}
+            >
+              <Plus size={15} />
+              Solicitar Peça
+            </Button>
+          </div>
+          <PartRequestCreationDialog
+            isOpenControlled={true}
+            isOpen={isPartRequestDialogOpen}
+            onOpenChange={setIsPartRequestDialogOpen}
+          />
         </div>
       </div>
 
