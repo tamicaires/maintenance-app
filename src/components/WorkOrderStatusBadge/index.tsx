@@ -35,6 +35,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { MaintenanceStatus, Box } from "@/shared/enums/work-order";
 import { useUpdateWorkOrder } from "@/app/Order/hooks/use-update-work-order";
+import { CustomDialogHeader } from "../CustomDialogHeader";
 
 interface WorkOrderStatusBadgeProps {
   workOrder: IWorkOrder;
@@ -109,10 +110,11 @@ export function WorkOrderStatusBadge({ workOrder }: WorkOrderStatusBadgeProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Atualizar Status da Ordem de Serviço</DialogTitle>
-          <DialogDescription>
-            Altere o status da ordem de serviço {workOrder.displayId}.
-          </DialogDescription>
+          <DialogTitle hidden>Atualizar Status da Ordem de Serviço</DialogTitle>
+          <CustomDialogHeader
+            title="Atualizar Status"
+            subtitle="Preencha os dados para mudança de status"
+          />
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
