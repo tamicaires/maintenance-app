@@ -8,6 +8,8 @@ import store from "./store/store.ts";
 import { ThemeProvider } from "./components/ThemeProvider/index.tsx";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/services/query-client";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -15,7 +17,9 @@ createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <TooltipProvider>
-            <App />
+            <DndProvider backend={HTML5Backend}>
+              <App />
+            </DndProvider>
           </TooltipProvider>
         </ThemeProvider>
       </QueryClientProvider>
