@@ -3,13 +3,16 @@ import {
   TypeOfMaintenance,
   Box,
 } from "@/shared/enums/work-order";
+import { IActiveTrailer } from "./trailer.interface";
 
 export interface IWorkOrder {
   id: string;
   displayId: string;
-  fleetNumber: string;
-  carrierName: string;
-  plate: string;
+  fleetInfo: {
+    fleetNumber: string;
+    carrierName: string;
+    trailers: IActiveTrailer[];
+  }
   severityLevel: string;
   entryQueue?: string | undefined;
   entryMaintenance?: string;
@@ -24,6 +27,7 @@ export interface IWorkOrder {
   user?: string;
   typeOfMaintenance: string;
   box: Box;
+  isCancelled: boolean;
   createdBy: string;
   status: MaintenanceStatus;
   createdAt: string;
@@ -37,6 +41,7 @@ export interface ICreateWorkOrder {
   fleetId: string;
   typeOfMaintenance: TypeOfMaintenance;
   box?: Box;
+  isCancelled: boolean;
 }
 
 export interface IWorkOrderUpdate {
@@ -56,6 +61,7 @@ export interface IWorkOrderUpdate {
   user?: string;
   typeOfMaintenance?: TypeOfMaintenance;
   box?: Box;
+  isCancelled: boolean;
   createdBy?: string;
   updatedBy?: string;
   status?: MaintenanceStatus;
