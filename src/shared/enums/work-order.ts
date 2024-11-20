@@ -11,6 +11,8 @@ export enum MaintenanceStatus {
   FINALIZADA = "Finalizada",
 }
 
+export type TMaintenanceStatus = keyof typeof MaintenanceStatus;
+
 export enum SeverityLevel {
   BAIXA = "Baixa",
   NORMAL = "Normal",
