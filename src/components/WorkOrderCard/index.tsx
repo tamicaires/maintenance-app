@@ -57,7 +57,7 @@ export default function WorkOrderCard({
               <p className="text-xl md:text-2xl font-semibold flex items-center mt-1">
                 Frota{" "}
                 <span className="ml-2">
-                  {highlightMatch(workOrder.fleetNumber)}
+                  {highlightMatch(workOrder.fleetInfo.fleetNumber)}
                 </span>
               </p>
             </div>
@@ -102,7 +102,9 @@ export default function WorkOrderCard({
             </TooltipProvider>
             <div>
               <p className="text-sm font-medium">Transportadora</p>
-              <p className="text-muted-foreground">{workOrder.carrierName}</p>
+              <p className="text-muted-foreground">
+                {workOrder.fleetInfo.carrierName}
+              </p>
             </div>
             <div>
               <p className="text-sm font-medium">Abertura OS</p>
@@ -123,10 +125,11 @@ export default function WorkOrderCard({
                 alt={workOrder.createdBy}
               />
               <AvatarFallback>
-                {workOrder.createdBy
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
+                {workOrder.createdBy &&
+                  workOrder.createdBy
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
               </AvatarFallback>
             </Avatar>
             <div>
