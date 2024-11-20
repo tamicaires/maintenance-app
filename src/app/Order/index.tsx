@@ -13,18 +13,17 @@ import {
   CalendarIcon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { OrderDetails } from "./OrderDetails";
+import { WorkOrderDetails } from "./OrderDetails";
 import { DailyChart } from "@/components/DailyChart/DailyChart";
 import { WorkOrderCreationDialog } from "./CreateOrder";
 import { useWorkOrder } from "./hooks/use-work-order";
 import { IWorkOrder } from "@/interfaces/work-order.interface";
 import { Spinner } from "@/components/Spinner";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
-import { EmptyState } from "@/components/EmptyState";
+import EmptyState from "@/components/EmptyState";
 import WorkOrderCard from "@/components/WorkOrderCard";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
-import { PartRequestCreationDialog } from "../PartRequest/create-part-request";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -46,7 +45,7 @@ export default function Order() {
         (activeTab === "aguard-peca" &&
           order.status === MaintenanceStatus.AGUARDANDO_PECA);
 
-      const matchesSearch = order.fleetNumber
+      const matchesSearch = order.fleetInfo.fleetNumber
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
 
@@ -128,7 +127,7 @@ export default function Order() {
   };
 
   return (
-    <div className="flex flex-col bg-background mt-14 p-4 md:px-6 max-h-full">
+    <div className="container flex flex-col bg-background mt-14 p-4 md:px-6 max-h-full">
       <div className="flex flex-col lg:flex-row gap-5">
         <main className="flex-1 bg-card p-4 md:p-6 shadow-lg rounded-xl">
           <motion.div
@@ -145,9 +144,7 @@ export default function Order() {
                 Gerenciamento de Ordem de Serviço abertas
               </p>
             </div>
-            {/* <CreateWorkOrder /> */}
             <WorkOrderCreationDialog />
-            <PartRequestCreationDialog />
           </motion.div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="my-6">
@@ -286,7 +283,7 @@ export default function Order() {
           </motion.div>
         </aside>
         {selectedWorkOrder && (
-          <OrderDetails
+          <WorkOrderDetails
             workOrder={selectedWorkOrder}
             isDialogOpen={isDialogOpen}
             setIsDialogOpen={setIsDialogOpen}
