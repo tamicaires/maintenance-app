@@ -18,6 +18,10 @@ export const useAuth = () => {
   const navigate = useNavigate();
   const { user, error } = useAppSelector(selectAuth);
 
+  const reloadPage = () => {
+    window.location.reload();
+  };
+
   useEffect(() => {
     if (error) {
       toast.error(error, {
@@ -37,7 +41,8 @@ export const useAuth = () => {
     setIsLoading(true);
     try {
       await dispatch(authenticate(data.email, data.password));
-      navigate(PrivateRoutes.Carrier);
+      navigate(PrivateRoutes.Home);
+      reloadPage();
     } catch (error) {
       console.error("Login failed", error);
     } finally {
