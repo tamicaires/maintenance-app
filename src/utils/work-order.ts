@@ -1,4 +1,6 @@
 import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { MaintenanceStatus, TMaintenanceStatus } from "@/shared/enums/work-order";
+import { AlertOctagon, CheckCircle, Clock, Package, Wrench } from "lucide-react";
 
 export function calculateDuration(
   startTime?: string,
@@ -31,3 +33,58 @@ export function calculateWaitingPartsDuration(
     workOrder.endWaitingParts
   );
 }
+
+export const getStatusInfo = (status: MaintenanceStatus) => {
+  switch (status) {
+    case MaintenanceStatus.FILA:
+      return {
+        color: "yellow",
+        icon: Clock,
+        label: "Em Fila",
+        description: "Aguardando início da manutenção",
+      };
+    case MaintenanceStatus.MANUTENCAO:
+      return {
+        color: "blue",
+        icon: Wrench,
+        label: "Em Manutenção",
+        description: "Manutenção em andamento",
+      };
+    case MaintenanceStatus.AGUARDANDO_PECA:
+      return {
+        color: "orange",
+        icon: Package,
+        label: "Aguardando Peça",
+        description: "Esperando entrega de peças",
+      };
+    case MaintenanceStatus.FINALIZADA:
+      return {
+        color: "green",
+        icon: CheckCircle,
+        label: "Finalizada",
+        description: "Manutenção concluída",
+      };
+    default:
+      return {
+        color: "gray",
+        icon: AlertOctagon,
+        label: "Status Desconhecido",
+        description: "Status não identificado",
+      };
+  }
+};
+
+export const calculateProgress = (workOrderStatus: MaintenanceStatus) => {
+  switch (workOrderStatus) {
+    case MaintenanceStatus.FILA:
+      return 25;
+    case MaintenanceStatus.MANUTENCAO:
+      return 50;
+    case MaintenanceStatus.AGUARDANDO_PECA:
+      return 75;
+    case MaintenanceStatus.FINALIZADA:
+      return 100;
+    default:
+      return 0;
+  }
+};
