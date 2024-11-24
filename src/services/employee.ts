@@ -1,7 +1,7 @@
 import {
   IEmployee,
   IEmployeeCreateAndUpdate,
-} from "@/interfaces/employee.interface";
+} from "@/shared/types/employee.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

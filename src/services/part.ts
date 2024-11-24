@@ -1,4 +1,4 @@
-import { IPart, IPartCreateAndUpdate } from "@/interfaces/part";
+import { IPart, IPartCreateAndUpdate } from "@/shared/types/part";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

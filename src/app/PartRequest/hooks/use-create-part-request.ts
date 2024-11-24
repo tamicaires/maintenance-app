@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
 import { CreatePartRequestData, createPartRequestSchema } from "@/validations/create-part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
-import { ICreatePartRequest, IPartRequest } from "@/interfaces/part-request";
+import { ICreatePartRequest, IPartRequest } from "@/shared/types/part-request";
 import { usePartRequestItems } from "./useHandleItem";
 
 export function useCreatePartRequest() {

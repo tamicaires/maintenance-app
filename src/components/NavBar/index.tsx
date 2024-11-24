@@ -10,7 +10,7 @@ import {
 import ThemeToggle from "../Toggle";
 import { Notification } from "../Notification";
 import { CompanyProfile } from "../CompanyProfile";
-import { ICompany } from "@/interfaces/company.interface";
+import { ICompany } from "@/shared/types/company.interface";
 import { Webhook } from "lucide-react";
 import { MyAccountAvatar } from "../MyAccount";
 import { useCompany } from "@/app/SelectCompany/hooks/useCompany";

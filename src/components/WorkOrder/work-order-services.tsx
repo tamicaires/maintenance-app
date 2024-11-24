@@ -1,10 +1,19 @@
-import { PlusCircle, User, Timer, ArrowRight } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { IWorkOrder } from "@/interfaces/work-order.interface"
-import { cn } from "@/lib/utils"
+import { PlusCircle, User, Timer, ArrowRight } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
+import { cn } from "@/lib/utils";
+import { useWorkOrderServices } from "@/app/Order/hooks/use-service-by-order";
+import { ServiceAssignmentCreationDialog } from "@/app/ServiceAssigment/create-service-assignment";
+import { useToast } from "../Toast/toast";
 
 const mockServices = [
   {
@@ -19,18 +28,30 @@ const mockServices = [
     priority: "Alta",
     cost: 250.0,
   },
-  // ... other services
-]
+];
 
 export function WorkOrderServices({ workOrder }: { workOrder: IWorkOrder }) {
+  const { addToast, ToastComponent } = useToast();
+  const showUpdateToast = () => {
+    addToast({
+      type: "success",
+      title: "Update available",
+      message: "A new software version is available for download.",
+      duration: 3000,
+    });
+  };
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Serviços</CardTitle>
-          <CardDescription>Lista de serviços realizados nesta ordem</CardDescription>
+          <CardDescription>
+            Lista de serviços realizados nesta ordem
+          </CardDescription>
         </div>
-        <Button>
+        <ServiceAssignmentCreationDialog workOrderId={workOrder.id} />
+        <Button onClick={showUpdateToast}>
           <PlusCircle className="w-4 h-4 mr-2" />
           Adicionar Serviço
         </Button>
@@ -62,9 +83,12 @@ export function WorkOrderServices({ workOrder }: { workOrder: IWorkOrder }) {
                 <Badge
                   variant="secondary"
                   className={cn(
-                    service.status === "Concluído" && "bg-green-100 text-green-800",
-                    service.status === "Em Andamento" && "bg-blue-100 text-blue-800",
-                    service.status === "Pendente" && "bg-yellow-100 text-yellow-800"
+                    service.status === "Concluído" &&
+                      "bg-green-100 text-green-800",
+                    service.status === "Em Andamento" &&
+                      "bg-blue-100 text-blue-800",
+                    service.status === "Pendente" &&
+                      "bg-yellow-100 text-yellow-800"
                   )}
                 >
                   {service.status}
@@ -73,11 +97,15 @@ export function WorkOrderServices({ workOrder }: { workOrder: IWorkOrder }) {
               <Separator className="my-4" />
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-4 text-muted-foreground">
-                  <span>Início: {new Date(service.startedAt).toLocaleString()}</span>
+                  <span>
+                    Início: {new Date(service.startedAt).toLocaleString()}
+                  </span>
                   {service.completedAt && (
                     <>
                       <span>•</span>
-                      <span>Fim: {new Date(service.completedAt).toLocaleString()}</span>
+                      <span>
+                        Fim: {new Date(service.completedAt).toLocaleString()}
+                      </span>
                     </>
                   )}
                 </div>
@@ -88,8 +116,9 @@ export function WorkOrderServices({ workOrder }: { workOrder: IWorkOrder }) {
               </div>
             </div>
           ))}
+          <ToastComponent />
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

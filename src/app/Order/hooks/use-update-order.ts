@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { z } from "zod";
 import { queryClient } from "@/services/query-client";
 import { IApiResponse } from "@/services/api";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { WorkOrderService } from "@/services/work-order";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { toast } from "sonner";

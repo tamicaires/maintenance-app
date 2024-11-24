@@ -8,7 +8,7 @@ import { EmployeeService } from "@/services/employee";
 import {
   IEmployee,
   IEmployeeCreateAndUpdate,
-} from "@/interfaces/employee.interface";
+} from "@/shared/types/employee.interface";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
 

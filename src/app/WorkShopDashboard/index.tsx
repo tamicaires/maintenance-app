@@ -28,7 +28,7 @@ import { AnalyticsCard } from "@/components/WorkShopDashboard/AnalyticsCard";
 import { QueueChart } from "./Charts/QueueChart";
 import { TypeMaintenanceChart } from "./Charts/TypeMaintenaceChart";
 import { ServiceChart } from "./Charts/ServicesChart";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { useWorkOrder } from "../Order/hooks/use-work-order";
 import {
   MaintenanceStatus,

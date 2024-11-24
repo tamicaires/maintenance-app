@@ -1,4 +1,4 @@
-import { IUser } from "@/interfaces/auth";
+import { IUser } from "@/shared/types/auth";
 import { handleRequest, IApiResponse } from "./api";
 
 interface IRequestRegister {

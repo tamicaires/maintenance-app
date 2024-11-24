@@ -1,4 +1,4 @@
-import { ICompany } from "@/interfaces/company.interface";
+import { ICompany } from "@/shared/types/company.interface";
 import { IApiResponse } from "@/services/api";
 import { CompanyService } from "@/services/company";
 import { useQuery } from "@tanstack/react-query";

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IPartRequest } from "@/interfaces/part-request";
+import { IPartRequest } from "@/shared/types/part-request";
 import { dateUtil } from "@/utils/date";
 import { Spinner } from "../Spinner";
 import { Profile } from "../Profile";

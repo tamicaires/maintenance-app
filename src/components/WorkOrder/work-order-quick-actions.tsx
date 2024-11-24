@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 
 type WorkOrderQuickActionsProps = {
   workOrder: IWorkOrder;

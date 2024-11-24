@@ -1,4 +1,4 @@
-import { ICompany } from "@/interfaces/company.interface";
+import { ICompany } from "@/shared/types/company.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const getAll = async (): Promise<IApiResponse<ICompany[]>> => {

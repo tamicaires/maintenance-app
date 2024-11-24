@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { queryClient } from "@/services/query-client";
 import { TrailerService } from "@/services/trailer";
 import { IApiResponse } from "@/services/api";
-import { ITrailer, ITrailerCreateAndUpdate } from "@/interfaces/trailer.interface";
+import { ITrailer, ITrailerCreateAndUpdate } from "@/shared/types/trailer.interface";
 import { z } from "zod";
 
 const createTrailerSchema = z.object({

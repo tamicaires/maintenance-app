@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { BatchPartRequestDialog } from "@/app/PartRequest/create-batch-part-request";
 import { usePartRequestByWorkOrderId } from "@/app/PartRequest/hooks/use-part-request-by-work-order-id";
 import { Spinner } from "../Spinner";

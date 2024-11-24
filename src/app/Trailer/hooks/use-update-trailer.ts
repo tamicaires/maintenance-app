@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
-import { ITrailer, ITrailerCreateAndUpdate } from "@/interfaces/trailer.interface";
+import { ITrailer, ITrailerCreateAndUpdate } from "@/shared/types/trailer.interface";
 import { TrailerService } from "@/services/trailer";
 
 const trailerSchema = z.object({

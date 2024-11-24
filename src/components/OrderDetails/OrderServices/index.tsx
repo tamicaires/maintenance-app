@@ -28,7 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { IServiceWithEmployee } from "@/interfaces/service.interface";
+import { IServiceWithEmployee } from "@/shared/types/service.interface";
 
 interface ServiceProps {
   services: IServiceWithEmployee[];

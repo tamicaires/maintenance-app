@@ -47,7 +47,7 @@ import {
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
 import { useService } from "../Services/hooks/use-service";
-import { IService } from "@/interfaces/service.interface";
+import { IService } from "@/shared/types/service.interface";
 import { useUpdateService } from "../Services/hooks/use-update-service";
 import { Spinner } from "@/components/Spinner";
 import ServiceCreationDialog from "../Services/CreateService";

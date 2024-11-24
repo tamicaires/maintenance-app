@@ -1,4 +1,4 @@
-import { IPart } from "@/interfaces/part";
+import { IPart } from "@/shared/types/part";
 import { IApiResponse } from "@/services/api";
 import { PartService } from "@/services/part";
 import { useQuery } from "@tanstack/react-query";

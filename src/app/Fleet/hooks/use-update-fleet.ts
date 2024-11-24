@@ -5,7 +5,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { FleetService } from "@/services/fleet";
-import { IFleet, IFleetUpdate } from "@/interfaces/fleet.interface";
+import { IFleet, IFleetUpdate } from "@/shared/types/fleet.interface";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
 

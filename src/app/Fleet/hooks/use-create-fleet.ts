@@ -6,7 +6,7 @@ import { queryClient } from "@/services/query-client";
 import { FleetService } from "@/services/fleet";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
-import { IFleet, IFleetCreate } from "@/interfaces/fleet.interface";
+import { IFleet, IFleetCreate } from "@/shared/types/fleet.interface";
 import { CreateFleetData, createFleetSchema } from "@/validations/create-fleet";
 
 export function useCreateFleet() {

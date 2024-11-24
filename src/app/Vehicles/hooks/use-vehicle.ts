@@ -1,4 +1,4 @@
-import { IVehicle } from "@/interfaces/vehicles.interface";
+import { IVehicle } from "@/shared/types/vehicles.interface";
 import { IApiResponse } from "@/services/api";
 import { VehicleService } from "@/services/vehicle";
 import { useQuery } from "@tanstack/react-query";

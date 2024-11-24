@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { createCarrierSchema } from "@/validations/create-carrier";
 import { queryClient } from "@/services/query-client";
 import { CarrierService } from "@/services/carrier";
-import { ICarrier } from "@/interfaces/carrier";
+import { ICarrier } from "@/shared/types/carrier";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
 

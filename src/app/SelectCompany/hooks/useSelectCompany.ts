@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { setCookie } from "@/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
 import { PrivateRoutes } from "@/shared/enums/routes";
-import { ICompany } from "@/interfaces/company.interface";
+import { ICompany } from "@/shared/types/company.interface";
 
 export function useSelectCompany() {
   const [searchTerm, setSearchTerm] = useState("");

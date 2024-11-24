@@ -1,4 +1,4 @@
-import { IBox, IBoxCreateAndUpdate } from "@/interfaces/box";
+import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

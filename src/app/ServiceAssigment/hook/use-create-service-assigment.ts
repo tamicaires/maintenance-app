@@ -69,7 +69,7 @@ export function useCreateServiceAssignment(
       addToast({
         type: "error",
         title: "Erro ao adicionar serviço",
-        message: error.message || "Ocorreu um erro ao criar a atribuição de serviço.",
+        message: error.message || "Ocorreu um erro ao adicionar serviço.",
         duration: 5000,
       })
     },

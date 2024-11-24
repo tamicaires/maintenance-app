@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PartRequestService } from "@/services/part-request";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
-import { THandledPartRequestResponse } from "@/interfaces/part-request";
+import { THandledPartRequestResponse } from "@/shared/types/part-request";
 
 export function useHandlePartRequest() {
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);

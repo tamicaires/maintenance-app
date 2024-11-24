@@ -1,7 +1,7 @@
 import { Clock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { IWorkOrder } from "@/interfaces/work-order.interface"
+import { IWorkOrder } from "@/shared/types/work-order.interface"
 
 const mockHistory = [
   {

@@ -48,7 +48,7 @@ import {
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
 import { useEmployee } from "./hooks/use-employee";
-import { IEmployee } from "@/interfaces/employee.interface";
+import { IEmployee } from "@/shared/types/employee.interface";
 import { useUpdateEmployee } from "./hooks/use-update-employee";
 import EmployeeCreationDialog from "./CreateEmployee";
 import { Spinner } from "@/components/Spinner";

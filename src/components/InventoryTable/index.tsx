@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PartCreationDialog } from "@/app/PartsManager/CreatePartForm";
-import { IPart } from "@/interfaces/part";
+import { IPart } from "@/shared/types/part";
 import { PartLocation, PartStatus } from "@/shared/enums/part";
 
 interface InventoryTableProps {

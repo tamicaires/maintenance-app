@@ -1,4 +1,4 @@
-import { IJob } from "@/interfaces/job.interface";
+import { IJob } from "@/shared/types/job.interface";
 import { IApiResponse } from "@/services/api";
 import { JobService } from "@/services/job";
 import { useQuery } from "@tanstack/react-query";

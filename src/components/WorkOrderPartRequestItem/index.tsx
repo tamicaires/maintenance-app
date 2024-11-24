@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { IPartRequest } from "@/interfaces/part-request";
+import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { cn } from "@/lib/utils";
 import { Profile } from "../Profile";

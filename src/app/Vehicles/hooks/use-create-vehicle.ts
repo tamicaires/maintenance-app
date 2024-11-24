@@ -7,7 +7,7 @@ import { queryClient } from "@/services/query-client";
 import { VehicleService } from "@/services/vehicle";
 import { IApiResponse } from "@/services/api";
 import * as z from "zod";
-import { IVehicle, IVehicleCreateAndUpdate } from "@/interfaces/vehicles.interface";
+import { IVehicle, IVehicleCreateAndUpdate } from "@/shared/types/vehicles.interface";
 
 const createVehicleSchema = z.object({
   plate: z.string().min(1, "Placa é obrigatória"),

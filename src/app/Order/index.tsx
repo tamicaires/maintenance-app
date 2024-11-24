@@ -17,7 +17,7 @@ import { WorkOrderDetails } from "./OrderDetails";
 import { DailyChart } from "@/components/DailyChart/DailyChart";
 import { WorkOrderCreationDialog } from "./CreateOrder";
 import { useWorkOrder } from "./hooks/use-work-order";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { Spinner } from "@/components/Spinner";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/EmptyState";

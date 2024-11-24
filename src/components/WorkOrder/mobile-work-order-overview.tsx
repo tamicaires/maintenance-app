@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Clock, Wrench, Package, CheckCircle } from 'lucide-react'
-import { IWorkOrder } from "@/interfaces/work-order.interface"
+import { IWorkOrder } from "@/shared/types/work-order.interface"
 
 type MobileWorkOrderOverviewProps = {
   workOrder: IWorkOrder

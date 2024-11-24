@@ -1,4 +1,4 @@
-import { IMembership } from "@/interfaces/membership";
+import { IMembership } from "@/shared/types/membership";
 import { handleRequest, IApiResponse } from "./api";
 
 const setCurrentMembership = async (companyId: string): Promise<IApiResponse<IMembership>> => {

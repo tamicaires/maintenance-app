@@ -6,7 +6,7 @@ import { queryClient } from "@/services/query-client";
 import { BoxService } from "@/services/box";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
-import { IBox, IBoxCreateAndUpdate } from "@/interfaces/box";
+import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
 import { CreateBoxData, createBoxSchema } from "@/validations/create-box";
 
 export function useCreateBox() {

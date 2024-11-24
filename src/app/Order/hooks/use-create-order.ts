@@ -6,7 +6,7 @@ import { createWorkOrderSchema } from "@/validations/create-work-order";
 import { queryClient } from "@/services/query-client";
 import { z } from "zod";
 import { IApiResponse } from "@/services/api";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { WorkOrderService } from "@/services/work-order";
 import {
   MaintenanceStatus,

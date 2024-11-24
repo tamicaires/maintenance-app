@@ -50,7 +50,7 @@ import { Input } from "@/components/ui/input";
 import { useTrailer } from "./hooks/use-trailer";
 import { useUpdateTrailer } from "./hooks/use-update-trailer";
 import { Spinner } from "@/components/Spinner";
-import { ITrailer } from "@/interfaces/trailer.interface";
+import { ITrailer } from "@/shared/types/trailer.interface";
 import TrailerCreationDialog from "./CreateTrailer";
 
 export function Trailer() {

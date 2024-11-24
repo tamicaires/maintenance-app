@@ -39,7 +39,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useFleet } from "./hooks/use-fleet";
 import { useSortableTable } from "@/hooks/use-sortable-table";
 import { SortableHeader } from "@/components/SortableHeader";
-import { IFleet } from "@/interfaces/fleet.interface";
+import { IFleet } from "@/shared/types/fleet.interface";
 import {
   Pagination,
   PaginationContent,

@@ -1,4 +1,4 @@
-import { ITrailer } from "@/interfaces/trailer.interface";
+import { ITrailer } from "@/shared/types/trailer.interface";
 import { IApiResponse } from "@/services/api";
 import { TrailerService } from "@/services/trailer";
 import { useQuery } from "@tanstack/react-query";

@@ -1,6 +1,6 @@
 // membershipSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { IMembership } from '@/interfaces/membership';
+import { IMembership } from '@/shared/types/membership';
 import { MembershipService } from '@/services/membership';
 
 interface MembershipState {

@@ -1,4 +1,4 @@
-import { IService } from "@/interfaces/service.interface";
+import { IService } from "@/shared/types/service.interface";
 import { IApiResponse } from "@/services/api";
 import { ServicesService } from "@/services/service";
 import { useQuery } from "@tanstack/react-query";

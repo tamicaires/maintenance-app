@@ -1,4 +1,4 @@
-import { IVehicle, IVehicleCreateAndUpdate } from "@/interfaces/vehicles.interface";
+import { IVehicle, IVehicleCreateAndUpdate } from "@/shared/types/vehicles.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

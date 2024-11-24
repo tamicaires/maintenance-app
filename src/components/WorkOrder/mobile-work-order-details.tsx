@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MobileWorkOrderHistory } from "./mobile-work-order-history";
 import { MobileWorkOrderHeader } from "./mobile-work-order-header";
 import { MobileWorkOrderOverview } from "./mobile-work-order-overview";

@@ -26,7 +26,7 @@ import { useParts } from "../PartsManager/hooks/use-parts";
 import { useCreatePartRequestBatch } from "./hooks/use-create-part-request-batch";
 import { PartRequestItem } from "@/validations/create-part-request-batch";
 import { usePartRequestItems } from "./hooks/useHandleItem";
-import { IActiveTrailer } from "@/interfaces/trailer.interface";
+import { IActiveTrailer } from "@/shared/types/trailer.interface";
 import {
   Table,
   TableBody,

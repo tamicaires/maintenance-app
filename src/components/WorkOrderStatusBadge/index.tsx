@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

@@ -1,4 +1,4 @@
-import { ITrailer, ITrailerCreateAndUpdate } from "@/interfaces/trailer.interface";
+import { ITrailer, ITrailerCreateAndUpdate } from "@/shared/types/trailer.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

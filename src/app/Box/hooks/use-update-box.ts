@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { BoxService } from "@/services/box";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
-import { IBox, IBoxCreateAndUpdate } from "@/interfaces/box";
+import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
 
 const boxSchema = z.object({
   name: z.string().min(1, "Identificação do box é obrigatória"),

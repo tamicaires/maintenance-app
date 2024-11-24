@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
-import { IVehicle, IVehicleCreateAndUpdate } from "@/interfaces/vehicles.interface";
+import { IVehicle, IVehicleCreateAndUpdate } from "@/shared/types/vehicles.interface";
 import { VehicleService } from "@/services/vehicle";
 
 const vehicleSchema = z.object({

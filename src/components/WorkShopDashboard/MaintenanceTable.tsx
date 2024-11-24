@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { calculateMaintenanceDuration } from "@/utils/work-order";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 

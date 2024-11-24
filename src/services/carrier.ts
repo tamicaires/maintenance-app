@@ -1,4 +1,4 @@
-import { ICarrier, ICarrierCreate } from "@/interfaces/carrier";
+import { ICarrier, ICarrierCreate } from "@/shared/types/carrier";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

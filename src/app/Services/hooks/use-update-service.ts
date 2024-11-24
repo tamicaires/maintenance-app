@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import {
   IService,
   IServiceCreateAndUpdate,
-} from "@/interfaces/service.interface";
+} from "@/shared/types/service.interface";
 import { IApiResponse } from "@/services/api";
 import { ServicesService } from "@/services/service";
 import { queryClient } from "@/services/query-client";

@@ -2,7 +2,7 @@ import { format } from "date-fns"
 import { Settings, AlertTriangle, Clock, Wrench, Package, CheckCircle } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { IWorkOrder } from "@/interfaces/work-order.interface"
+import { IWorkOrder } from "@/shared/types/work-order.interface"
 import { SeverityLevel } from "@/shared/enums/work-order"
 import { cn } from "@/lib/utils"
 

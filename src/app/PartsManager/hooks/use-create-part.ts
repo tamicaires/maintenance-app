@@ -6,7 +6,7 @@ import { queryClient } from "@/services/query-client";
 import { PartService } from "@/services/part";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
-import { IPart, IPartCreateAndUpdate } from "@/interfaces/part";
+import { IPart, IPartCreateAndUpdate } from "@/shared/types/part";
 import { z } from "zod";
 import { PartLocation, PartStatus, TPartLocation, TPartStatus } from "@/shared/enums/part";
 

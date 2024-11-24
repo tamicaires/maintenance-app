@@ -23,7 +23,7 @@ import { usePartRequests } from "../PartRequest/hooks/use-part-requests";
 import { OpenRequestsList } from "@/components/OpenRequestsList";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { Button } from "@/components/ui/button";
-import { IPartRequest } from "@/interfaces/part-request";
+import { IPartRequest } from "@/shared/types/part-request";
 
 export enum PartLocation {
   ESTOQUE = "ESTOQUE",

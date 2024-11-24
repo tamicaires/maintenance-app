@@ -8,7 +8,7 @@ import { IApiResponse } from "@/services/api";
 import {
   IService,
   IServiceCreateAndUpdate,
-} from "@/interfaces/service.interface";
+} from "@/shared/types/service.interface";
 
 import { ServicesService } from "@/services/service";
 import {

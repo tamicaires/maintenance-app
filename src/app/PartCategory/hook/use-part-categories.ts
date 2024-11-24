@@ -1,4 +1,4 @@
-import { IPartCategory } from "@/interfaces/part-category";
+import { IPartCategory } from "@/shared/types/part-category";
 import { IApiResponse } from "@/services/api";
 import { PartCategoryService } from "@/services/part-category";
 import { useQuery } from "@tanstack/react-query";

@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/form";
 import { CheckCircleIcon } from "lucide-react";
 import { FormFields, useUpdateService } from "../hooks/use-update-service";
-import { IService } from "@/interfaces/service.interface";
+import { IService } from "@/shared/types/service.interface";
 import { ServiceCategory } from "@/shared/enums/service";
 
 const steps: Array<{

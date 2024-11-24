@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ChevronLeft, MoreVertical, Printer, Download, Share2 } from 'lucide-react'
-import { IWorkOrder } from "@/interfaces/work-order.interface"
+import { IWorkOrder } from "@/shared/types/work-order.interface"
 import { cn } from "@/lib/utils"
 
 interface MobileWorkOrderHeaderProps {

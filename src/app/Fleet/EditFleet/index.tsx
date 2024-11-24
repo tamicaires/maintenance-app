@@ -16,7 +16,7 @@ import { Loader2, Pencil } from "lucide-react"
 import { useCarrier } from "@/app/Carrier/hooks/use-carrier"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { CustomDialogHeader } from "@/components/CustomDialogHeader"
-import { IFleet } from "@/interfaces/fleet.interface"
+import { IFleet } from "@/shared/types/fleet.interface"
 
 export default function UpdateFleetDialog({ fleet }: { fleet: IFleet }) {
   const {

@@ -21,7 +21,7 @@ import {
   AlertTriangleIcon,
   CalendarIcon,
 } from "lucide-react";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { WorkOrderStatusBadge } from "../WorkOrderStatusBadge";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MobileWorkOrderDetails } from "@/components/WorkOrder/mobile-work-order-details";
 import { WorkOrderHeader } from "@/components/WorkOrder/work-order-header";
 import { WorkOrderOverview } from "@/components/WorkOrder/word-order-overview";
@@ -50,7 +50,7 @@ export function WorkOrderDetails({
         <ScrollArea className="h-full">
           <div className="flex flex-col h-full">
             <WorkOrderHeader workOrder={workOrder} />
-            <div className="flex-1 px-6 py-3">
+            <div className="flex-1 px-6 py-3 pb-32">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="mb-1">
                   <TabsTrigger value="overview">Visão Geral</TabsTrigger>

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { IPartRequest } from "@/interfaces/part-request";
+import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { MoreVertical } from "lucide-react";
 

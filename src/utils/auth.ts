@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ITokenPayload, IUser } from "@/interfaces/auth";
+import { ITokenPayload, IUser } from "@/shared/types/auth";
 import { jwtDecode } from "jwt-decode";
 
 export const Api = () => {

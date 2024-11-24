@@ -1,4 +1,4 @@
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { IApiResponse } from "@/services/api";
 import { WorkOrderService } from "@/services/work-order";
 import { useQuery } from "@tanstack/react-query";

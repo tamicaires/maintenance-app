@@ -29,7 +29,7 @@ import { CheckCircleIcon } from "lucide-react";
 import { useCreateTrailer } from "@/app/Trailer/hooks/use-create-trailer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useFleet } from "@/app/Fleet/hooks/use-fleet";
-import { IFleet } from "@/interfaces/fleet.interface";
+import { IFleet } from "@/shared/types/fleet.interface";
 
 interface ITrailerCreationDialogProps {
   isOpen?: boolean;

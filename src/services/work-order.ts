@@ -1,7 +1,7 @@
 import {
   ICreateWorkOrder,
   IWorkOrder,
-} from "@/interfaces/work-order.interface";
+} from "@/shared/types/work-order.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

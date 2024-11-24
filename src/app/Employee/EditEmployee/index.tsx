@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { FormFields, useUpdateEmployee } from "../hooks/use-update-employee";
 import { useJobTitle } from "@/app/JobTitle/hooks/use-job";
-import { IEmployee } from "@/interfaces/employee.interface";
+import { IEmployee } from "@/shared/types/employee.interface";
 
 const steps: Array<{
   title: string;

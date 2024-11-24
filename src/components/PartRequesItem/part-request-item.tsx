@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Check, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IPartRequest } from "@/interfaces/part-request";
+import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { dateUtil } from "@/utils/date";
 

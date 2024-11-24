@@ -2,7 +2,7 @@ import { CheckCircleIcon, ClockIcon, Eye, Truck } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { calculateMaintenanceDuration } from "@/utils/work-order";
 import { boxToNumber } from "@/utils/utils";
 import { format } from "date-fns";

@@ -5,7 +5,7 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { WorkOrderService } from "@/services/work-order";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
 import {

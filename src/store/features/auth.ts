@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser } from "@/interfaces/auth";
+import { IUser } from "@/shared/types/auth";
 import { AppThunk } from "../store";
 import {
   decodeToken,

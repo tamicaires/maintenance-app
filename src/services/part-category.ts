@@ -1,4 +1,4 @@
-import { IPartCategory, IPartCategoryCreateAndUpdate } from "@/interfaces/part-category";
+import { IPartCategory, IPartCategoryCreateAndUpdate } from "@/shared/types/part-category";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (

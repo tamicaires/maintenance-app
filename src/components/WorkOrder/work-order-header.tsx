@@ -31,7 +31,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { IWorkOrder } from "@/interfaces/work-order.interface";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { calculateProgress, getStatusInfo } from "@/utils/work-order";
 
 export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {

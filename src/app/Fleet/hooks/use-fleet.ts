@@ -1,4 +1,4 @@
-import { IFleet } from "@/interfaces/fleet.interface";
+import { IFleet } from "@/shared/types/fleet.interface";
 import { IApiResponse } from "@/services/api";
 import { FleetService } from "@/services/fleet";
 import { useQuery } from "@tanstack/react-query";

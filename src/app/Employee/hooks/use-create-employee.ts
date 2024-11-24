@@ -9,7 +9,7 @@ import { IApiResponse } from "@/services/api";
 import {
   IEmployee,
   IEmployeeCreateAndUpdate,
-} from "@/interfaces/employee.interface";
+} from "@/shared/types/employee.interface";
 import {
   createEmployeeSchema,
   CreateEmployeeData,

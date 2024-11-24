@@ -2,7 +2,7 @@ import {
   IFleet,
   IFleetCreate,
   IFleetUpdate,
-} from "@/interfaces/fleet.interface";
+} from "@/shared/types/fleet.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (data: IFleetCreate): Promise<IApiResponse<IFleet>> => {
