@@ -1,6 +1,6 @@
 import { IServiceAssignment } from "@/shared/types/service-assigment";
-import ServiceAssigmentItem from "../../app/service-assigment/components/service-assigment-item/service-assigment-item";
-import { ScrollArea } from "../ui/scroll-area";
+import ServiceAssigmentItem from "@/app/service-assigment/components/service-assigment-item/service-assigment-item";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -8,8 +8,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import EmptyState from "../EmptyState";
+} from "@/components/ui/table";
+import EmptyState from "@/components/EmptyState";
 
 interface IServiceAssigmentListProps {
   serviceAssigments: IServiceAssignment[];
