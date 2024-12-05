@@ -14,7 +14,7 @@ type ServiceOrderCardProps = {
   serviceAssignment: IServiceAssignment;
   isOpen?: boolean;
   onClose?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export function ServiceOrderCard({
@@ -131,7 +131,6 @@ export function ServiceOrderCard({
               isOpen={isActionDialogOpen}
               onClose={() => setIsActionDialogOpen(false)}
               serviceAssignmentId={serviceAssignment.id}
-              currentStatus={serviceAssignment.status as ServiceAssigmentStatus}
               action={
                 serviceAssignment.status === ServiceAssigmentStatus.PENDING
                   ? "start"
