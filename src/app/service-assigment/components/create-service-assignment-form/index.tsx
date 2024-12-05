@@ -18,7 +18,10 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
-import { Select as CustomSelect } from "@/components/CustomCombobox/index";
+import {
+  Select as CustomSelect,
+  IOption,
+} from "@/components/CustomCombobox/index";
 import { useService } from "@/app/Services/hooks/use-service";
 import { useEmployee } from "@/app/Employee/hooks/use-employee";
 import { dateUtil } from "@/utils/date";
@@ -51,13 +54,13 @@ export function ServiceAssignmentCreationDialog({
     handleSubmit,
     isSubmitting,
     isLoading,
+    isPending,
     isError,
     error,
     reset,
   } = useCreateServiceAssignment(setIsDialogOpen, workOrderId, addToast);
 
   const { data: services, isLoading: isServicesLoading } = useService();
-  const { data: employees, isLoading: isEmployeesLoading } = useEmployee();
   const { data: trailers, isLoading: isTrailerLoading } = useTrailer();
 
   const { control, watch } = createServiceAssignmentForm;
@@ -77,18 +80,11 @@ export function ServiceAssignmentCreationDialog({
       description: service.serviceCategory,
     })) || [];
 
-  const employeeOptions =
-    employees?.data?.map((employee) => ({
-      value: employee.id,
-      label: employee.name,
-      description: employee.jobTitle,
-    })) || [];
-
-  const trailersOptions =
+  const trailersOptions: IOption[] =
     trailers?.data?.map((trailer) => ({
       value: trailer.id,
       label: trailer.plate,
-      description: trailer.position,
+      description: trailer.position?.toString() || "",
     })) || [];
 
   const statusOptions: {
@@ -199,7 +195,7 @@ export function ServiceAssignmentCreationDialog({
                                   className={cn(
                                     "flex-1",
                                     field.value === option.value &&
-                                      `bg-${option.color}-500 bg-opacity-20 hover:bg-opacity-20 text-${option.color}-600 hover:bg-${option.color}-600`
+                                      `bg-${option.color}-500 bg-opacity-10 hover:bg-opacity-20 text-${option.color}-600 hover:bg-${option.color}-600`
                                   )}
                                   onClick={() => field.onChange(option.value)}
                                 >
@@ -282,18 +278,14 @@ export function ServiceAssignmentCreationDialog({
                 render={({ field }) => <input type="hidden" {...field} />}
               />
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting || isLoading}
-              >
-                {isSubmitting || isLoading ? (
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Adicionar Serviço...
+                    Adicionando Serviço...
                   </>
                 ) : (
-                  "Adicionando Serviço"
+                  "Adicionar Serviço"
                 )}
               </Button>
             </form>

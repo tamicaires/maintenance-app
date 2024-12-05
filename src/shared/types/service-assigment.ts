@@ -26,7 +26,6 @@ export interface IServiceAssignment {
 export interface ICreateServiceAssigment {
   workOrderId: string;
   serviceId: string;
-  employeeId: string | null;
   status: TServiceAssigmentStatus;
   startAt: Date | null;
   endAt: Date | null;
