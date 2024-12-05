@@ -1,9 +1,13 @@
 import {
   IServiceCreateAndUpdate,
-  IServiceWithEmployee,
 } from "@/shared/types/service.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
-import { ICreateServiceAssigment, IServiceAssignment } from "@/shared/types/service-assigment";
+import {
+  ChangeStatusRequestType,
+  ChangeStatusResponseType,
+  ICreateServiceAssigment,
+  IServiceAssignment
+} from "@/shared/types/service-assigment";
 
 const create = async (
   data: ICreateServiceAssigment
@@ -43,10 +47,10 @@ const deleteServiceAssignment = async (
 
 const getByWorkOrder = async (
   workOrderId: string
-): Promise<IApiResponse<IServiceWithEmployee[]>> => {
-  const response = await handleRequest<IServiceWithEmployee[]>({
+): Promise<IApiResponse<IServiceAssignment[]>> => {
+  const response = await handleRequest<IServiceAssignment[]>({
     method: "GET",
-    url: `/service-assignments/${workOrderId}/services`,
+    url: `/service-assignments/work-order/${workOrderId}`,
   });
 
   return response;
@@ -61,10 +65,25 @@ const getAll = async (): Promise<IApiResponse<IServiceAssignment[]>> => {
   return response;
 };
 
+const changeStatus = async (
+  data: ChangeStatusRequestType
+): Promise<IApiResponse<ChangeStatusResponseType>> => {
+  return await handleRequest<ChangeStatusResponseType>({
+    method: "PATCH",
+    data: {
+      status: data.status,
+      startAt: data.startAt,
+      endAt: data.endAt,
+    },
+    url: `/service-assignments/change-status/${data.serviceAssignmentId}`,
+  });
+}
+
 export const ServiceAssignmentService = {
   create,
   update,
   deleteServiceAssignment,
   getByWorkOrder,
   getAll,
+  changeStatus
 };
