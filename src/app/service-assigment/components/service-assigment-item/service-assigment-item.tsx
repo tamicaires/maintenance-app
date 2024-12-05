@@ -7,7 +7,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../../../components/ui/dropdown-menu";
-import { CircleX, Eye, MoreHorizontal, Play } from "lucide-react";
+import {
+  CircleCheckBig,
+  CircleX,
+  Eye,
+  MoreHorizontal,
+  Play,
+} from "lucide-react";
 import { TableCell, TableRow } from "../../../../components/ui/table";
 import EmployeeAvatarGroup from "../../../../components/AvatarGroup";
 import { Badge } from "../../../../components/ui/badge";
@@ -15,6 +21,8 @@ import { getServiceAssigmentStatusInfo } from "@/utils/service-assigment";
 
 import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment";
 import { ServiceOrderCard } from "@/app/service-assigment/components/service-assigment-card/service-assigment-card";
+import { ServiceActionDialog } from "../service-assingment-action/service-action-dialog";
+import { useState } from "react";
 
 interface IServiceAssigmentItem {
   serviceAssigment: IServiceAssignment;
@@ -23,7 +31,13 @@ interface IServiceAssigmentItem {
 export default function ServiceAssigmentItem({
   serviceAssigment,
 }: IServiceAssigmentItem) {
+  const [isActionDialogOpen, setIsActionDialogOpen] = useState<boolean>(false);
   const statusInfo = getServiceAssigmentStatusInfo(serviceAssigment.status);
+
+  const isStatusClosed =
+    serviceAssigment.status === ServiceAssigmentStatus.COMPLETED ||
+    serviceAssigment.status === ServiceAssigmentStatus.CANCELED;
+
   return (
     <TableRow key={serviceAssigment.id}>
       <TableCell>
@@ -66,15 +80,21 @@ export default function ServiceAssigmentItem({
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {serviceAssigment.status !== ServiceAssigmentStatus.COMPLETED && (
-              <DropdownMenuItem className="hover:text-primary">
+            {!isStatusClosed && (
+              <DropdownMenuItem
+                className="hover:text-primary"
+                onSelect={() => setIsActionDialogOpen(true)}
+              >
                 {serviceAssigment.status === ServiceAssigmentStatus.PENDING ? (
                   <div className="flex gap-1.5 items-center hover:text-primary">
                     <Play className="h-4 w-4 text-muted-foreground" />{" "}
                     <span>Iniciar Serviço</span>
                   </div>
                 ) : (
-                  "Finalizar Serviço"
+                  <div className="flex gap-1.5 items-center hover:text-primary">
+                    <CircleCheckBig className="h-4 w-4 text-muted-foreground" />{" "}
+                    <span>Finalizar Serviço</span>
+                  </div>
                 )}
               </DropdownMenuItem>
             )}
@@ -86,15 +106,27 @@ export default function ServiceAssigmentItem({
                 </div>
               </DropdownMenuItem>
             </ServiceOrderCard>
-            <DropdownMenuItem className="text-red-600">
-              <div className="flex gap-1.5 items-center">
-                <CircleX className="h-4 w-4 text-red-600" />
-                Cancelar Serviço
-              </div>
-            </DropdownMenuItem>
+            {!isStatusClosed && (
+              <DropdownMenuItem className="text-red-600">
+                <div className="flex gap-1.5 items-center">
+                  <CircleX className="h-4 w-4 text-red-600" />
+                  Cancelar Serviço
+                </div>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>{" "}
+      <ServiceActionDialog
+        serviceAssignmentId={serviceAssigment.id}
+        action={
+          serviceAssigment.status === ServiceAssigmentStatus.PENDING
+            ? "start"
+            : "finish"
+        }
+        isOpen={isActionDialogOpen}
+        onClose={() => setIsActionDialogOpen(false)}
+      />
     </TableRow>
   );
 }
