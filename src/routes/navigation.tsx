@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "@/shared/enums/routes";
-import MainLayout from "@/components/Layout/DefaultLayout";
 import { SettingsLayout } from "@/app/Settings";
 import { MyAccount } from "@/app/Settings/components/MyAccount";
 import { Appearance } from "@/app/Settings/components/Appearance";
@@ -19,6 +18,7 @@ import MaintenanceChecklist from "@/app/Checklist";
 import { Vehicle } from "@/app/Vehicles";
 import { Fleet } from "@/app/Fleet";
 import { BoxManagement } from "@/app/Box";
+import { RootLayout } from "@/components/Layout/root-layout";
 
 export function Navigation() {
   return (
@@ -28,11 +28,8 @@ export function Navigation() {
           path={PrivateRoutes.CompanySelection}
           element={<CompanySelection />}
         />
-        <Route path={PrivateRoutes.Home} element={<MainLayout />}>
-          <Route
-            path={PrivateRoutes.Home}
-            element={<WorkShopDashboard />}
-          />
+        <Route path={PrivateRoutes.Home} element={<RootLayout />}>
+          <Route path={PrivateRoutes.Home} element={<WorkShopDashboard />} />
           <Route path={PrivateRoutes.WorkOrders} element={<Order />} />
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
