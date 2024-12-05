@@ -24,11 +24,10 @@ import { useToast } from "@/components/Toast/toast";
 import { dateUtil } from "@/utils/date";
 
 interface ServiceActionDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
   serviceAssignmentId: string;
-  currentStatus: ServiceAssigmentStatus;
+  isOpen?: boolean;
   action: "start" | "finish";
+  onClose?: () => void;
   children?: React.ReactNode;
 }
 
@@ -46,7 +45,6 @@ export function ServiceActionDialog({
     changeServiceAssignmentStatusForm,
     handleSubmit,
     isSubmitting,
-    isLoading,
     control,
   } = useChangeServiceAssignmentStatus(
     setIsDialogOpen,
@@ -54,14 +52,12 @@ export function ServiceActionDialog({
     action,
     serviceAssignmentId
   );
-  console.log("isloding", isLoading);
-  console.log("isSubmitting", isSubmitting);
+
   return (
     <Dialog
-      open={isDialogOpen}
+      open={isOpen}
       onOpenChange={(open) => {
-        setIsDialogOpen(open);
-        if (!open) onClose();
+        if (!open && onClose) onClose();
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
