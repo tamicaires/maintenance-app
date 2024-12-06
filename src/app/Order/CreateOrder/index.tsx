@@ -28,6 +28,7 @@ import { Select as CustomSelect } from "@/components/CustomCombobox/index";
 import { useBoxes } from "@/app/Box/hooks/use-box";
 import { useFleet } from "@/app/Fleet/hooks/use-fleet";
 import { useCreateWorkOrder } from "../hooks/use-create-order";
+import { useToast } from "@/components/Toast/toast";
 
 const severityColors = {
   [SeverityLevel.BAIXA]: "text-green-500",
@@ -48,6 +49,7 @@ const dateUtil = {
 
 export function WorkOrderCreationDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { addToast, ToastComponent } = useToast();
 
   const {
     createWorkOrderForm,
@@ -56,7 +58,7 @@ export function WorkOrderCreationDialog() {
     isError,
     error,
     reset,
-  } = useCreateWorkOrder(setIsDialogOpen);
+  } = useCreateWorkOrder(setIsDialogOpen, addToast);
 
   const { data: boxes, isLoading: isBoxesLoading } = useBoxes();
   const { data: fleets, isLoading: isFleetsLoading } = useFleet();
@@ -244,7 +246,7 @@ export function WorkOrderCreationDialog() {
 
                 <FormField
                   control={control}
-                  name="box"
+                  name="boxId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Box</FormLabel>
@@ -289,6 +291,7 @@ export function WorkOrderCreationDialog() {
               )}
             </Button>
           </form>
+          <ToastComponent />
         </Form>
         {isError && <p className="text-red-500 mt-2">Erro: {error?.message}</p>}
       </DialogContent>

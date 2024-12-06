@@ -1,5 +1,4 @@
 import {
-  Box,
   MaintenanceStatus,
   SeverityLevel,
   TypeOfMaintenance,
@@ -21,7 +20,7 @@ export const createWorkOrderSchema = z
     typeOfMaintenance: z.nativeEnum(TypeOfMaintenance, {
       errorMap: () => ({ message: "Tipo de manutenção é obrigatório" }),
     }),
-    box: z.nativeEnum(Box).optional(),
+    boxId: z.string().optional(),
     isCancelled: z.boolean().default(false),
   })
   .refine(
@@ -74,5 +73,20 @@ export const createWorkOrderSchema = z
     {
       message: "Campo 'Entrada Manutenção' é obrigatório.",
       path: ["entryMaintenance"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (
+        data.status === MaintenanceStatus.MANUTENCAO &&
+        !data.boxId
+      ) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Campo 'Box' é obrigatório.",
+      path: ["boxId"],
     }
   );

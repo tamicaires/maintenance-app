@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 type CreateWorkOrderData = z.infer<typeof createWorkOrderSchema>;
 
-export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void) {
+export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void, addToast: (toast: any) => void) {
   const defaultValues: CreateWorkOrderData = {
     severityLevel: SeverityLevel.NORMAL,
     entryQueue: undefined,
@@ -26,7 +26,7 @@ export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void) {
     status: MaintenanceStatus.FILA,
     fleetId: "",
     typeOfMaintenance: TypeOfMaintenance.CORRETIVA,
-    box: undefined,
+    boxId: undefined,
     isCancelled: false
   };
 
@@ -52,15 +52,22 @@ export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void) {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["work-orders"] });
       if (response.success && response.data) {
-        console.log("Work Order created:", response.data);
-        toast.success("Ordem de serviço criada com sucesso!");
+        addToast({
+          type: "success",
+          title: "Sucesso!",
+          message: "Ordem de serviço criada com sucesso!",
+          duration: 5000,
+        })
       }
     },
     onError: (error) => {
       console.error("Error in mutation:", error);
-      toast.error(
-        error.message || "Ocorreu um erro ao criar a ordem de serviço."
-      );
+      addToast({
+        type: "error",
+        title: "Erro ao criar ordem de serviço",
+        message: error.message || "Ocorreu um erro ao criar ordem de serviço.",
+        duration: 5000,
+      });
     },
   });
 
