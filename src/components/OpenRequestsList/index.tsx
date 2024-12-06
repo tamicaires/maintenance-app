@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { Clock, List, Wrench } from 'lucide-react';
+import { Clock, List, Wrench } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -9,9 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IPartRequest } from "@/shared/types/part-request";
 import { dateUtil } from "@/utils/date";
-import { Spinner } from "../Spinner";
-import { Profile } from "../Profile";
-import { PartRequestDetailsDialog } from "@/app/PartRequest/part-request-details";
+import { Spinner } from "@/components/Spinner";
+import { Profile } from "@/components/Profile";
+import { PartRequestDetailsDialog } from "@/app/part-request/components/part-request-details/part-request-details";
 import { RequestStatus } from "@/shared/enums/part-request";
 
 type OpenRequestsListProps = {
@@ -23,9 +23,11 @@ type OpenRequestsListProps = {
 export function OpenRequestsList({
   requests,
   isLoading = false,
-  onUpdateRequests
+  onUpdateRequests,
 }: OpenRequestsListProps) {
-  const [selectedRequests, setSelectedRequests] = useState<IPartRequest[] | null>(null);
+  const [selectedRequests, setSelectedRequests] = useState<
+    IPartRequest[] | null
+  >(null);
   const [activeTab, setActiveTab] = useState<"all" | "workOrder">("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [localRequests, setLocalRequests] = useState<IPartRequest[]>(requests);
@@ -35,7 +37,9 @@ export function OpenRequestsList({
   }, [requests]);
 
   const pendingRequests = useMemo(() => {
-    return localRequests.filter(request => request.status === RequestStatus.PENDING);
+    return localRequests.filter(
+      (request) => request.status === RequestStatus.PENDING
+    );
   }, [localRequests]);
 
   const groupedByWorkOrder = useMemo(() => {
@@ -65,12 +69,15 @@ export function OpenRequestsList({
   };
 
   const handleUpdateRequests = (updatedRequests: IPartRequest[]) => {
-    setLocalRequests(prevRequests => {
-      const newRequests = prevRequests.map(req => {
-        const updatedReq = updatedRequests.find(r => r.id === req.id);
+    setLocalRequests((prevRequests) => {
+      const newRequests = prevRequests.map((req) => {
+        const updatedReq = updatedRequests.find((r) => r.id === req.id);
         return updatedReq || req;
       });
-      console.log("Updating requests:", newRequests.filter(req => req.status === RequestStatus.PENDING).length);
+      console.log(
+        "Updating requests:",
+        newRequests.filter((req) => req.status === RequestStatus.PENDING).length
+      );
       onUpdateRequests(newRequests);
       return newRequests;
     });

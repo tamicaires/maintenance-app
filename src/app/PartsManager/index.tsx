@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParts } from "./hooks/use-parts";
 import { InventoryTable } from "@/components/InventoryTable";
 import { RequestTable } from "@/components/RequestTable";
-import { usePartRequests } from "../PartRequest/hooks/use-part-requests";
+import { usePartRequests } from "@/app/part-request/hooks/use-part-requests";
 import { OpenRequestsList } from "@/components/OpenRequestsList";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { Button } from "@/components/ui/button";
