@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreatePart } from "../hooks/use-create-part";
+import { useCreatePart } from "../../hooks/use-create-part";
 import { Loader2, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";

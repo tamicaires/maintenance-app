@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
 import { IPart, IPartCreateAndUpdate } from "@/shared/types/part";
 import { z } from "zod";
-import { PartLocation, PartStatus, TPartLocation, TPartStatus } from "@/shared/enums/part";
+import { PartLocation, PartStatus } from "@/shared/enums/part";
 
 const createPartSchema = z.object({
   name: z.string().min(1, "Name is required"),

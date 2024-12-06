@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useParts } from "./hooks/use-parts";
+import { useParts } from "../hooks/use-parts";
 import { InventoryTable } from "@/components/InventoryTable";
 import { RequestTable } from "@/components/RequestTable";
 import { usePartRequests } from "@/app/part-request/hooks/use-part-requests";
