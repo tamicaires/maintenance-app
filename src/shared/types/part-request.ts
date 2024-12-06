@@ -1,5 +1,4 @@
 import { TRequestStatus } from "@/shared/enums/part-request";
-import { IAxle } from "./axle";
 
 export interface IPartRequest {
   id: string;
@@ -7,7 +6,6 @@ export interface IPartRequest {
   handledById: string | null;
   quantity: number;
   approvedQuantity: number | null;
-  stockQuantity: number | null;
   status: TRequestStatus;
   isRejected: boolean;
   rejectionReason: string | null;
