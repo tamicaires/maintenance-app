@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
-import { useHandlePartRequest } from "./hooks/use-handle-part-request";
+import { useHandlePartRequest } from "../../hooks/use-handle-part-request";
 import PartRequestItem from "@/components/PartRequesItem/part-request-item";
 
 interface ActionModalProps {

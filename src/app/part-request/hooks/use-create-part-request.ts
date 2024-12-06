@@ -9,14 +9,11 @@ import { IApiResponse } from "@/services/api";
 import { CreatePartRequestData, createPartRequestSchema } from "@/validations/create-part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { ICreatePartRequest, IPartRequest } from "@/shared/types/part-request";
-import { usePartRequestItems } from "./useHandleItem";
 
 export function useCreatePartRequest() {
   const [step, setStep] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const partRequestItemHandler = usePartRequestItems();
-  
   const defaultValues: CreatePartRequestData = {
     partId: "",
     requestedForEmployeeId: null,

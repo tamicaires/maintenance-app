@@ -11,7 +11,7 @@ import {
   createPartRequestBatchSchema,
   PartRequestItem,
 } from "@/validations/create-part-request-batch";
-import { usePartRequestItems } from "./useHandleItem";
+import { usePartRequestItems } from "@/app/part-request/hooks/use-handle-item";
 
 export function useCreatePartRequestBatch() {
   const [isOpen, setIsOpen] = useState<boolean>(false);

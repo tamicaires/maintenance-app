@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Select } from "@/components/CustomCombobox"
-import { useCreatePartRequest } from "../hooks/use-create-part-request"
+import { useCreatePartRequest } from "../../hooks/use-create-part-request"
 import { Check, Loader2, Plus, X } from "lucide-react"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { CustomDialogHeader } from "@/components/CustomDialogHeader"

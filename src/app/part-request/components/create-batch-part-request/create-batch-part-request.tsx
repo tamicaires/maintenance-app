@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/CustomCombobox";
-import { Loader2, Package, Plus, Trash2 } from "lucide-react";
+import { Loader2, Plus, Trash2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -22,10 +22,7 @@ import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { toast } from "sonner";
 import RequiredIndicator from "@/components/RequiredIndicator";
-import { useParts } from "../PartsManager/hooks/use-parts";
-import { useCreatePartRequestBatch } from "./hooks/use-create-part-request-batch";
 import { PartRequestItem } from "@/validations/create-part-request-batch";
-import { usePartRequestItems } from "./hooks/useHandleItem";
 import { IActiveTrailer } from "@/shared/types/trailer.interface";
 import {
   Table,
@@ -37,6 +34,9 @@ import {
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EmptyState from "@/components/EmptyState";
+import { useParts } from "@/app/PartsManager/hooks/use-parts";
+import { useCreatePartRequestBatch } from "@/app/part-request/hooks/use-create-part-request-batch";
+import { usePartRequestItems } from "../../hooks/use-handle-item";
 
 type BatchPartRequestDialogProps = {
   workOrderDisplayId?: string;
@@ -98,7 +98,10 @@ export function BatchPartRequestDialog({
           <DialogTitle className="sr-only">
             Solicitação de Peças em Lote
           </DialogTitle>
-          <CustomDialogHeader title="Solicitação de Peças" />
+          <CustomDialogHeader
+            title="Solicitação de Peças"
+            subtitle={`OS: ${workOrderDisplayId}`}
+          />
         </DialogHeader>
 
         <Form onSubmit={(e) => e.preventDefault()} className="max-h-[90vh]">
