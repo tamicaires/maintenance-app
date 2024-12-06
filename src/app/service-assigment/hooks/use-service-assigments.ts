@@ -1,11 +1,11 @@
 import { IApiResponse } from "@/services/api";
-import { useQuery } from "@tanstack/react-query";
-import { IServiceAssignment } from "@/shared/types/service-assigment";
 import { ServiceAssignmentService } from "@/services/service-assigment";
+import { IServiceAssignment } from "@/shared/types/service-assigment";
+import { useQuery } from "@tanstack/react-query";
 
 export function useServiceAssigments(workOrderId: string) {
   return useQuery<IApiResponse<IServiceAssignment[]>>({
-    queryKey: ["service-assignments"],
+    queryKey: ["service-assignments", workOrderId],
     queryFn: () => ServiceAssignmentService.getByWorkOrder(workOrderId),
     staleTime: 60 * 5 * 1000,
   });

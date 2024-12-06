@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { z } from "zod"
 import { queryClient } from "@/services/query-client"
 import { IApiResponse } from "@/services/api"
@@ -24,6 +24,7 @@ export function useChangeServiceAssignmentStatus(
   action: 'start' | 'finish',
   serviceAssignmentId?: string,
 ) {
+
   const defaultValues: ChangeServiceAssignmentStatusData = {
     serviceAssignmentId: serviceAssignmentId || "",
     status: action === 'start' ? ServiceAssigmentStatus.IN_PROGRESS : ServiceAssigmentStatus.COMPLETED,
@@ -40,13 +41,14 @@ export function useChangeServiceAssignmentStatus(
     handleSubmit,
     reset,
     control,
-    formState: { isSubmitting, isLoading, errors },
+    formState: { isSubmitting, isLoading },
   } = changeServiceAssignmentStatusForm
-  console.log(errors)
+
   const {
     mutate: mutateChangeStatus,
     isSuccess,
     isError,
+    isPending,
     data,
     error,
   } = useMutation<IApiResponse<ChangeStatusResponseType>, Error, ChangeStatusRequestType>({
@@ -75,10 +77,7 @@ export function useChangeServiceAssignmentStatus(
   })
 
   const submitChangeStatusData = (data: ChangeServiceAssignmentStatusData) => {
-    console.log(data)
-    mutateChangeStatus({
-      ...data,
-    })
+    mutateChangeStatus(data)
     reset()
   }
 
@@ -95,6 +94,7 @@ export function useChangeServiceAssignmentStatus(
     submitChangeStatusData,
     control,
     isLoading,
+    isPending,
     isError,
     error,
     data,

@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment";
 import {
   Form,
   FormControl,
@@ -38,13 +37,13 @@ export function ServiceActionDialog({
   action,
   children,
 }: ServiceActionDialogProps) {
-  const { addToast } = useToast();
+  const { addToast, ToastComponent } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
 
   const {
     changeServiceAssignmentStatusForm,
     handleSubmit,
-    isSubmitting,
+    isPending,
     control,
   } = useChangeServiceAssignmentStatus(
     setIsDialogOpen,
@@ -82,7 +81,7 @@ export function ServiceActionDialog({
               name={action === "start" ? "startAt" : "endAt"}
               render={({ field: { onChange, value } }) => (
                 <FormItem>
-                  <FormLabel>Data e Hora de Inicio</FormLabel>
+                  <FormLabel>Data e Hora</FormLabel>
                   <FormControl>
                     <Input
                       className="w-full"
@@ -105,13 +104,14 @@ export function ServiceActionDialog({
               >
                 Cancelar
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Processando..." : "Confirmar"}
+              <Button type="submit" disabled={isPending}>
+                {isPending ? "Processando..." : "Confirmar"}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
+      <ToastComponent />
     </Dialog>
   );
 }

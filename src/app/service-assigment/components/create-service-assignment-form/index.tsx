@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -9,13 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Loader2,
-  Plus,
-  CheckCircle2,
-  Clock,
-  AlertTriangle,
-} from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import {
@@ -23,37 +16,30 @@ import {
   IOption,
 } from "@/components/CustomCombobox/index";
 import { useService } from "@/app/Services/hooks/use-service";
-import { useEmployee } from "@/app/Employee/hooks/use-employee";
-import { dateUtil } from "@/utils/date";
-import { cn } from "@/lib/utils";
-import {
-  ServiceAssigmentStatus,
-  TServiceAssigmentStatus,
-} from "@/shared/enums/service-assigment";
+import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useToast } from "@/components/Toast/toast";
-import { useTrailer } from "@/app/Trailer/hooks/use-trailer";
 import { useCreateServiceAssignment } from "../../hooks/use-create-service-assigment";
+import { IActiveTrailer } from "@/shared/types/trailer.interface";
+import { DateTimePicker } from "@/components/date-time-picker/date-time-picker";
+
+type ServiceAssignmentCreationDialogProps = {
+  workOrderId: string;
+  trailers: IActiveTrailer[];
+  isDisabled?: boolean;
+};
 
 export function ServiceAssignmentCreationDialog({
   workOrderId,
-}: {
-  workOrderId: string;
-}) {
+  trailers,
+  isDisabled,
+}: ServiceAssignmentCreationDialogProps) {
   const { ToastComponent, addToast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
     createServiceAssignmentForm,
     handleSubmit,
-    isSubmitting,
-    isLoading,
     isPending,
     isError,
     error,
@@ -61,10 +47,10 @@ export function ServiceAssignmentCreationDialog({
   } = useCreateServiceAssignment(setIsDialogOpen, workOrderId, addToast);
 
   const { data: services, isLoading: isServicesLoading } = useService();
-  const { data: trailers, isLoading: isTrailerLoading } = useTrailer();
 
   const { control, watch } = createServiceAssignmentForm;
   const status = watch("status");
+  const selectedTrailerId = watch("trailerId");
 
   const handleOpenChange = (newOpen: boolean) => {
     setIsDialogOpen(newOpen);
@@ -81,47 +67,46 @@ export function ServiceAssignmentCreationDialog({
     })) || [];
 
   const trailersOptions: IOption[] =
-    trailers?.data?.map((trailer) => ({
+    trailers.map((trailer) => ({
       value: trailer.id,
       label: trailer.plate,
-      description: trailer.position?.toString() || "",
+      description: `SR${trailer.position?.toString()}` || "",
     })) || [];
 
-  const statusOptions: {
-    value: TServiceAssigmentStatus;
-    label: string;
-    icon: React.ReactNode;
-    color: string;
-  }[] = [
+  const statusOptions: IOption[] = [
     {
       value: ServiceAssigmentStatus.PENDING,
       label: "Pendente",
-      icon: <AlertTriangle className="w-4 h-4" />,
-      color: "yellow",
+      description: "",
     },
     {
       value: ServiceAssigmentStatus.IN_PROGRESS,
       label: "Em Progresso",
-      icon: <Clock className="w-4 h-4" />,
-      color: "blue",
-    },
-    {
-      value: ServiceAssigmentStatus.COMPLETED,
-      label: "Concluído",
-      icon: <CheckCircle2 className="w-4 h-4" />,
-      color: "green",
+      description: "",
     },
   ];
-  console.log("trailer", trailersOptions);
+
+  const axleOptions: IOption[] = useMemo(() => {
+    const selectedTrailer = trailers.find(
+      (trailer) => trailer.id === selectedTrailerId
+    );
+    if (!selectedTrailer) return [];
+
+    return selectedTrailer.axles.map((axle) => ({
+      value: axle.id,
+      label: `Eixo ${axle.position}`,
+    }));
+  }, [selectedTrailerId, trailers]);
+
   return (
     <>
       <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <Button>
+          <Button disabled={isDisabled}>
             <Plus className="mr-2 h-4 w-4" /> Adicionar Serviço
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[500px]">
           <CustomDialogHeader
             title="Adicionar Serviço"
             subtitle="Preencha os campos abaixo para criar uma nova atribuição de serviço"
@@ -152,9 +137,31 @@ export function ServiceAssignmentCreationDialog({
                 />
                 <FormField
                   control={control}
-                  name="trailerId"
+                  name="status"
                   render={({ field }) => (
                     <FormItem className="w-2/5">
+                      <FormLabel>Status</FormLabel>
+                      <FormControl>
+                        <CustomSelect
+                          options={statusOptions}
+                          placeholder="Selecione o status"
+                          emptyText="Nenhum status encontrado"
+                          onChange={field.onChange}
+                          isFiltered={true}
+                          value={field.value || undefined}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex gap-3 w-full">
+                <FormField
+                  control={control}
+                  name="trailerId"
+                  render={({ field }) => (
+                    <FormItem className="w-1/2">
                       <FormLabel>Reboque</FormLabel>
                       <FormControl>
                         <CustomSelect
@@ -162,9 +169,29 @@ export function ServiceAssignmentCreationDialog({
                           placeholder="Escolha um Reboque"
                           emptyText="Nenhum reboque encontrado"
                           onChange={field.onChange}
-                          isLoading={isTrailerLoading}
                           isFiltered={true}
-                          value={field.value}
+                          value={field.value || undefined}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="axleId"
+                  render={({ field }) => (
+                    <FormItem className="w-1/2">
+                      <FormLabel>Eixo</FormLabel>
+                      <FormControl>
+                        <CustomSelect
+                          options={axleOptions}
+                          placeholder="Escolha um Eixo"
+                          emptyText="Nenhum eixo encontrado"
+                          onChange={field.onChange}
+                          isFiltered={true}
+                          value={field.value || undefined}
+                          disabled={!selectedTrailerId}
                         />
                       </FormControl>
                       <FormMessage />
@@ -173,51 +200,8 @@ export function ServiceAssignmentCreationDialog({
                 />
               </div>
 
-              <FormField
-                control={control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <FormControl>
-                      <div className="flex space-x-2">
-                        {statusOptions.map((option) => (
-                          <TooltipProvider key={option.value}>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  type="button"
-                                  variant={
-                                    field.value === option.value
-                                      ? "default"
-                                      : "outline"
-                                  }
-                                  className={cn(
-                                    "flex-1",
-                                    field.value === option.value &&
-                                      `bg-${option.color}-500 bg-opacity-10 hover:bg-opacity-20 text-${option.color}-600 hover:bg-${option.color}-600`
-                                  )}
-                                  onClick={() => field.onChange(option.value)}
-                                >
-                                  {option.icon}
-                                  <span className="ml-2">{option.label}</span>
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{option.label}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        ))}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <AnimatePresence>
-                {status !== ServiceAssigmentStatus.PENDING && (
+                {status === ServiceAssigmentStatus.IN_PROGRESS && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -225,48 +209,25 @@ export function ServiceAssignmentCreationDialog({
                     transition={{ duration: 0.3 }}
                     className="space-y-4 overflow-hidden"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="w-full">
                       <FormField
                         control={control}
                         name="startAt"
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field }) => (
                           <FormItem>
                             <FormLabel>Data e Hora de Início</FormLabel>
                             <FormControl>
-                              <Input
-                                type="datetime-local"
-                                value={dateUtil.formatDate(value)}
-                                onChange={(e) =>
-                                  onChange(dateUtil.parseDate(e.target.value))
-                                }
+                              <DateTimePicker
+                                value={field.value}
+                                onChange={(date) => {
+                                  field.onChange(date);
+                                }}
                               />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-
-                      {status === ServiceAssigmentStatus.COMPLETED && (
-                        <FormField
-                          control={control}
-                          name="endAt"
-                          render={({ field: { onChange, value } }) => (
-                            <FormItem>
-                              <FormLabel>Data e Hora de Término</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="datetime-local"
-                                  value={dateUtil.formatDate(value)}
-                                  onChange={(e) =>
-                                    onChange(dateUtil.parseDate(e.target.value))
-                                  }
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      )}
                     </div>
                   </motion.div>
                 )}
