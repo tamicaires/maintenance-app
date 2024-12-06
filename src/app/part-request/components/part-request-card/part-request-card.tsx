@@ -5,7 +5,7 @@ import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { getRequestStatusInfo } from "@/utils/part-request";
 import { Profile } from "@/components/Profile";
-import { InfoDisplay } from "@/components/info-display";
+import { InfoDisplay } from "@/components/InfoDisplay";
 import { UpdatesTimeline, Update } from "@/components/UpdatesTimeLine";
 
 type PartRequestCardProps = {
