@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EmptyState from "@/components/EmptyState";
-import { useParts } from "@/app/PartsManager/hooks/use-parts";
+import { useParts } from "@/app/part-manager/hooks/use-parts";
 import { useCreatePartRequestBatch } from "@/app/part-request/hooks/use-create-part-request-batch";
 import { usePartRequestItems } from "../../hooks/use-handle-item";
 

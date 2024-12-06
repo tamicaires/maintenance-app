@@ -11,7 +11,7 @@ import WorkShopDashboard from "@/app/WorkShopDashboard";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
 import NotFound from "@/components/NotFound";
-import { PartsManager } from "@/app/PartsManager";
+import { PartsManager } from "@/app/part-manager/pages";
 import CompanySelection from "@/app/SelectCompany";
 import { Trailer } from "@/app/Trailer";
 import MaintenanceChecklist from "@/app/Checklist";
