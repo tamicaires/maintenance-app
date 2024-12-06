@@ -3,13 +3,13 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { MobileWorkOrderDetails } from "@/components/WorkOrder/mobile-work-order-details";
-import { WorkOrderHeader } from "@/components/WorkOrder/work-order-header";
-import { WorkOrderOverview } from "@/components/WorkOrder/word-order-overview";
-import { WorkOrderServices } from "@/components/WorkOrder/work-order-services";
-import { WorkOrderParts } from "@/components/WorkOrder/work-order-parts";
-import { WorkOrderHistory } from "@/components/WorkOrder/work-order-history";
-import { WorkOrderQuickActions } from "@/components/WorkOrder/work-order-quick-actions";
+import { MobileWorkOrderDetails } from "@/app/work-order/components/mobile/mobile-work-order-details";
+import { WorkOrderHeader } from "@/app/work-order/components/work-order-header/work-order-header";
+import { WorkOrderOverview } from "@/app/work-order/components/work-order-overview/word-order-overview";
+import { WorkOrderServices } from "@/app/work-order/components/work-order-services/work-order-services";
+import { WorkOrderHistory } from "@/app/work-order/components/work-order-history/work-order-history";
+import { WorkOrderQuickActions } from "@/app/work-order/components/work-order-quick-actions/work-order-quick-actions";
+import { WorkOrderParts } from "@/app/work-order/components/work-order-parts/work-order-parts";
 
 type WorkOrderDetailsProps = {
   workOrder: IWorkOrder;
@@ -59,7 +59,7 @@ export function WorkOrderDetails({
                   <TabsTrigger value="history">Histórico</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview">
-                  <WorkOrderOverview workOrder={workOrder} /> 
+                  <WorkOrderOverview workOrder={workOrder} />
                 </TabsContent>
                 <TabsContent value="services">
                   <WorkOrderServices workOrder={workOrder} />

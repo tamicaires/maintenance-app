@@ -6,11 +6,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { BatchPartRequestDialog } from "@/app/PartRequest/create-batch-part-request";
-import { usePartRequestByWorkOrderId } from "@/app/PartRequest/hooks/use-part-request-by-work-order-id";
-import { Spinner } from "../Spinner";
-import WorkOrderPartRequestItem from "../WorkOrderPartRequestItem";
-import EmptyState from "../EmptyState";
+import { BatchPartRequestDialog } from "@/app/part-request/components/create-batch-part-request/create-batch-part-request";
+import { usePartRequestByWorkOrderId } from "@/app/part-request/hooks/use-part-request-by-work-order-id";
+import { Spinner } from "@/components/Spinner";
+import WorkOrderPartRequestItem from "@/components/WorkOrderPartRequestItem";
+import EmptyState from "@/components/EmptyState";
 
 type PartRequestsProps = {
   workOrder: IWorkOrder;

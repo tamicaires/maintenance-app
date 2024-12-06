@@ -27,7 +27,7 @@ import {
 import { Select as CustomSelect } from "@/components/CustomCombobox/index";
 import { useBoxes } from "@/app/Box/hooks/use-box";
 import { useFleet } from "@/app/Fleet/hooks/use-fleet";
-import { useCreateWorkOrder } from "../hooks/use-create-order";
+import { useCreateWorkOrder } from "@/app/work-order/hooks/use-create-order";
 import { useToast } from "@/components/Toast/toast";
 
 const severityColors = {

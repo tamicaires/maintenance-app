@@ -3,11 +3,11 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { MobileWorkOrderHistory } from "./mobile-work-order-history";
-import { MobileWorkOrderHeader } from "./mobile-work-order-header";
-import { MobileWorkOrderOverview } from "./mobile-work-order-overview";
-import { MobileWorkOrderServices } from "./mobile-work-order-services";
-import { MobileWorkOrderParts } from "./mobile-work-order-parts";
+import { MobileWorkOrderHistory } from "@/app/work-order/components/mobile/mobile-work-order-history";
+import { MobileWorkOrderHeader } from "@/app/work-order/components/mobile/mobile-work-order-header";
+import { MobileWorkOrderOverview } from "@/app/work-order/components/mobile/mobile-work-order-overview";
+import { MobileWorkOrderServices } from "@/app/work-order/components/mobile/mobile-work-order-services";
+import { MobileWorkOrderParts } from "@/app/work-order/components/mobile/mobile-work-order-parts";
 import { calculateProgress, getStatusInfo } from "@/utils/work-order";
 
 type MobileWorkOrderDetailsProps = {

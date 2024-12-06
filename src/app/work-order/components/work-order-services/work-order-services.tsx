@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { ServiceAssignmentCreationDialog } from "@/app/service-assigment/components/create-service-assignment-form";
-import { Spinner } from "../Spinner";
+import { Spinner } from "../../../../components/Spinner";
 import { useServiceAssigments } from "@/app/service-assigment/hooks/use-service-assigments";
 import ServiceAssigmentList from "@/app/service-assigment/components/service-assigment-list/service-assigment-list";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
