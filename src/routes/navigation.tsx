@@ -6,7 +6,7 @@ import { Appearance } from "@/app/Settings/components/Appearance";
 import { Subscription } from "@/app/Settings/components/Subscription";
 import { Carrier } from "@/app/Carrier";
 import { Login } from "@/app/Login";
-import Order from "@/app/Order";
+import Order from "@/app/work-order/pages";
 import WorkShopDashboard from "@/app/WorkShopDashboard";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";

@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { MaintenanceStatus, Box } from "@/shared/enums/work-order";
-import { useUpdateWorkOrder } from "@/app/Order/hooks/use-update-work-order";
+import { useUpdateWorkOrder } from "@/app/work-order/hooks/use-update-work-order";
 import { CustomDialogHeader } from "../CustomDialogHeader";
 
 interface WorkOrderStatusBadgeProps {

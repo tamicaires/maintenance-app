@@ -29,7 +29,7 @@ import { QueueChart } from "./Charts/QueueChart";
 import { TypeMaintenanceChart } from "./Charts/TypeMaintenaceChart";
 import { ServiceChart } from "./Charts/ServicesChart";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { useWorkOrder } from "../Order/hooks/use-work-order";
+import { useWorkOrder } from "../work-order/hooks/use-work-order";
 import {
   MaintenanceStatus,
   TypeOfMaintenance,
