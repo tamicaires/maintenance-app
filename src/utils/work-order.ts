@@ -1,5 +1,5 @@
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { MaintenanceStatus, TMaintenanceStatus } from "@/shared/enums/work-order";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { AlertOctagon, CheckCircle, Clock, Package, Wrench } from "lucide-react";
 
 export function calculateDuration(
