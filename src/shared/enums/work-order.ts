@@ -9,6 +9,7 @@ export enum MaintenanceStatus {
   MANUTENCAO = "Manutencao",
   AGUARDANDO_PECA = "AguardandoPeca",
   FINALIZADA = "Finalizada",
+  CANCELADA = "Cancelada",
 }
 
 export type TMaintenanceStatus = keyof typeof MaintenanceStatus;
