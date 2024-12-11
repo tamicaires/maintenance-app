@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PartCreationDialog } from "@/app/PartsManager/CreatePartForm";
+import { PartCreationDialog } from "@/app/part-manager/components/create-part-dialog";
 import { IPart } from "@/shared/types/part";
 import { PartLocation, PartStatus } from "@/shared/enums/part";
 

@@ -36,8 +36,18 @@ const getAll = async (): Promise<IApiResponse<IWorkOrder[]>> => {
   return response;
 };
 
+const cancel = async (workOrderId: string): Promise<IApiResponse<void>> => {
+  const response = await handleRequest<void>({
+    method: "PATCH",
+    url: `/work-orders/${workOrderId}/cancel`,
+  });
+
+  return response;
+}
+
 export const WorkOrderService = {
   create,
   update,
+  cancel,
   getAll,
 };
