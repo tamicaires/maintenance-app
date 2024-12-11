@@ -1,13 +1,14 @@
-import { format } from "date-fns";
 import {
   User,
   Calendar,
-  Truck,
   Printer,
   Download,
-  Share2,
   MoreVertical,
   Timer,
+  MessageCircle,
+  Edit3,
+  XCircle,
+  CheckCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,11 +33,46 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { calculateProgress, getStatusInfo } from "@/utils/work-order";
+import {
+  calculateProgress,
+  getMaintenanceStatusInfo,
+} from "@/utils/work-order";
+import { useCancelWorkOrder } from "../../hooks/use-cancel-work-order";
+import { useToast } from "@/components/Toast/toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
+import { ShareContent } from "@/components/share-content/share-content";
 
 export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
-  const statusInfo = getStatusInfo(workOrder.status);
+  const { addToast, ToastComponent } = useToast();
+
+  const { handleCancelWorkOrder, isCancelPending } =
+    useCancelWorkOrder(addToast);
+
+  const statusInfo = getMaintenanceStatusInfo(workOrder.status);
   const progressAnimation = calculateProgress(workOrder.status);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const isClosedWorkOrder =
+    workOrder.status === MaintenanceStatus.FINALIZADA ||
+    workOrder.status === MaintenanceStatus.CANCELADA;
+
+  const pathToShare = window.location.href;
+
+  const handleEmailShare = async (email: string) => {
+    // Simular o envio de e-mail (em um cenário real, isso seria feito no servidor)
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // throw new Error("Falha ao enviar e-mail")
+  };
 
   return (
     <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b">
@@ -50,7 +86,7 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
                 className="text-base px-3 py-0 bg-primary/5 border-primary/40 rounded-full text-primary"
               >
                 {workOrder.displayId}
-              </Badge> 
+              </Badge>
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
@@ -60,12 +96,9 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 <span>
-                  {format(new Date(workOrder.createdAt), "dd/MM/yyyy HH:mm")}
+                  {/* {format(new Date(workOrder.createdAt), "dd/MM/yyyy HH:mm")} */}{" "}
+                  12/02/2024 15:00
                 </span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Truck className="w-4 h-4" />
-                <span>Frota: {workOrder.fleetInfo.fleetNumber}</span>
               </div>
             </div>
           </div>
@@ -98,7 +131,13 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="outline" size="icon">
-                    <Share2 className="w-4 h-4" />
+                    <ShareContent
+                      contentId={workOrder.id}
+                      contentType="Ordem de Serviço"
+                      contentTitle="Manutenção Florestal"
+                      shareLink={pathToShare}
+                      onEmailShare={handleEmailShare}
+                    />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -115,15 +154,30 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>Ações da OS</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Editar OS</DropdownMenuItem>
-                <DropdownMenuItem>Adicionar Comentário</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Edit3 className="mr-2 h-4 w-4" />
+                  <span>Editar OS</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  <span>Adicionar Comentário</span>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
-                  Cancelar OS
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-green-600">
-                  Finalizar OS
-                </DropdownMenuItem>
+                {!isClosedWorkOrder && (
+                  <DropdownMenuItem
+                    className="text-red-600"
+                    onSelect={() => setIsAlertDialogOpen(true)}
+                  >
+                    <XCircle className="mr-2 h-4 w-4" />
+                    Cancelar OS
+                  </DropdownMenuItem>
+                )}
+                {!isClosedWorkOrder && (
+                  <DropdownMenuItem className="bg-green-500 bg-opacity-15 text-green-600 hoverbg-green-600 hover:text-red-500">
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Finalizar OS
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -177,7 +231,32 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
           </div>
           <Progress value={progressAnimation} className="h-2" />
         </div>
+        <AlertDialog
+          open={isAlertDialogOpen}
+          onOpenChange={setIsAlertDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta ação é irreversível. Cancelar a Ordem de Serviço não pode
+                ser desfeito.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Voltar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => handleCancelWorkOrder(workOrder.id)}
+                disabled={isCancelPending}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                {isCancelPending ? "Cancelando..." : "Cancelar mesmo assim"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
+      <ToastComponent />
     </div>
   );
 }
