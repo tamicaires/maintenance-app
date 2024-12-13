@@ -34,7 +34,7 @@ export function calculateWaitingPartsDuration(
   );
 }
 
-export const getStatusInfo = (status: MaintenanceStatus) => {
+export const getMaintenanceStatusInfo = (status: MaintenanceStatus) => {
   switch (status) {
     case MaintenanceStatus.FILA:
       return {
@@ -63,6 +63,13 @@ export const getStatusInfo = (status: MaintenanceStatus) => {
         icon: CheckCircle,
         label: "Finalizada",
         description: "Manutenção concluída",
+      };
+    case MaintenanceStatus.CANCELADA:
+      return {
+        color: "red",
+        icon: AlertOctagon,
+        label: "Cancelada",
+        description: "Ordem de Serviço cancelada",
       };
     default:
       return {

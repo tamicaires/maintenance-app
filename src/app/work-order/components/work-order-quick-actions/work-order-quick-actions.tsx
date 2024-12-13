@@ -2,6 +2,9 @@ import { format } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
+import { StartMaintenanceDialog } from "../actions-dialogs/start-maintenace-dialog";
+import { FinishMaintenanceDialog } from "../actions-dialogs/finish-maintenance-dialog";
 
 type WorkOrderQuickActionsProps = {
   workOrder: IWorkOrder;
@@ -12,6 +15,8 @@ export function WorkOrderQuickActions({
   workOrder,
   setIsDialogOpen,
 }: WorkOrderQuickActionsProps) {
+  const isInQueue = workOrder.status === MaintenanceStatus.FILA;
+  const isInProgress = workOrder.status === MaintenanceStatus.MANUTENCAO;
   return (
     <div className="fixed bottom-0 w-full border-t bg-background/80 backdrop-blur-sm p-4">
       <div className="flex justify-between items-center">
@@ -37,7 +42,16 @@ export function WorkOrderQuickActions({
           <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
             Fechar
           </Button>
-          <Button>Atualizar Status</Button>
+          {isInQueue && (
+            <StartMaintenanceDialog workOrderId={workOrder.id}>
+              <Button>Iniciar Manutenção</Button>
+            </StartMaintenanceDialog>
+          )}
+          {isInProgress && (
+            <FinishMaintenanceDialog workOrderId={workOrder.id}>
+              <Button>Finalizar Manutenção</Button>
+            </FinishMaintenanceDialog>
+          )}
         </div>
       </div>
     </div>

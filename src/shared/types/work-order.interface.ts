@@ -67,3 +67,15 @@ export interface IWorkOrderUpdate {
   status?: MaintenanceStatus;
   updatedAt?: string;
 }
+
+export interface IStartMaintenance {
+  status: MaintenanceStatus;
+  entryMaintenance: Date;
+  boxId: string;
+}
+
+export interface IFinishMaintenance {
+  status: MaintenanceStatus;
+  exitMaintenance: Date;
+  exitSupervisor: string;
+}

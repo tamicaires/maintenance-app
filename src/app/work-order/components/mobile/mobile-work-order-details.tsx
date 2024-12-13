@@ -8,7 +8,7 @@ import { MobileWorkOrderHeader } from "@/app/work-order/components/mobile/mobile
 import { MobileWorkOrderOverview } from "@/app/work-order/components/mobile/mobile-work-order-overview";
 import { MobileWorkOrderServices } from "@/app/work-order/components/mobile/mobile-work-order-services";
 import { MobileWorkOrderParts } from "@/app/work-order/components/mobile/mobile-work-order-parts";
-import { calculateProgress, getStatusInfo } from "@/utils/work-order";
+import { calculateProgress, getMaintenanceStatusInfo } from "@/utils/work-order";
 
 type MobileWorkOrderDetailsProps = {
   workOrder: IWorkOrder;
@@ -155,7 +155,7 @@ export function MobileWorkOrderDetails({
   setIsDialogOpen,
 }: MobileWorkOrderDetailsProps) {
   const [activeTab, setActiveTab] = useState("overview");
-  const statusInfo = getStatusInfo(workOrder.status);
+  const statusInfo = getMaintenanceStatusInfo(workOrder.status);
   const progress = calculateProgress(workOrder.status);
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

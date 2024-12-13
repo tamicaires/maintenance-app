@@ -1,5 +1,7 @@
 import {
   ICreateWorkOrder,
+  IFinishMaintenance,
+  IStartMaintenance,
   IWorkOrder,
 } from "@/shared/types/work-order.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
@@ -45,9 +47,32 @@ const cancel = async (workOrderId: string): Promise<IApiResponse<void>> => {
   return response;
 }
 
+const startMaintenance = async (workOrderId: string, data: IStartMaintenance): Promise<IApiResponse<IStartMaintenance>> => {
+  const response = await handleRequest<IStartMaintenance>({
+    method: "PATCH",
+    url: `/work-orders/${workOrderId}/start-maintenance`,
+    data,
+  });
+
+  return response;
+}
+
+const finishMaintenance = async (
+  workOrderId: string,
+  data: IFinishMaintenance
+): Promise<IApiResponse<IFinishMaintenance>> => {
+  return await handleRequest<IFinishMaintenance>({
+    method: "PATCH",
+    url: `/work-orders/${workOrderId}/finish-maintenance`,
+    data,
+  });
+
+}
 export const WorkOrderService = {
   create,
   update,
   cancel,
   getAll,
+  startMaintenance,
+  finishMaintenance,
 };

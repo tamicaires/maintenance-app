@@ -1,14 +1,21 @@
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { IApiResponse } from "@/services/api";
-import { WorkOrderService } from "@/services/work-order";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { WorkOrderService } from '@/services/work-order';
 
 export function useWorkOrder() {
-  const data = useQuery<IApiResponse<IWorkOrder[]>>({
-    queryKey: ["work-orders"],
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, error, refetch } = useQuery<IApiResponse<IWorkOrder[]>>({
+    queryKey: ['work-orders'],
     queryFn: WorkOrderService.getAll,
-    staleTime: 60 * 5 * 1000,
+    refetchInterval: 5000,
   });
 
-  return data;
+  const invalidateWorkOrders = () => {
+    queryClient.invalidateQueries({ queryKey: ['work-orders'] });
+  };
+
+  return { data, isLoading, error, refetch, invalidateWorkOrders };
 }
+
