@@ -79,3 +79,8 @@ export interface IFinishMaintenance {
   exitMaintenance: Date;
   exitSupervisor: string;
 }
+
+export interface IStartWaitingParts {
+  status: MaintenanceStatus;
+  startWaitingParts: Date;
+}

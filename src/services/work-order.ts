@@ -2,6 +2,7 @@ import {
   ICreateWorkOrder,
   IFinishMaintenance,
   IStartMaintenance,
+  IStartWaitingParts,
   IWorkOrder,
 } from "@/shared/types/work-order.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
@@ -66,8 +67,19 @@ const finishMaintenance = async (
     url: `/work-orders/${workOrderId}/finish-maintenance`,
     data,
   });
-
 }
+
+const startWaitingParts = async (
+  workOrderId: string,
+  data: IStartWaitingParts
+): Promise<IApiResponse<IStartWaitingParts>> => {
+  return await handleRequest<IStartWaitingParts>({
+    method: "PATCH",
+    url: `/work-orders/${workOrderId}/start-waiting-parts`,
+    data,
+  });
+}
+
 export const WorkOrderService = {
   create,
   update,
@@ -75,4 +87,5 @@ export const WorkOrderService = {
   getAll,
   startMaintenance,
   finishMaintenance,
+  startWaitingParts
 };
