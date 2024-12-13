@@ -28,7 +28,7 @@ export function useFinishMaintenance(
 ) {
 
   const defaultValues: StatusMaintenanceData = {
-    status: MaintenanceStatus.MANUTENCAO,
+    status: MaintenanceStatus.FINALIZADA,
     exitMaintenance: new Date(),
     exitSupervisor: "",
   }
