@@ -81,24 +81,6 @@ export function WorkOrderHistory({ workOrder }: { workOrder: IWorkOrder }) {
       <CardContent>
         <ScrollArea className="h-[400px] pr-4">
           <div className="space-y-8">
-            {/* {mockHistory.map((event, index) => (
-              <div key={event.id} className="relative pl-8">
-                <div className="absolute left-0 rounded-full p-2 bg-muted">
-                  <Clock className="w-4 h-4 text-muted-foreground" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(event.date).toLocaleString()}
-                  </p>
-                  <p className="font-medium">{event.description}</p>
-                  <p className="text-sm text-muted-foreground">{event.user}</p>
-                  <p className="text-sm">{event.details}</p>
-                </div>
-                {index < mockHistory.length - 1 && (
-                  <div className="absolute left-[0.9375rem] top-8 h-full w-px bg-border" />
-                )}
-              </div>
-            ))} */}
             {history.map(
               (event) =>
                 event.date && (
