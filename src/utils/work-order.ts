@@ -95,3 +95,14 @@ export const calculateProgress = (workOrderStatus: MaintenanceStatus) => {
       return 0;
   }
 };
+
+export function validateWorkOrderState(status: MaintenanceStatus) {
+  return {
+    isInQueueWorkOrder: status === MaintenanceStatus.FILA,
+    isInMaintenanceWorkOrder: status === MaintenanceStatus.MANUTENCAO,
+    isWaitingPartsWorkOrder: status === MaintenanceStatus.AGUARDANDO_PECA,
+    isClosedWorkOrder:
+      status === MaintenanceStatus.FINALIZADA ||
+      status === MaintenanceStatus.CANCELADA,
+  };
+}
