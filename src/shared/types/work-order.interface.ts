@@ -84,3 +84,8 @@ export interface IStartWaitingParts {
   status: MaintenanceStatus;
   startWaitingParts: Date;
 }
+
+export interface IFinishWaitingParts {
+  status: MaintenanceStatus;
+  endWaitingParts: Date;
+}
