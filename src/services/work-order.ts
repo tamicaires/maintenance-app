@@ -1,6 +1,7 @@
 import {
   ICreateWorkOrder,
   IFinishMaintenance,
+  IFinishWaitingParts,
   IStartMaintenance,
   IStartWaitingParts,
   IWorkOrder,
@@ -29,6 +30,15 @@ const update = async (workOrderId: string, data: Partial<IWorkOrder>) => {
   console.log("response", response);
   return response;
 };
+
+const getById = async (workOrderId: string): Promise<IApiResponse<IWorkOrder>> => {
+  const response = await handleRequest<IWorkOrder>({
+    method: "GET",
+    url: `/work-orders/${workOrderId}/order`,
+  });
+
+  return response
+}
 
 const getAll = async (): Promise<IApiResponse<IWorkOrder[]>> => {
   const response = await handleRequest<IWorkOrder[]>({
@@ -69,6 +79,13 @@ const finishMaintenance = async (
   });
 }
 
+const backToQueue = async (workOrderId: string): Promise<IApiResponse<void>> => {
+  return await handleRequest<void>({
+    method: "PATCH",
+    url: `/work-orders/${workOrderId}/back-to-queue`,
+  });
+}
+
 const startWaitingParts = async (
   workOrderId: string,
   data: IStartWaitingParts
@@ -80,12 +97,26 @@ const startWaitingParts = async (
   });
 }
 
+const finishWaitingParts = async (
+  workOrderId: string,
+  data: IFinishWaitingParts
+): Promise<IApiResponse<IFinishWaitingParts>> => {
+  return await handleRequest<IFinishWaitingParts>({
+    method: "PATCH",
+    url: `/work-orders/${workOrderId}/finish-waiting-parts`,
+    data,
+  });
+}
+
 export const WorkOrderService = {
   create,
   update,
   cancel,
+  getById,
   getAll,
   startMaintenance,
   finishMaintenance,
-  startWaitingParts
+  backToQueue,
+  startWaitingParts,
+  finishWaitingParts,
 };
