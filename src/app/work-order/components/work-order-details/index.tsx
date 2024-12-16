@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MobileWorkOrderDetails } from "@/app/work-order/components/mobile/mobile-work-order-details";
 import { WorkOrderHeader } from "@/app/work-order/components/work-order-header/work-order-header";
 import { WorkOrderOverview } from "@/app/work-order/components/work-order-overview/word-order-overview";
@@ -10,29 +9,37 @@ import { WorkOrderServices } from "@/app/work-order/components/work-order-servic
 import { WorkOrderHistory } from "@/app/work-order/components/work-order-history/work-order-history";
 import { WorkOrderQuickActions } from "@/app/work-order/components/work-order-quick-actions/work-order-quick-actions";
 import { WorkOrderParts } from "@/app/work-order/components/work-order-parts/work-order-parts";
+import { useWorkOrderById } from "../../hooks/use-work-order-by-id";
+import { Spinner } from "@/components/Spinner";
 
 type WorkOrderDetailsProps = {
-  workOrder: IWorkOrder;
+  workOrderId: string;
   isDialogOpen: boolean;
   setIsDialogOpen: (isOpen: boolean) => void;
 };
 
 export function WorkOrderDetails({
-  workOrder,
+  workOrderId,
   isDialogOpen = false,
   setIsDialogOpen = () => {},
 }: WorkOrderDetailsProps) {
+  const { data, isLoading } = useWorkOrderById(workOrderId);
   const [activeTab, setActiveTab] = useState("overview");
   const [isMobile, setIsMobile] = useState(false);
+  const workOrder = data?.data;
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  if (!workOrder) {
+    return <div>Loading...</div>;
+  }
+
+  // useEffect(() => {
+  //   const checkMobile = () => {
+  //     setIsMobile(window.innerWidth < 768);
+  //   };
+  //   checkMobile();
+  //   window.addEventListener("resize", checkMobile);
+  //   return () => window.removeEventListener("resize", checkMobile);
+  // }, []);
 
   if (isMobile) {
     return (
@@ -46,6 +53,7 @@ export function WorkOrderDetails({
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {isLoading && <Spinner />}
       <DialogContent className="max-w-4xl h-[95vh] p-0 gap-0">
         <ScrollArea className="h-full">
           <div className="flex flex-col h-full">
