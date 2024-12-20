@@ -18,12 +18,12 @@ import { DailyChart } from "@/components/DailyChart/DailyChart";
 import { WorkOrderCreationDialog } from "@/app/work-order/components/create-order-dialog";
 import { useWorkOrder } from "../hooks/use-work-order";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { Spinner } from "@/components/Spinner";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/EmptyState";
 import WorkOrderCard from "@/components/WorkOrderCard";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
+import { useLoader } from "@/store/hook/use-loader";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -32,7 +32,7 @@ export default function Order() {
     useState<IWorkOrder | null>();
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { data, isLoading } = useWorkOrder();
+  const { data, isLoading, invalidateWorkOrders } = useWorkOrder();
   const workOrders = data?.data || [];
 
   const filteredWorkOrders = useMemo(() => {
@@ -90,6 +90,11 @@ export default function Order() {
   const handleOpenDialog = (workOrder: IWorkOrder) => {
     setSelectedWorkOrder(workOrder);
     setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    invalidateWorkOrders(); // Invalidate and refetch when dialog closes
   };
 
   const getEmptyStateMessage = () => {
@@ -187,7 +192,6 @@ export default function Order() {
 
           <div className="overflow-y-auto max-h-screen">
             <AnimatePresence>
-              {isLoading && <Spinner />}
               {!isLoading && filteredWorkOrders.length === 0 && (
                 <EmptyState message={getEmptyStateMessage()} />
               )}
@@ -284,9 +288,9 @@ export default function Order() {
         </aside>
         {selectedWorkOrder && (
           <WorkOrderDetails
-            workOrder={selectedWorkOrder}
+            workOrderId={selectedWorkOrder.id}
             isDialogOpen={isDialogOpen}
-            setIsDialogOpen={setIsDialogOpen}
+            setIsDialogOpen={handleCloseDialog}
           />
         )}
       </div>
