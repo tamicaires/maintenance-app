@@ -4,6 +4,7 @@ import {
   Box,
 } from "@/shared/enums/work-order";
 import { IActiveTrailer } from "./trailer.interface";
+import { INote } from "./note";
 
 export interface IWorkOrder {
   id: string;
@@ -26,11 +27,16 @@ export interface IWorkOrder {
   fleetId: string;
   user?: string;
   typeOfMaintenance: string;
-  box: Box;
   isCancelled: boolean;
   createdBy: string;
   status: MaintenanceStatus;
   createdAt: string;
+  box?: {
+    id: string;
+    name: string;
+    isActive: boolean
+  }
+  notes: INote[];
 }
 
 export interface ICreateWorkOrder {
