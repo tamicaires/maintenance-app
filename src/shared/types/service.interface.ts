@@ -1,9 +1,10 @@
+import { ServiceCategory } from "../enums/service";
 import { EmployeeBasicInfo } from "./employee.interface";
 
 export interface IService {
   id: string;
   serviceName: string;
-  serviceCategory: string;
+  serviceCategory: ServiceCategory;
 }
 export interface IServiceWithEmployee {
   id: string;
