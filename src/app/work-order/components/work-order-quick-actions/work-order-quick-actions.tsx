@@ -5,6 +5,8 @@ import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { StartMaintenanceDialog } from "../actions-dialogs/start-maintenace-dialog";
 import { FinishMaintenanceDialog } from "../actions-dialogs/finish-maintenance-dialog";
+import { validateWorkOrderState } from "@/utils/work-order";
+import { FinishWaitingPartsDialog } from "../actions-dialogs/finish-waiting-parts";
 
 type WorkOrderQuickActionsProps = {
   workOrder: IWorkOrder;
@@ -17,6 +19,8 @@ export function WorkOrderQuickActions({
 }: WorkOrderQuickActionsProps) {
   const isInQueue = workOrder.status === MaintenanceStatus.FILA;
   const isInProgress = workOrder.status === MaintenanceStatus.MANUTENCAO;
+
+  const { isWaitingPartsWorkOrder } = validateWorkOrderState(workOrder.status);
   return (
     <div className="fixed bottom-0 w-full border-t bg-background/80 backdrop-blur-sm p-4">
       <div className="flex justify-between items-center">
@@ -51,6 +55,11 @@ export function WorkOrderQuickActions({
             <FinishMaintenanceDialog workOrderId={workOrder.id}>
               <Button>Finalizar Manutenção</Button>
             </FinishMaintenanceDialog>
+          )}
+          {isWaitingPartsWorkOrder && (
+            <FinishWaitingPartsDialog workOrderId={workOrder.id}>
+              <Button>Retornar Manutenção</Button>
+            </FinishWaitingPartsDialog>
           )}
         </div>
       </div>
