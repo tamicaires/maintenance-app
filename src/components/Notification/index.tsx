@@ -29,7 +29,7 @@ export function Notification() {
             <CardTitle className="text-xl font-bold">Notificações</CardTitle>
             <Button
               variant="link"
-              className="text-green-600 hover:text-green-700"
+              className="text-primary hover:text-primary/80"
             >
               Marcar todas como lidas
             </Button>
@@ -50,7 +50,7 @@ export function Notification() {
                   <p className="text-sm text-gray-500">
                     The maintenance request for John Doe in Apartment 301 has
                     been{" "}
-                    <span className="font-medium text-green-600">
+                    <span className="font-medium text-primary">
                       Completed
                     </span>
                     . The issue was a leaking faucet in the kitchen.
@@ -58,9 +58,9 @@ export function Notification() {
                   <p className="mt-1 text-xs text-gray-400">5h ago</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-4 rounded-lg bg-green-50 p-3">
-                <div className="mt-1 rounded-full bg-green-200 p-2">
-                  <DollarSign className="h-4 w-4 text-green-700" />
+              <div className="flex items-start space-x-4 rounded-lg bg-primary/5 p-3">
+                <div className="mt-1 rounded-full bg-primary/25 p-2">
+                  <DollarSign className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium">
@@ -70,7 +70,7 @@ export function Notification() {
                     We have received the rent payment of{" "}
                     <span className="font-medium">$1,200</span> for Jane Smith
                     in Apartment 102. The payment was processed{" "}
-                    <span className="font-medium text-green-600">
+                    <span className="font-medium text-primary">
                       successfully
                     </span>
                     .
