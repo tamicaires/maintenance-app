@@ -106,3 +106,23 @@ export function validateWorkOrderState(status: MaintenanceStatus) {
       status === MaintenanceStatus.CANCELADA,
   };
 }
+
+export function getStatusColor(status: string) {
+  const colors = {
+    completed: "bg-green-500",
+    current: "bg-blue-500",
+    pending: "bg-gray-300",
+  }
+  return colors[status as keyof typeof colors] || colors.pending
+}
+
+export function getSeverityColor(severity: string) {
+  const colors = {
+    BAIXA: "text-green-500",
+    NORMAL: "text-blue-500",
+    ALTA: "text-orange-500",
+    URGENTE: "text-red-500",
+  }
+  return colors[severity as keyof typeof colors] || colors.NORMAL
+}
+

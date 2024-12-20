@@ -10,7 +10,7 @@ interface FormatOptions {
 
 export const formatDuration = (
   milliseconds: number,
-  options: FormatOptions = { format: "hms" }
+  options: FormatOptions = { format: "hm" }
 ): string => {
   const hours = Math.floor(milliseconds / (1000 * 60 * 60));
   const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
