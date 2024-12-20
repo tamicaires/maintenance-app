@@ -1,5 +1,4 @@
 import {
-  User,
   Calendar,
   Printer,
   Download,
@@ -8,11 +7,11 @@ import {
   MessageCircle,
   Edit3,
   XCircle,
-  CheckCircle,
+  Pause,
+  CornerUpLeft,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import {
   HoverCard,
   HoverCardContent,
@@ -34,8 +33,8 @@ import {
 } from "@/components/ui/tooltip";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import {
-  calculateProgress,
   getMaintenanceStatusInfo,
+  validateWorkOrderState,
 } from "@/utils/work-order";
 import { useCancelWorkOrder } from "../../hooks/use-cancel-work-order";
 import { useToast } from "@/components/Toast/toast";
@@ -52,6 +51,10 @@ import {
 import { useState } from "react";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { ShareContent } from "@/components/share-content/share-content";
+import { StartWaitingPartsDialog } from "../actions-dialogs/start-waiting-parts-dialog";
+import { Profile } from "@/components/Profile";
+import { BackToQueueWorkOrderDialog } from "../actions-dialogs/back-to-queue";
+import { formatDuration } from "@/utils/time";
 
 export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
   const { addToast, ToastComponent } = useToast();
@@ -60,20 +63,25 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
     useCancelWorkOrder(addToast);
 
   const statusInfo = getMaintenanceStatusInfo(workOrder.status);
-  const progressAnimation = calculateProgress(workOrder.status);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-  const isClosedWorkOrder =
-    workOrder.status === MaintenanceStatus.FINALIZADA ||
-    workOrder.status === MaintenanceStatus.CANCELADA;
+  const [isBackToQueueDialogOpen, setIsBackToQueueDialogOpen] =
+    useState<boolean>(false);
+
+  const { isClosedWorkOrder, isInMaintenanceWorkOrder } =
+    validateWorkOrderState(workOrder.status);
+
+  const maintenanceDuration = formatDuration(
+    workOrder.maintenanceDuration || 0
+  );
+  const queueDuration = formatDuration(workOrder.queueDuration || 0);
 
   const pathToShare = window.location.href;
 
   const handleEmailShare = async (email: string) => {
     // Simular o envio de e-mail (em um cenário real, isso seria feito no servidor)
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    // throw new Error("Falha ao enviar e-mail")
+    console.log("E-mail enviado para:", email);
   };
-
   return (
     <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-background p-6">
@@ -88,12 +96,14 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
                 {workOrder.displayId}
               </Badge>
             </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <User className="w-4 h-4" />
-                <span>Criada por {workOrder.createdBy}</span>
-              </div>
-              <div className="flex items-center gap-1">
+            <div className="flex items-center gap-4 text-sm ">
+              <Profile
+                name={"Thamires Carvalho"}
+                description="criado por"
+                descriptionPosition="top"
+                showAvatar
+              />
+              <div className="flex items-center gap-1 text-muted-foreground">
                 <Calendar className="w-4 h-4" />
                 <span>
                   {/* {format(new Date(workOrder.createdAt), "dd/MM/yyyy HH:mm")} */}{" "}
@@ -155,35 +165,45 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
                 <DropdownMenuLabel>Ações da OS</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Edit3 className="mr-2 h-4 w-4" />
+                  <Edit3 className="mr-2 h-3.5 w-3.5" />
                   <span>Editar OS</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <MessageCircle className="mr-2 h-4 w-4" />
+                  <MessageCircle className="mr-2 h-3.5 w-3.5" />
                   <span>Adicionar Comentário</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                {isInMaintenanceWorkOrder && (
+                  <DropdownMenuItem
+                    onSelect={() => setIsBackToQueueDialogOpen(true)}
+                  >
+                    <CornerUpLeft className="mr-2 h-3.5 w-3.5" />
+                    Voltar para fila
+                  </DropdownMenuItem>
+                )}
+                {workOrder.status === MaintenanceStatus.MANUTENCAO && (
+                  <StartWaitingPartsDialog workOrderId={workOrder.id}>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                      <Pause className="mr-2 h-3.5 w-3.5" />
+                      Iniciar Aguardar Peça
+                    </DropdownMenuItem>
+                  </StartWaitingPartsDialog>
+                )}
                 {!isClosedWorkOrder && (
                   <DropdownMenuItem
                     className="text-red-600"
                     onSelect={() => setIsAlertDialogOpen(true)}
                   >
-                    <XCircle className="mr-2 h-4 w-4" />
+                    <XCircle className="mr-2 h-3.5 w-3.5" />
                     Cancelar OS
-                  </DropdownMenuItem>
-                )}
-                {!isClosedWorkOrder && (
-                  <DropdownMenuItem className="bg-green-500 bg-opacity-15 text-green-600 hoverbg-green-600 hover:text-red-500">
-                    <CheckCircle className="mr-2 h-4 w-4" />
-                    Finalizar OS
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
-        <div className="mt-6 bg-card rounded-lg p-4 border shadow-sm">
-          <div className="flex items-center justify-between mb-4">
+        <div className="mt-4 bg-card rounded-lg px-6 py-2 border shadow-sm">
+          <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-full bg-${statusInfo.color}-100`}>
                 <statusInfo.icon
@@ -197,40 +217,45 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
                 </p>
               </div>
             </div>
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <div className="flex items-center gap-2 cursor-help">
-                  <Timer className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
-                    Tempo Total: {workOrder.maintenanceDuration || 0} min
-                  </span>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <div className="space-y-2">
-                  <h4 className="text-sm font-semibold">
-                    Detalhamento do Tempo
-                  </h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <p className="text-sm">Tempo em Fila</p>
-                      <p className="text-xs text-muted-foreground">
-                        {workOrder.queueDuration || 0} min
-                      </p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-sm">Tempo em Manutenção</p>
-                      <p className="text-xs text-muted-foreground">
-                        {workOrder.maintenanceDuration || 0} min
-                      </p>
+            <div className="flex gap-10">
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <div className="flex items-center gap-2 cursor-help">
+                    <Timer className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      Tempo Total: {maintenanceDuration} min
+                    </span>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold">
+                      Detalhamento do Tempo
+                    </h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <p className="text-sm">Tempo em Fila</p>
+                        <p className="text-xs text-muted-foreground">
+                          {queueDuration} min
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm">Tempo em Manutenção</p>
+                        <p className="text-xs text-muted-foreground">
+                          {workOrder.maintenanceDuration || 0} min
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+                </HoverCardContent>
+              </HoverCard>
+              {workOrder.status === MaintenanceStatus.MANUTENCAO && (
+                <Button variant="outline">Iniciar Checklist</Button>
+              )}
+            </div>
           </div>
-          <Progress value={progressAnimation} className="h-2" />
         </div>
+
         <AlertDialog
           open={isAlertDialogOpen}
           onOpenChange={setIsAlertDialogOpen}
@@ -239,7 +264,7 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
             <AlertDialogHeader>
               <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
               <AlertDialogDescription>
-                Esta ação é irreversível. Cancelar a Ordem de Serviço não pode
+                Esta ação é irreversível, cancelar a Ordem de Serviço não pode
                 ser desfeito.
               </AlertDialogDescription>
             </AlertDialogHeader>
@@ -255,6 +280,11 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <BackToQueueWorkOrderDialog
+          workOrderId={workOrder.id}
+          isAlertDialogOpen={isBackToQueueDialogOpen}
+          setIsAlertDialogOpen={setIsBackToQueueDialogOpen}
+        />
       </div>
       <ToastComponent />
     </div>
