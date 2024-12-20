@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, Check, Search } from "lucide-react";
 import { Spinner } from "../Spinner";
+import EmptyState from "../EmptyState";
 
-interface Option {
+export interface IOption {
   value: string;
   label: string;
-  description?: string;
+  description?: string | null;
 }
 
 interface CustomSelectProps {
-  options: Option[];
+  options: IOption[];
   placeholder?: string;
   emptyText?: string;
   onChange: (value: string) => void;
   isLoading?: boolean;
   isFiltered?: boolean;
+  isClean?: boolean;
   value?: string;
   disabled?: boolean;
 }
@@ -26,12 +28,13 @@ export function Select({
   onChange,
   isLoading = false,
   isFiltered = false,
+  isClean = false,
   value,
   disabled = false,
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const [selectedOption, setSelectedOption] = useState<IOption | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,7 +51,7 @@ export function Select({
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleOptionSelect = (option: Option) => {
+  const handleOptionSelect = (option: IOption) => {
     if (disabled) return;
     setSelectedOption(option);
     onChange(option.value);
@@ -72,7 +75,7 @@ export function Select({
     }
   };
 
-  const handleOptionKeyDown = (event: React.KeyboardEvent, option: Option) => {
+  const handleOptionKeyDown = (event: React.KeyboardEvent, option: IOption) => {
     if (disabled) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -122,7 +125,9 @@ export function Select({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls="select-options"
-        className={`flex items-center justify-between w-full px-3 py-2 text-sm bg-background border border-input rounded-md shadow-sm ${
+        className={`flex items-center justify-between w-full px-3 py-2 text-sm bg-background ${
+          isClean ? "" : "border border-input rounded-md shadow-sm"
+        } ${
           disabled
             ? "cursor-not-allowed opacity-50"
             : "cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -130,7 +135,13 @@ export function Select({
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
         onKeyDown={handleKeyDown}
       >
-        <span>{selectedOption ? selectedOption.label : placeholder}</span>
+        <span>
+          {selectedOption ? (
+            selectedOption.label
+          ) : (
+            <div className="text-muted-foreground">{placeholder}</div>
+          )}
+        </span>
         <ChevronDown className="w-5 h-5 text-gray-400" />
       </div>
       {isOpen && !disabled && (
@@ -172,7 +183,7 @@ export function Select({
                     onKeyDown={(e) => handleOptionKeyDown(e, option)}
                   >
                     <div className="flex flex-col leading-none">
-                      <span>{option.label}</span>
+                      <span className={`text-sm ${selectedOption?.value === option.value && "font-semibold"}`}>{option.label}</span>
                       {option.description && (
                         <span className="text-muted-foreground text-xs">
                           {option.description}
@@ -180,16 +191,14 @@ export function Select({
                       )}
                     </div>
                     {selectedOption?.value === option.value && (
-                      <div className="ml-0 bg-green-500 bg-opacity-15 p-1 rounded-full">
+
                         <Check className="w-3.5 h-3.5 text-green-500 ml-auto" />
-                      </div>
+
                     )}
                   </li>
                 ))
               ) : (
-                <li className="px-3 py-2 text-sm text-muted-foreground">
-                  {emptyText}
-                </li>
+                <EmptyState message={emptyText} />
               )}
             </ul>
           )}
