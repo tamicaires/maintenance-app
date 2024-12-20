@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -26,52 +25,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  ClockIcon,
-  WrenchIcon,
-  PackageIcon,
-  CheckCircleIcon,
-} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { MaintenanceStatus, Box } from "@/shared/enums/work-order";
 import { useUpdateWorkOrder } from "@/app/work-order/hooks/use-update-work-order";
 import { CustomDialogHeader } from "../CustomDialogHeader";
+import { getMaintenanceStatusInfo } from "@/utils/work-order";
 
 interface WorkOrderStatusBadgeProps {
   workOrder: IWorkOrder;
 }
-
-const statusColors = {
-  [MaintenanceStatus.FILA]: "bg-amber-200 text-yellow-600 border-yellow-300",
-  [MaintenanceStatus.MANUTENCAO]: "bg-blue-200 text-blue-500 border-blue-300",
-  [MaintenanceStatus.AGUARDANDO_PECA]:
-    "bg-orange-200 text-orange-500 border-orange-300",
-  [MaintenanceStatus.FINALIZADA]:
-    "bg-green-200 text-green-500 border-green-300",
-};
-
-const statusIcons = {
-  [MaintenanceStatus.FILA]: ClockIcon,
-  [MaintenanceStatus.MANUTENCAO]: WrenchIcon,
-  [MaintenanceStatus.AGUARDANDO_PECA]: PackageIcon,
-  [MaintenanceStatus.FINALIZADA]: CheckCircleIcon,
-};
 
 const statusLabels: Record<MaintenanceStatus, string> = {
   [MaintenanceStatus.FILA]: "Fila",
   [MaintenanceStatus.MANUTENCAO]: "Manutenção",
   [MaintenanceStatus.AGUARDANDO_PECA]: "Aguardando Peça",
   [MaintenanceStatus.FINALIZADA]: "Finalizada",
+  [MaintenanceStatus.CANCELADA]: "Cancelada",
 };
 
-export function WorkOrderStatusBadge({ workOrder }: WorkOrderStatusBadgeProps) {
+export default function WorkOrderStatusBadge({
+  workOrder,
+}: WorkOrderStatusBadgeProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState<MaintenanceStatus | null>(null);
   const { form, handleSubmit, isSubmitting, handleEdit, setEditingWorkOrder } =
     useUpdateWorkOrder(() => setIsOpen(false));
 
-  const StatusIcon = statusIcons[workOrder.status];
-
+  const statusInfo = getMaintenanceStatusInfo(workOrder.status);
   const onOpenChange = (open: boolean) => {
     if (open) {
       handleEdit(workOrder);
@@ -98,12 +78,10 @@ export function WorkOrderStatusBadge({ workOrder }: WorkOrderStatusBadgeProps) {
           variant="ghost"
           size="sm"
           role="combobox"
-          className={`justify-between text-sm ${
-            statusColors[workOrder.status]
-          }  bg-opacity-15`}
+          className={`justify-between text-sm bg-${statusInfo.color}-200 text-${statusInfo.color}-600 border-${statusInfo.color}-300 bg-opacity-15`}
         >
           <span className="flex items-center">
-            <StatusIcon className="mr-2 h-4 w-4" />
+            <statusInfo.icon className="mr-2 h-4 w-4" />
             {workOrder.status.toUpperCase()}
           </span>
         </Button>
