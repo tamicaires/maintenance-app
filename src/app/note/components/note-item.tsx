@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Edit2, Trash2, X, Check } from "lucide-react";
 import { INote } from "@/shared/types/note";
@@ -15,7 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useToast } from "@/components/Toast/toast";
 import { useEditNote } from "../hooks/use-edit-note";
-import { useLoader } from "@/store/hook/use-loader";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,6 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useDeleteNote } from "../hooks/use-delete-note";
+import { Profile } from "@/components/Profile";
 
 interface NoteItemProps {
   note: INote;
@@ -49,6 +48,8 @@ export function NoteItem({ note }: NoteItemProps) {
     deleteNote(note.id);
   };
 
+  const timeSinceSentNote = dateUtil.timeSince(new Date(note.createdAt));
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -57,21 +58,15 @@ export function NoteItem({ note }: NoteItemProps) {
       className="py-4 group"
     >
       <div className="flex gap-3">
-        <Avatar className="h-6 w-6 mt-0.5">
-          <AvatarImage
-            src={`https://api.dicebear.com/6.x/initials/svg?seed=${note.user.name}`}
-            alt={note.user.name}
-          />
-          <AvatarFallback>{note.user.name.charAt(0)}</AvatarFallback>
-        </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <div className="flex flex-col items-start leading-none">
-              <span className="text-sm font-medium">{note.user.name}</span>
-              <span className="text-[0.70rem] text-muted-foreground">
-                {dateUtil.timeSince(new Date(note.createdAt))}
-              </span>
-            </div>
+            <Profile
+              name={note.user.name}
+              description={timeSinceSentNote}
+              descriptionPosition="bottom"
+              size="large"
+              showAvatar
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

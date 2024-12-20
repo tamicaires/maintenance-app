@@ -128,7 +128,7 @@ const WorkOrderPartRequestItem: React.FC<WorkOrderPartRequestItemProps> = ({
             </div>
             {partRequest.requestedBy && (
               <Profile
-                companyName={partRequest.requestedBy.name}
+                name={partRequest.requestedBy.name}
                 description="Solicitante"
                 showAvatar
               />

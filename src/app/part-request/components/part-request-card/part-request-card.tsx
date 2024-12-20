@@ -98,7 +98,7 @@ export function PartRequestCard({
                 </p>
               </div>
               <Profile
-                companyName={partRequest.requestedBy?.name || "N/A"}
+                name={partRequest.requestedBy?.name || "N/A"}
                 description="Solicitante"
                 showAvatar
                 size="large"

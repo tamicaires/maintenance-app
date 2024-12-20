@@ -98,7 +98,7 @@ export function OpenRequestsList({
             showAvatar
             size="small"
             description="Solicitante"
-            companyName={
+            name={
               workOrderRequests[0].requestedBy?.name || "Desconhecido"
             }
           />
