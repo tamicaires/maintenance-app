@@ -4,6 +4,7 @@ import { Inbox, AlertCircle } from "lucide-react";
 
 interface EmptyStateProps {
   message?: string;
+  description?: string;
   icon?: "inbox" | "alert";
   actionLabel?: string;
   onAction?: () => void;
@@ -11,11 +12,14 @@ interface EmptyStateProps {
 
 export default function EmptyState({
   message = "Nenhum item encontrado",
+  description,
   icon = "inbox",
   actionLabel,
   onAction,
 }: EmptyStateProps) {
   const Icon = icon === "inbox" ? Inbox : AlertCircle;
+  const defaultDescriptionMessage =
+    "Não se preocupe, isso é normal quando não há itens para exibir.";
 
   return (
     <motion.div
@@ -27,15 +31,15 @@ export default function EmptyState({
       <motion.div
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="mb-6 rounded-full bg-gray-100 p-4 dark:bg-gray-800"
+        className="mb-6 rounded-full bg-primary/5 p-4"
       >
-        <Icon className="h-12 w-12 text-gray-400" aria-hidden="true" />
+        <Icon className="h-12 w-12 text-primary" aria-hidden="true" />
       </motion.div>
-      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
         {message}
       </h3>
       <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-        Não se preocupe, isso é normal quando não há itens para exibir.
+        {description || defaultDescriptionMessage}
       </p>
       {actionLabel && onAction && (
         <Button onClick={onAction} className="mt-2">
