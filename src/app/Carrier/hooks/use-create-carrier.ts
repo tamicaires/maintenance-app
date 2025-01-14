@@ -9,6 +9,7 @@ import { CarrierService } from "@/services/carrier";
 import { ICarrier } from "@/shared/types/carrier";
 import { toast } from "sonner";
 import { IApiResponse } from "@/services/api";
+import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 type CreateCarrierData = z.infer<typeof createCarrierSchema>;
 
@@ -40,7 +41,7 @@ export function useCreateCarrier(setShowModal: (show: boolean) => void) {
   } = useMutation<IApiResponse<ICarrier>, Error, CreateCarrierData>({
     mutationFn: CarrierService.create,
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["carriers"] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Carrier] });
       if (response.success && response.data) {
         console.log("Carrier created:", response.data);
       }

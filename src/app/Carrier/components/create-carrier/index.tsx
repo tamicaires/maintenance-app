@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Dialog } from "@/components/CustomDialog";
-import { useCreateCarrier } from "../hooks/use-create-carrier";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useCreateCarrier } from "../../hooks/use-create-carrier";
 
 interface CreateCarrierProps {
   isDialogOpen: boolean;
@@ -108,8 +108,8 @@ export function CreateCarrier({
             <Button variant="outline" onClick={closeDialog}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Cadastrando..." : "Cadastrar"}
+            <Button type="submit" disabled={isSubmitting || isLoading}>
+              {isSubmitting || isLoading ? "Cadastrando..." : "Cadastrar"}
             </Button>
           </DialogFooter>
         </form>
