@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, Check, Search } from "lucide-react";
-import { Spinner } from "../Spinner";
-import EmptyState from "../EmptyState";
+import { Spinner } from "@/components/Spinner";
+import EmptyState from "@/components/empty-state";
 
 export interface IOption {
   value: string;
@@ -183,7 +183,14 @@ export function Select({
                     onKeyDown={(e) => handleOptionKeyDown(e, option)}
                   >
                     <div className="flex flex-col leading-none">
-                      <span className={`text-sm ${selectedOption?.value === option.value && "font-semibold"}`}>{option.label}</span>
+                      <span
+                        className={`text-sm ${
+                          selectedOption?.value === option.value &&
+                          "font-semibold"
+                        }`}
+                      >
+                        {option.label}
+                      </span>
                       {option.description && (
                         <span className="text-muted-foreground text-xs">
                           {option.description}
@@ -191,9 +198,7 @@ export function Select({
                       )}
                     </div>
                     {selectedOption?.value === option.value && (
-
-                        <Check className="w-3.5 h-3.5 text-green-500 ml-auto" />
-
+                      <Check className="w-3.5 h-3.5 text-green-500 ml-auto" />
                     )}
                   </li>
                 ))
