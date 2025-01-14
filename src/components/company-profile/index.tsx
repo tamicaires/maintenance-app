@@ -34,7 +34,7 @@ export function CompanyProfile({
     <div className="relative">
       <div className="flex items-center space-x-3 bg-primary/5 text-primary px-2 py-1 rounded-md">
         <Avatar className="h-10 w-10 bg-primary/20">
-          <AvatarFallback className="text-primary font-semibold">
+          <AvatarFallback className="font-semibold">
             {currentCompany?.name.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
