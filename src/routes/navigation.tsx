@@ -4,7 +4,7 @@ import { SettingsLayout } from "@/app/Settings";
 import { MyAccount } from "@/app/Settings/components/MyAccount";
 import { Appearance } from "@/app/Settings/components/Appearance";
 import { Subscription } from "@/app/Settings/components/Subscription";
-import { Carrier } from "@/app/carrier/pages";
+import { Carrier } from "@/app/carrier/pages/index";
 import { Login } from "@/app/Login";
 import Order from "@/app/work-order/pages";
 import WorkShopDashboard from "@/app/WorkShopDashboard/pages";
