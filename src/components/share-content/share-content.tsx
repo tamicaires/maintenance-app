@@ -47,7 +47,7 @@ export function ShareContent({
   const [copySuccess, setCopySuccess] = React.useState(false);
   const [shareMethod, setShareMethod] = React.useState("link");
   const { addToast, ToastComponent } = useToast();
-
+  console.log(contentId)
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareLink);

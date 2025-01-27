@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -69,7 +68,10 @@ export function StartMaintenanceDialog({
       >
         <DialogHeader>
           <DialogTitle hidden>Iniciar Manutenção</DialogTitle>
-          <CustomDialogHeader title="Iniciar Manutenção" subtitle="Selecione a data e hora de inicio da manutenção"/>
+          <CustomDialogHeader
+            title="Iniciar Manutenção"
+            subtitle="Selecione a data e hora de inicio da manutenção"
+          />
         </DialogHeader>
         <Form {...startMaintenanceForm}>
           <form onSubmit={handleSubmit} className="space-y-6">

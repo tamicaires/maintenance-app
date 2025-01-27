@@ -11,20 +11,24 @@ import {
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-const statusColors = {
+const statusColors: Record<MaintenanceStatus, string> = {
   [MaintenanceStatus.FILA]: "bg-amber-200 text-yellow-600 border-yellow-300",
   [MaintenanceStatus.MANUTENCAO]: "bg-blue-200 text-blue-500 border-blue-300",
   [MaintenanceStatus.AGUARDANDO_PECA]:
     "bg-orange-200 text-orange-500 border-orange-300",
   [MaintenanceStatus.FINALIZADA]:
     "bg-green-200 text-green-500 border-green-300",
+  [MaintenanceStatus.CANCELADA]:
+    "bg-green-200 text-green-500 border-green-300",
+    
 };
 
-const statusIcons = {
+const statusIcons: Record<MaintenanceStatus, React.ComponentType<any>> = {
   [MaintenanceStatus.FILA]: ClockIcon,
   [MaintenanceStatus.MANUTENCAO]: WrenchIcon,
   [MaintenanceStatus.AGUARDANDO_PECA]: PackageIcon,
   [MaintenanceStatus.FINALIZADA]: CheckCircleIcon,
+  [MaintenanceStatus.CANCELADA]: CheckCircleIcon,
 };
 
 export function StatusSelect({

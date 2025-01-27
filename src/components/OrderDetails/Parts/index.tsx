@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { PartRequestCreationDialog } from "@/app/part-request/components/create-part-request";
+// import { PartRequestCreationDialog } from "@/app/part-request/components/create-part-request";
 
 type Part = {
   id: string;
@@ -54,7 +54,7 @@ export function OrderParts() {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
   const [isPartRequestDialogOpen, setIsPartRequestDialogOpen] =
     useState<boolean>(false);
-
+  isPartRequestDialogOpen;
   console.log(setOpenItems);
   const filteredParts = parts.filter(
     (part) =>
@@ -77,11 +77,11 @@ export function OrderParts() {
               Solicitar Peça
             </Button>
           </div>
-          <PartRequestCreationDialog
+          {/* <PartRequestCreationDialog
             isOpenControlled={true}
             isOpen={isPartRequestDialogOpen}
             onOpenChange={setIsPartRequestDialogOpen}
-          />
+          /> */}
         </div>
       </div>
 

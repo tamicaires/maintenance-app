@@ -12,7 +12,7 @@ export interface ITrailer {
 
 export interface ITrailerCreateAndUpdate {
   plate: string;
-  position?: number | null;
+  position?: string | null;
   isActive: boolean;
   fleetId?: string | null;
 }

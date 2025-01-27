@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { NavBar } from "@/components/NavBar";
+import { NavBar } from "@/components/navbar";
 import { useSelectCompany } from "./hooks/useSelectCompany";
 import { useAppSelector } from "@/store/hook/app-selector";
 import { selectAuth } from "@/store/selectors";

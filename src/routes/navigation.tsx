@@ -4,17 +4,17 @@ import { SettingsLayout } from "@/app/Settings";
 import { MyAccount } from "@/app/Settings/components/MyAccount";
 import { Appearance } from "@/app/Settings/components/Appearance";
 import { Subscription } from "@/app/Settings/components/Subscription";
-import { Carrier } from "@/app/Carrier";
+import { Carrier } from "@/app/carrier/pages";
 import { Login } from "@/app/Login";
 import Order from "@/app/work-order/pages";
-import WorkShopDashboard from "@/app/WorkShopDashboard";
+import WorkShopDashboard from "@/app/WorkShopDashboard/pages";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
 import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/app/part-manager/pages";
 import CompanySelection from "@/app/SelectCompany";
 import { Trailer } from "@/app/Trailer";
-import MaintenanceChecklist from "@/app/Checklist";
+import { Checklist } from "@/app/checklist/pages";
 import { Vehicle } from "@/app/Vehicles";
 import { Fleet } from "@/app/Fleet";
 import { BoxManagement } from "@/app/Box";
@@ -44,7 +44,7 @@ export function Navigation() {
           />
           <Route
             path={PrivateRoutes.MaintenanceChecklist}
-            element={<MaintenanceChecklist />}
+            element={<Checklist />}
           />
           {/* <Route path={"pneu"} element={<GestaoReboque />} /> */}
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>

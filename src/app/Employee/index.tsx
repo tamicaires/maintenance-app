@@ -52,7 +52,7 @@ import { IEmployee } from "@/shared/types/employee.interface";
 import { useUpdateEmployee } from "./hooks/use-update-employee";
 import EmployeeCreationDialog from "./CreateEmployee";
 import { Spinner } from "@/components/Spinner";
-import EmployeeEditDialog from "./EditEmployee";
+// import EmployeeEditDialog from "./EditEmployee";
 
 export function Employee() {
   const [page, setPage] = useState(1);
@@ -62,7 +62,7 @@ export function Employee() {
 
   const { handleEdit, handleDelete, editingEmployee, setEditingEmployee } =
     useUpdateEmployee(() => setEditingEmployee(null));
-
+    editingEmployee
   const { sortedData, sortField, sortOrder, handleSort } =
     useSortableTable<IEmployee>(data?.data || [], "name");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
@@ -334,12 +334,12 @@ export function Employee() {
           </div>
         </div>
       )}
-      {editingEmployee && (
+      {/* {editingEmployee && (
         <EmployeeEditDialog
           employee={editingEmployee}
           onClose={() => setEditingEmployee(null)}
         />
-      )}
+      )} */}
     </ScrollArea>
   );
 }

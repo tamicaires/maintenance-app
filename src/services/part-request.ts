@@ -1,5 +1,6 @@
 import { ICreatePartRequest, ICreatePartRequestBatch, IPartRequest, IUpdatePartRequest, THandledPartRequestResponse } from "@/shared/types/part-request";
 import { handleRequest, IApiResponse } from "@/services/api";
+import { IPartRequestsRelationalDataList } from "@/shared/types/part-request-relational-data";
 
 const create = async (
   data: ICreatePartRequest
@@ -82,10 +83,21 @@ const getByWorkOrderId = async (workOrderId: string): Promise<IApiResponse<IPart
 
   return response;
 }
-const getAll = async (): Promise<IApiResponse<IPartRequest[]>> => {
-  const response = await handleRequest<IPartRequest[]>({
+
+const getAll = async (
+  filters?: {
+    page?: string;
+    perPage?: string;
+    status?: string;
+    startDate?: string;
+    endDate?: string;
+  }
+): Promise<IApiResponse<IPartRequestsRelationalDataList>> => {
+  const params = new URLSearchParams(filters as Record<string, string>);
+
+  const response = await handleRequest<IPartRequestsRelationalDataList>({
     method: "GET",
-    url: "/part-requests",
+    url: `/part-requests?${params.toString()}`,
   });
 
   return response;

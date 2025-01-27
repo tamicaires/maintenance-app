@@ -27,7 +27,7 @@ export function MobileWorkOrderOverview({ workOrder, statusInfo }: MobileWorkOrd
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Box</p>
-              <p className="text-sm font-semibold">{workOrder.box || 'N/A'}</p>
+              <p className="text-sm font-semibold">{workOrder.box?.id || 'N/A'}</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Status</p>

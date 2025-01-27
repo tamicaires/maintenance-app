@@ -1,7 +1,7 @@
 import { INote } from "@/shared/types/note";
 import { NoteItem } from "./note-item";
 import { AnimatePresence, motion } from "framer-motion";
-import EmptyState from "@/components/EmptyState";
+import EmptyState from "@/components/empty-state";
 
 interface NoteListProps {
   notes: INote[];

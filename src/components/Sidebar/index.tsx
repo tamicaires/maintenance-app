@@ -4,11 +4,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -19,9 +14,7 @@ import {
   FileAxis3D,
   Package2,
   ChevronRight,
-  Webhook,
   LucideIcon,
-  Home,
   MoreHorizontal,
   ChevronLeft,
   Truck,
@@ -31,6 +24,7 @@ import {
 } from "lucide-react";
 import { PrivateRoutes } from "@/shared/enums/routes";
 import { MyAccountAvatar } from "../MyAccount";
+import { Logo } from "../logo/logo";
 
 interface MenuItem {
   icon: LucideIcon;
@@ -72,10 +66,13 @@ const Sidebar = () => {
   }, []);
 
   const mainMenuItems: MenuItem[] = [
-    { icon: Home, label: "Home", path: "/" },
-    { icon: Wrench, label: "Oficina", path: PrivateRoutes.WorkShop },
+    { icon: Wrench, label: "Oficina", path: PrivateRoutes.Home },
     { icon: ClipboardList, label: "Ordens", path: PrivateRoutes.WorkOrders },
-    { icon: ClipboardList, label: "Checklist", path: PrivateRoutes.MaintenanceChecklist },
+    {
+      icon: ClipboardList,
+      label: "Checklist",
+      path: PrivateRoutes.MaintenanceChecklist,
+    },
     {
       icon: CalendarCog,
       label: "Planejamento",
@@ -150,50 +147,43 @@ const Sidebar = () => {
   };
 
   const renderMenuItem = (item: MenuItem, isMobile = false) => (
-    <Tooltip key={item.label}>
-      <TooltipTrigger asChild>
-        <Button
-          variant="ghost"
-          className={cn(
-            "w-full justify-start",
-            isItemActive(item) && "bg-accent",
-            isCollapsed && !isMobile ? "px-2" : "px-4"
-          )}
-          onClick={() => {
-            handleItemClick(item);
-            if (isMobile) {
-              setIsSheetOpen(false);
-            }
-          }}
-          asChild
-        >
-          <Link to={item.path || "#"}>
-            <item.icon
-              className={cn(
-                "h-5 w-5",
-                isItemActive(item) ? "text-primary" : "text-muted-foreground"
-              )}
-            />
-            {(!isCollapsed || isMobile) && (
-              <>
-                <span
-                  className={cn(
-                    "ml-2 flex-1 text-left",
-                    isItemActive(item) && "text-primary"
-                  )}
-                >
-                  {item.label}
-                </span>
-                {item.hasSubmenu && <ChevronRight className="h-4 w-4" />}
-              </>
-            )}
-          </Link>
-        </Button>
-      </TooltipTrigger>
-      {isCollapsed && !isMobile && (
-        <TooltipContent side="right">{item.label}</TooltipContent>
+    <Button
+      variant="ghost"
+      className={cn(
+        "w-full justify-start",
+        isItemActive(item) && "bg-primary/10",
+        isCollapsed && !isMobile ? "px-2" : "px-4"
       )}
-    </Tooltip>
+      onClick={() => {
+        handleItemClick(item);
+        if (isMobile) {
+          setIsSheetOpen(false);
+        }
+      }}
+      asChild
+    >
+      <Link to={item.path || "#"}>
+        <item.icon
+          className={cn(
+            "h-5 w-5 ml-1",
+            isItemActive(item) ? "text-primary" : "text-muted-foreground"
+          )}
+        />
+        {(!isCollapsed || isMobile) && (
+          <>
+            <span
+              className={cn(
+                "ml-2 flex-1 text-left",
+                isItemActive(item) && "text-primary"
+              )}
+            >
+              {item.label}
+            </span>
+            {item.hasSubmenu && <ChevronRight className="h-4 w-4" />}
+          </>
+        )}
+      </Link>
+    </Button>
   );
 
   const renderSubmenuItems = (item: MenuItem, isMobile = false) =>
@@ -232,24 +222,12 @@ const Sidebar = () => {
     <div
       ref={sidebarRef}
       className={cn(
-        "hidden sm:flex flex-col h-screen bg-card border-r transition-all duration-300 ease-in-out fixed top-0 left-0 z-50",
+        "hidden sm:flex flex-col h-screen bg-card border-r border-muted/50 shadow-lg transition-all duration-300 ease-in-out fixed top-0 left-0 z-50 ",
         isCollapsed ? "w-[60px]" : "w-[240px]"
       )}
     >
-      <div className="flex items-center justify-center h-[60px] border-b">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <Webhook className="h-6 w-6 text-primary" />
-          {!isCollapsed && (
-            <div className="flex items-center">
-              <Webhook className="h-6 w-6 text-primary" />
-              <span className="ml-2 text-xl">zetta truck</span>
-            </div>
-          )}
-        </Button>
+      <div className="flex items-center justify-center h-[60px] border-b bg-primary">
+        <Logo showText={!isCollapsed} />
       </div>
       <ScrollArea className="flex-1">
         <nav className="p-2 space-y-1">
@@ -304,7 +282,7 @@ const Sidebar = () => {
             {activeSubmenu.children?.map((subItem) => (
               <Card
                 key={subItem.label}
-                className="hover:bg-accent transition-colors"
+                className="hover:bg-primary/30 transition-colors"
               >
                 <CardContent className="p-4">
                   <Link
@@ -331,7 +309,10 @@ const Sidebar = () => {
         )}
       >
         {moreMenuItems.map((item) => (
-          <Card key={item.label} className="hover:bg-accent transition-colors">
+          <Card
+            key={item.label}
+            className="hover:bg-primary/15 transition-colors"
+          >
             <CardContent className="p-4">
               {item.hasSubmenu ? (
                 <button

@@ -1,6 +1,15 @@
 export enum QueryKeysEnum {
-  Checklists = "checklists",
+  Dashboard = "dashboard",
+  Checklist = "checklists",
+  ChecklistItem = "checklist-items",
   ChecklistCategory = "checklist-category",
   ChecklistTemplateItem = "checklist-template-item",
   Carrier = "carriers",
+  Event = "events",
+  Part_Request = "part-requests",
+  Box = "boxes",
+  Service = "services",
+  Service_Assigment = "service-assignments",
+  Trailer = "trailers",
+  Work_Order = "work-orders",
 }

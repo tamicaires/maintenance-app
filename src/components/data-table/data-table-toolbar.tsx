@@ -1,6 +1,6 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { Calendar, Filter, Search } from "lucide-react";
+import { Activity, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,33 +10,78 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import React from "react";
 
+export interface ITableFilterOption {
+  name: string;
+  options?: { label: string; value: string }[];
+  render?: React.ReactNode;
+}
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  filterOptions?: {
-    name: string;
-    options: { label: string; value: string }[];
-  }[];
+  searchColumn?: string;
+  filterOptions?: ITableFilterOption[];
 }
 
 export function DataTableToolbar<TData>({
   table,
+  searchColumn,
   filterOptions,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const column = table.getColumn(searchColumn ?? "");
+    const searchValue = event.target.value;
+
+    if (column) {
+      column.setFilterValue(searchValue);
+    }
+  };
+
+  const renderFilterOption = (filter: ITableFilterOption) => {
+    if (filter.options) {
+      return (
+        <Select key={filter.name}>
+          <SelectTrigger className="h-9 w-[120px]">
+            <Activity className="mr-2 h-4 w-4 text-muted-foreground" />
+            <SelectValue placeholder={filter.name} />
+          </SelectTrigger>
+          <SelectContent>
+            {filter.options.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    }
+
+    return null;
+  };
+
+  const renderFilterComponent = (filter: ITableFilterOption) => {
+    if (filter.render) {
+      return <React.Fragment key={filter.name}>{filter.render}</React.Fragment>;
+    }
+
+    return null;
+  };
+
   return (
     <div className="flex flex-1 items-center space-x-2">
+      {/* Search Input */}
       <div className="flex flex-1 items-center space-x-2">
         <div className="relative">
           <Input
             placeholder="Buscar"
             value={
-              (table.getColumn("carrierName")?.getFilterValue() as string) ?? ""
+              (table
+                .getColumn(searchColumn || "")
+                ?.getFilterValue() as string) ?? ""
             }
-            onChange={(event) =>
-              table.getColumn("carrierName")?.setFilterValue(event.target.value)
-            }
+            onChange={handleSearch}
             className="h-9 w-[150px] lg:w-[250px] pl-8"
           />
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -52,29 +97,15 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+
+      {/* Filter Options */}
       <div className="flex items-center space-x-2">
-        <Button variant="outline" size="sm" className="h-9">
-          <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-          Filtrar Data
-        </Button>
-        {filterOptions?.map((filter) => (
-          <Select key={filter.name}>
-            <SelectTrigger className="h-9 w-[120px]">
-              <SelectValue placeholder={filter.name} />
-            </SelectTrigger>
-            <SelectContent>
-              {filter.options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ))}
-        <Button variant="outline" size="sm" className="h-9">
-          <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
-          Filtros
-        </Button>
+        {filterOptions &&
+          filterOptions.map((filter) => {
+            return filter.options
+              ? renderFilterOption(filter)
+              : renderFilterComponent(filter);
+          })}
       </div>
     </div>
   );

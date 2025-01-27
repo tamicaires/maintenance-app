@@ -8,6 +8,7 @@ import { IApiResponse } from "@/services/api"
 import { ServiceAssignmentService } from "@/services/service-assigment"
 import { ICreateServiceAssigment, IServiceAssignment } from "@/shared/types/service-assigment"
 import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment"
+import { QueryKeysEnum } from "@/shared/enums/query-keys"
 
 const createServiceAssignmentSchema = z.object({
   workOrderId: z.string().min(2, "É obrigatório está vinculado a uma Ordem Serviço"),
@@ -57,7 +58,7 @@ export function useCreateServiceAssignment(
   } = useMutation<IApiResponse<IServiceAssignment>, Error, ICreateServiceAssigment>({
     mutationFn: ServiceAssignmentService.create,
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["service-assignments"] })
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Service_Assigment] })
       if (response.success && response.data) {
         addToast({
           type: "success",

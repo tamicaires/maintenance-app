@@ -21,7 +21,7 @@ import {
 import { ChevronRight, ChevronLeft, CheckCircle } from "lucide-react"
 import { useFleet } from "@/app/Fleet/hooks/use-fleet"
 import { FormFields, useCreateVehicle } from "../hooks/use-create-vehicle"
-import { Select } from "@/components/CustomCombobox"
+import { Select } from "@/components/custom-combobox"
 
 const steps: Array<{
   title: string

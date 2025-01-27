@@ -1,10 +1,10 @@
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
-import { motion, AnimatePresence } from "framer-motion"
-import { LoaderVariant } from "@/store/features/loader"
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import { LoaderVariant } from "@/store/features/loader";
 
 const loaderVariants = cva(
-  "flex items-center justify-center bg-background/30 backdrop-blur-sm",
+  "flex items-center justify-center backdrop-blur-sm",
   {
     variants: {
       variant: {
@@ -13,29 +13,30 @@ const loaderVariants = cva(
         dots: "",
         pulse: "",
       },
-      isGlobal: {
-        true: "fixed inset-0 z-[9999]",
-        false: "absolute inset-0 z-50",
+      scope: {
+        global: "fixed inset-0 z-[9999]",
+        local: "absolute inset-0 z-50",
       },
     },
     defaultVariants: {
       variant: "default",
-      isGlobal: true,
+      scope: "global",
     },
   }
-)
+);
 
 export interface LoaderProps extends VariantProps<typeof loaderVariants> {
-  message?: string
-  variant?: LoaderVariant
-  isGlobal?: boolean
+  message?: string;
+  variant?: LoaderVariant;
+  scope?: "global" | "local";
+  isTransparentBg?: boolean;
 }
 
 const spinnerVariants = {
   initial: { opacity: 0, scale: 0.8 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.8 },
-}
+};
 
 function SpinnerLoader() {
   return (
@@ -44,7 +45,7 @@ function SpinnerLoader() {
       animate={{ rotate: 360 }}
       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
     />
-  )
+  );
 }
 
 function DotsLoader() {
@@ -65,7 +66,7 @@ function DotsLoader() {
         />
       ))}
     </div>
-  )
+  );
 }
 
 function PulseLoader() {
@@ -92,21 +93,29 @@ function PulseLoader() {
         }}
       />
     </motion.div>
-  )
+  );
 }
 
-export function Loader({ variant = "default", message, isGlobal = true }: LoaderProps) {
+export function Loader({
+  variant = "default",
+  message,
+  scope = "global",
+  isTransparentBg = true,
+}: LoaderProps) {
   const loaderComponents = {
     default: <SpinnerLoader />,
     spinner: <SpinnerLoader />,
     dots: <DotsLoader />,
     pulse: <PulseLoader />,
-  }
+  };
 
   return (
     <AnimatePresence>
       <motion.div
-        className={cn(loaderVariants({ variant, isGlobal }))}
+        className={cn(
+          loaderVariants({ variant, scope }),
+          `${isTransparentBg ? "bg-background/90" : "bg-background"}`
+        )}
         initial="initial"
         animate="animate"
         exit="exit"
@@ -116,7 +125,7 @@ export function Loader({ variant = "default", message, isGlobal = true }: Loader
           {loaderComponents[variant]}
           {message && (
             <motion.p
-              className="text-sm text-muted-foreground"
+              className="text-lg text-muted-foreground"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -127,6 +136,5 @@ export function Loader({ variant = "default", message, isGlobal = true }: Loader
         </div>
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }
-

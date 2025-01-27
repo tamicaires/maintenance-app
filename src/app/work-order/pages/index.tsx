@@ -19,11 +19,11 @@ import { WorkOrderCreationDialog } from "@/app/work-order/components/create-orde
 import { useWorkOrder } from "../hooks/use-work-order";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
-import EmptyState from "@/components/EmptyState";
+import EmptyState from "@/components/empty-state";
 import WorkOrderCard from "@/components/WorkOrderCard";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
-import { useLoader } from "@/store/hook/use-loader";
+import { Schedule } from "@/components/schedule/schedule";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -153,17 +153,17 @@ export default function Order() {
           </motion.div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="my-6">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 rounded-xl bg-muted p-1">
-              <TabsTrigger value="todas" className="rounded-lg">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 rounded-xl p-1">
+              <TabsTrigger value="todas">
                 Todas
               </TabsTrigger>
-              <TabsTrigger value="fila" className="rounded-lg">
+              <TabsTrigger value="fila">
                 Fila
               </TabsTrigger>
-              <TabsTrigger value="manutencao" className="rounded-lg">
+              <TabsTrigger value="manutencao">
                 Manutenção
               </TabsTrigger>
-              <TabsTrigger value="aguard-peca" className="rounded-lg">
+              <TabsTrigger value="aguard-peca">
                 Aguard. Peça
               </TabsTrigger>
             </TabsList>
@@ -213,6 +213,7 @@ export default function Order() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
+            <Schedule showCalendarOnly/>
             <ScrollArea className="shadow-lg rounded-xl p-4 md:p-6 bg-card">
               <div className="pb-5">
                 <h2 className="text-2xl font-semibold leading-tight tracking-tight">

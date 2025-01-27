@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Check, X, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { dateUtil } from "@/utils/date";
+import { IPartRequestRelationalData } from "@/shared/types/part-request-relational-data";
 
 interface PartRequestItemProps {
-  request: IPartRequest;
+  request: IPartRequestRelationalData;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
   isApprovePending: boolean;
@@ -106,19 +106,22 @@ function PartRequestItem({
             <div className="grid grid-cols-5 items-center gap-4 text-sm">
               <div>
                 <p className="text-muted-foreground">Reboque</p>
-                <p className="font-medium">{request.trailer.plate}</p>
+                <p className="font-medium">{request.trailer?.plate}</p>
               </div>
-              {request.trailer.axle && (
+              {request.trailer?.axles && (
                 <div>
                   <p className="text-muted-foreground">Eixo</p>
-                  <p className="font-medium">{request.trailer.axle.position}</p>
+                  <p className="font-medium">{request.trailer.axles.map((axle) => {
+                    return axle.position
+                  })}
+                  </p>
                 </div>
               )}
               <div>
                 <p className="text-muted-foreground">Posição</p>
-                <p className="font-medium">{request.trailer.position}</p>
+                <p className="font-medium">{request.trailer?.position}</p>
               </div>
-              {request.stockQuantity && (
+              {/* {request.stockQuantity && (
                 <div
                   className={`${
                     request.stockQuantity < request.quantity
@@ -131,7 +134,7 @@ function PartRequestItem({
                     {request.stockQuantity}
                   </span>
                 </div>
-              )}
+              )} */}
               <div>
                 <p className="text-muted-foreground">
                   {dateUtil.timeSince(new Date(request.requestedAt))}

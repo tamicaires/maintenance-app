@@ -1,10 +1,9 @@
-import { NavBar } from "@/components/NavBar";
+import { NavBar } from "@/components/navbar";
 import Sidebar from "@/components/Sidebar";
 import { useToast } from "@/components/Toast/toast";
 import { Outlet } from "react-router-dom";
 import { AuthGuard } from "../auth-guard";
 import { CompanyGuard } from "../company-guard";
-import { RootLoader } from "@/components/loader/root-loader";
 
 export function RootLayout() {
   const { ToastComponent } = useToast();
@@ -19,7 +18,6 @@ export function RootLayout() {
               <Outlet />
             </main>
             <ToastComponent />
-            <RootLoader />
           </div>
         </div>
       </CompanyGuard>

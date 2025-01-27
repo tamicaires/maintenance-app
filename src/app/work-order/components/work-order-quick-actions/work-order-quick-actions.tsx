@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
+import type { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { StartMaintenanceDialog } from "../actions-dialogs/start-maintenace-dialog";
 import { FinishMaintenanceDialog } from "../actions-dialogs/finish-maintenance-dialog";
@@ -10,12 +10,12 @@ import { FinishWaitingPartsDialog } from "../actions-dialogs/finish-waiting-part
 
 type WorkOrderQuickActionsProps = {
   workOrder: IWorkOrder;
-  setIsDialogOpen: (isOpen: boolean) => void;
+  onClose: () => void;
 };
 
 export function WorkOrderQuickActions({
   workOrder,
-  setIsDialogOpen,
+  onClose,
 }: WorkOrderQuickActionsProps) {
   const isInQueue = workOrder.status === MaintenanceStatus.FILA;
   const isInProgress = workOrder.status === MaintenanceStatus.MANUTENCAO;
@@ -43,7 +43,7 @@ export function WorkOrderQuickActions({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+          <Button variant="outline" onClick={onClose}>
             Fechar
           </Button>
           {isInQueue && (

@@ -8,20 +8,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { getMaintenanceStatusInfo } from "@/utils/work-order";
-import { HistoryItem, HistoryItemProps } from "./work-order-history-item";
-
-const mockHistory = [
-  {
-    id: "1",
-    date: "2024-01-15T09:00:00",
-    type: "status_change",
-    description: "Status atualizado para: Em Manutenção",
-    user: "João Silva",
-    details: "Início dos trabalhos de manutenção preventiva",
-  },
-  // ... other history events
-];
+import { HistoryItem } from "./work-order-history-item";
 
 export function WorkOrderHistory({ workOrder }: { workOrder: IWorkOrder }) {
   const history = [

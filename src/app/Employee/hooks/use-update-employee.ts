@@ -16,7 +16,7 @@ const employeeSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   workShift: z.string().min(1, "Turno de trabalho é obrigatório"),
   jobTitleId: z.string().min(1, "ID do cargo é obrigatório"),
-  status: z.enum(["ATIVO", "INATIVO"]),
+  isActive: z.boolean(),
 });
 
 export type FormFields = z.infer<typeof employeeSchema>;
@@ -34,7 +34,7 @@ export function useUpdateEmployee(onClose: () => void) {
       name: "",
       workShift: "",
       jobTitleId: "",
-      status: "ATIVO",
+      isActive: true,
     },
   });
 
@@ -59,7 +59,7 @@ export function useUpdateEmployee(onClose: () => void) {
       console.error("Error updating employee:", error);
       toast.error(
         error.message ||
-          "Ocorreu um erro ao atualizar o funcionário. Tente novamente."
+        "Ocorreu um erro ao atualizar o funcionário. Tente novamente."
       );
     },
     onSettled: () => {
@@ -77,7 +77,7 @@ export function useUpdateEmployee(onClose: () => void) {
       console.error("Error deleting employee:", error);
       toast.error(
         error.message ||
-          "Ocorreu um erro ao excluir o funcionário. Tente novamente."
+        "Ocorreu um erro ao excluir o funcionário. Tente novamente."
       );
     },
   });
@@ -91,7 +91,7 @@ export function useUpdateEmployee(onClose: () => void) {
         name: data.name,
         workShift: data.workShift,
         jobTitleId: data.jobTitleId,
-        status: data.status,
+        isActive: data.isActive,
       };
       updateMutation.mutate(updateData);
     }
@@ -104,7 +104,7 @@ export function useUpdateEmployee(onClose: () => void) {
       name: employee.name,
       workShift: employee.workShift,
       jobTitleId: employee.jobTitleId.toString(),
-      status: employee.status as "ATIVO" | "INATIVO",
+      isActive: employee.isActive,
     });
   };
 
@@ -118,7 +118,7 @@ export function useUpdateEmployee(onClose: () => void) {
         name: editingEmployee.name,
         workShift: editingEmployee.workShift,
         jobTitleId: editingEmployee.jobTitleId.toString(),
-        status: editingEmployee.status as "ATIVO" | "INATIVO",
+        isActive: editingEmployee.isActive,
       });
     }
   }, [editingEmployee, form]);

@@ -1,58 +1,56 @@
-import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { MobileWorkOrderDetails } from "@/app/work-order/components/mobile/mobile-work-order-details";
-import { WorkOrderHeader } from "@/app/work-order/components/work-order-header/work-order-header";
-import { WorkOrderOverview } from "@/app/work-order/components/work-order-overview/word-order-overview";
-import { WorkOrderServices } from "@/app/work-order/components/work-order-services/work-order-services";
-import { WorkOrderHistory } from "@/app/work-order/components/work-order-history/work-order-history";
-import { WorkOrderQuickActions } from "@/app/work-order/components/work-order-quick-actions/work-order-quick-actions";
-import { WorkOrderParts } from "@/app/work-order/components/work-order-parts/work-order-parts";
-import { useWorkOrderById } from "../../hooks/use-work-order-by-id";
-import { Spinner } from "@/components/Spinner";
+import { useState, useCallback } from "react"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { WorkOrderHeader } from "@/app/work-order/components/work-order-header/work-order-header"
+import { WorkOrderOverview } from "@/app/work-order/components/work-order-overview/word-order-overview"
+import { WorkOrderServices } from "@/app/work-order/components/work-order-services/work-order-services"
+import { WorkOrderHistory } from "@/app/work-order/components/work-order-history/work-order-history"
+import { WorkOrderQuickActions } from "@/app/work-order/components/work-order-quick-actions/work-order-quick-actions"
+import { WorkOrderParts } from "@/app/work-order/components/work-order-parts/work-order-parts"
+import { useWorkOrderById } from "../../hooks/use-work-order-by-id"
+import { Spinner } from "@/components/Spinner"
 
 type WorkOrderDetailsProps = {
-  workOrderId: string;
-  isDialogOpen: boolean;
-  setIsDialogOpen: (isOpen: boolean) => void;
-};
+  workOrderId: string
+  isDialogOpen?: boolean
+  setIsDialogOpen?: (isOpen: boolean) => void
+  trigger?: React.ReactNode
+}
 
 export function WorkOrderDetails({
   workOrderId,
-  isDialogOpen = false,
-  setIsDialogOpen = () => {},
+  trigger,
+  isDialogOpen: externalIsDialogOpen,
+  setIsDialogOpen: externalSetIsDialogOpen,
 }: WorkOrderDetailsProps) {
-  const { data, isLoading } = useWorkOrderById(workOrderId);
-  const [activeTab, setActiveTab] = useState("overview");
-  const [isMobile, setIsMobile] = useState(false);
-  const workOrder = data?.data;
+  const { data, isLoading } = useWorkOrderById(workOrderId)
+  const [activeTab, setActiveTab] = useState("overview")
+  const [internalIsDialogOpen, setInternalIsDialogOpen] = useState(false)
+
+  const isControlled = externalIsDialogOpen !== undefined
+  const isOpen = isControlled ? externalIsDialogOpen : internalIsDialogOpen
+
+  const onOpenChange = useCallback(
+    (open: boolean) => {
+      if (isControlled) {
+        externalSetIsDialogOpen?.(open)
+      } else {
+        setInternalIsDialogOpen(open)
+      }
+    },
+    [isControlled, externalSetIsDialogOpen],
+  )
+
+  const workOrder = data?.data
 
   if (!workOrder) {
-    return <div>Loading...</div>;
-  }
-
-  // useEffect(() => {
-  //   const checkMobile = () => {
-  //     setIsMobile(window.innerWidth < 768);
-  //   };
-  //   checkMobile();
-  //   window.addEventListener("resize", checkMobile);
-  //   return () => window.removeEventListener("resize", checkMobile);
-  // }, []);
-
-  if (isMobile) {
-    return (
-      <MobileWorkOrderDetails
-        workOrder={workOrder}
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
-      />
-    );
+    return <Spinner size="small" />
   }
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogTrigger className="w-full">{trigger}</DialogTrigger>
       {isLoading && <Spinner />}
       <DialogContent className="max-w-4xl h-[95vh] p-0 gap-0">
         <ScrollArea className="h-full">
@@ -80,13 +78,11 @@ export function WorkOrderDetails({
                 </TabsContent>
               </Tabs>
             </div>
-            <WorkOrderQuickActions
-              workOrder={workOrder}
-              setIsDialogOpen={setIsDialogOpen}
-            />
+            <WorkOrderQuickActions workOrder={workOrder} onClose={() => onOpenChange(false)} />
           </div>
         </ScrollArea>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
+

@@ -35,9 +35,7 @@ export function Profile({
       {!isCollapsed && (
         <div className="flex-1 text-left">
           {descriptionPosition === "top" && description && (
-            <p
-              className={`text-muted-foreground leading-none ${descriptionSizeClass}`}
-            >
+            <p className={`text-muted-foreground ${descriptionSizeClass}`}>
               {description}
             </p>
           )}

@@ -24,7 +24,7 @@ import {
   SeverityLevel,
   TypeOfMaintenance,
 } from "@/shared/enums/work-order";
-import { Select as CustomSelect } from "@/components/CustomCombobox/index";
+import { Select as CustomSelect } from "@/components/custom-combobox/index";
 import { useBoxes } from "@/app/Box/hooks/use-box";
 import { useFleet } from "@/app/Fleet/hooks/use-fleet";
 import { useCreateWorkOrder } from "@/app/work-order/hooks/use-create-order";

@@ -98,12 +98,12 @@ export function useUpdateTrailer(onClose: () => void) {
   const handleEdit = (trailer: ITrailer) => {
     console.log("Editing trailer:", trailer);
     setEditingTrailer(trailer);
-    form.reset({
-      plate: trailer.plate,
-      position: trailer.position || "",
-      fleetId: trailer.fleetId || "",
-      isActive: trailer.isActive,
-    });
+    // form.reset({
+    //   plate: trailer.plate,
+    //   position: trailer.position || "",
+    //   fleetId: trailer.fleetId || "",
+    //   isActive: trailer.isActive,
+    // });
   };
 
   const handleDelete = (trailerId: string) => {
@@ -112,12 +112,12 @@ export function useUpdateTrailer(onClose: () => void) {
 
   useEffect(() => {
     if (editingTrailer) {
-      form.reset({
-        plate: editingTrailer.plate,
-        position: editingTrailer.position || "",
-        fleetId: editingTrailer.fleetId || "",
-        isActive: editingTrailer.isActive,
-      });
+      // form.reset({
+      //   plate: editingTrailer.plate,
+      //   position: editingTrailer.position! || "",
+      //   fleetId: editingTrailer.fleetId || "",
+      //   isActive: editingTrailer.isActive,
+      // });
     }
   }, [editingTrailer, form]);
 

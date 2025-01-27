@@ -8,13 +8,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Wrench } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import {
   Select as CustomSelect,
   IOption,
-} from "@/components/CustomCombobox/index";
+} from "@/components/custom-combobox/index";
 import { useService } from "@/app/Services/hooks/use-service";
 import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,12 +27,14 @@ type ServiceAssignmentCreationDialogProps = {
   workOrderId: string;
   trailers: IActiveTrailer[];
   isDisabled?: boolean;
+  iconButton?: boolean;
 };
 
 export function ServiceAssignmentCreationDialog({
   workOrderId,
   trailers,
   isDisabled,
+  iconButton,
 }: ServiceAssignmentCreationDialogProps) {
   const { ToastComponent, addToast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -103,7 +105,14 @@ export function ServiceAssignmentCreationDialog({
       <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <Button disabled={isDisabled}>
-            <Plus className="mr-2 h-4 w-4" /> Adicionar Serviço
+            {iconButton ? (
+              <Wrench className="h-4 w-4" />
+            ) : (
+              <div className="flex gap-1 items-center">
+                <Wrench className="mr-2 h-4 w-4" /> Adicionar Serviço
+              </div>
+            )}
+            {/* <Wrench className="mr-2 h-4 w-4" /> Adicionar Serviço */}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">

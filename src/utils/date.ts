@@ -1,3 +1,6 @@
+import { format as fnsFormat } from "date-fns"
+import { ptBR } from "date-fns/locale"
+
 export const dateUtil = {
   formatDate: (date: Date | null | undefined): string => {
     if (!date) return "";
@@ -23,5 +26,42 @@ export const dateUtil = {
     if (hours > 0) return hours === 1 ? "1 hora atrás" : `${hours} horas atrás`;
     if (minutes > 0) return minutes === 1 ? "1 minuto atrás" : `${minutes} minutos atrás`;
     return seconds === 1 ? "1 segundo atrás" : `${seconds} segundos atrás`;
+  },
+  formatDateBR: (date: Date) => {
+    return fnsFormat(date, "dd/MM/yyyy", { locale: ptBR })
+  },
+  getToday: (): string => {
+    const today = new Date();
+    return today.toISOString();
+  },
+  getTodayInterval: (): { startDate: Date, endDate: Date } => {
+    const today = new Date();
+
+    const startDate = new Date(today.setHours(0, 0, 0, 0));
+    const endDate = new Date(today.setHours(23, 59, 59, 999));
+
+    return {
+      startDate,
+      endDate,
+    };
+
   }
-};
+}
+
+export const dateLabels = {
+  today: "Hoje",
+  yesterday: "Ontem",
+  thisWeek: "Esta semana",
+  lastWeek: "Semana passada",
+  thisMonth: "Este mês",
+  lastMonth: "Mês passado",
+  thisYear: "Este ano",
+  lastYear: "Ano passado",
+  includeTime: "Incluir horário",
+  range: "Intervalo",
+  days: "dias",
+  reset: "Resetar",
+  apply: "Aplicar",
+  pickDateRange: "Filtrar por data"
+}
+

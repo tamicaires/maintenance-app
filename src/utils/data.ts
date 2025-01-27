@@ -7,3 +7,7 @@ export function getDataOrDefault<T>(obj: any, defaultValue: T, path?: string,): 
     .split(".")
     .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj) ?? defaultValue;
 }
+
+export function getNestedValue(obj: any, path: string): any {
+  return path.split('.').reduce((acc, key) => acc?.[key], obj);
+}

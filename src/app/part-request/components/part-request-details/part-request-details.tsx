@@ -11,10 +11,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
-import { IPartRequest } from "@/shared/types/part-request";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { useHandlePartRequest } from "../../hooks/use-handle-part-request";
 import PartRequestItem from "@/components/PartRequesItem/part-request-item";
+import { IPartRequestRelationalData } from "@/shared/types/part-request-relational-data";
 
 interface ActionModalProps {
   isOpen: boolean;
@@ -81,20 +81,18 @@ function ActionModal({ isOpen, onClose, onConfirm, type }: ActionModalProps) {
 }
 
 interface PartRequestDetailsDialogProps {
-  partRequests: IPartRequest[];
+  partRequests: IPartRequestRelationalData[];
   isOpen: boolean;
   onClose: () => void;
-  onUpdateRequests: (updatedRequests: IPartRequest[]) => void;
 }
 
 export function PartRequestDetailsDialog({
   partRequests: initialPartRequests,
   isOpen,
   onClose,
-  onUpdateRequests,
 }: PartRequestDetailsDialogProps) {
   const [localPartRequests, setLocalPartRequests] =
-    useState<IPartRequest[]>(initialPartRequests);
+    useState<IPartRequestRelationalData[]>(initialPartRequests);
 
   const {
     handleAction,
@@ -140,9 +138,6 @@ export function PartRequestDetailsDialog({
         }
         return req;
       });
-
-      // Call onUpdateRequests with all updated requests
-      onUpdateRequests(updatedRequests);
 
       // Filter out non-pending requests for local state
       return updatedRequests.filter(

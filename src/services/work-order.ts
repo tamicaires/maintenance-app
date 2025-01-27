@@ -1,5 +1,6 @@
 import {
   ICreateWorkOrder,
+  IDailyWorkOrdersData,
   IFinishMaintenance,
   IFinishWaitingParts,
   IStartMaintenance,
@@ -17,7 +18,7 @@ const create = async (
     data,
   });
 
-  console.log("response", response);
+
   return response;
 };
 
@@ -27,9 +28,18 @@ const update = async (workOrderId: string, data: Partial<IWorkOrder>) => {
     url: `/work-orders/${workOrderId}`,
     data,
   });
-  console.log("response", response);
+
   return response;
 };
+
+const getDaily = async (startDate: string, endDate: string): Promise<IApiResponse<IDailyWorkOrdersData>> => {
+  const response = await handleRequest<IDailyWorkOrdersData>({
+    method: "GET",
+    url: `/work-orders/daily?startDate=${startDate}&endDate=${endDate}`,
+  });
+
+  return response;
+}
 
 const getById = async (workOrderId: string): Promise<IApiResponse<IWorkOrder>> => {
   const response = await handleRequest<IWorkOrder>({
@@ -40,14 +50,25 @@ const getById = async (workOrderId: string): Promise<IApiResponse<IWorkOrder>> =
   return response
 }
 
-const getAll = async (): Promise<IApiResponse<IWorkOrder[]>> => {
+const getAll = async (
+  filters?: {
+    page?: string;
+    perPage?: string;
+    status?: string;
+    startDate?: string;
+    endDate?: string;
+  }
+): Promise<IApiResponse<IWorkOrder[]>> => {
+  const params = new URLSearchParams(filters as Record<string, string>);
+
   const response = await handleRequest<IWorkOrder[]>({
     method: "GET",
-    url: "/work-orders",
+    url: `/work-orders?${params.toString()}`,
   });
 
   return response;
 };
+
 
 const cancel = async (workOrderId: string): Promise<IApiResponse<void>> => {
   const response = await handleRequest<void>({
@@ -112,6 +133,7 @@ export const WorkOrderService = {
   create,
   update,
   cancel,
+  getDaily,
   getById,
   getAll,
   startMaintenance,

@@ -1,4 +1,4 @@
-import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
+import { IBox, IBoxCreateAndUpdate, IBoxWithRelationalData } from "@/shared/types/box";
 import { handleRequest, IApiResponse } from "@/services/api";
 
 const create = async (
@@ -13,6 +13,15 @@ const create = async (
   console.log("response", response);
   return response;
 };
+
+const getWithRelationalData = async (): Promise<IApiResponse<IBoxWithRelationalData[]>> => {
+  const response = await handleRequest<IBoxWithRelationalData[]>({
+    method: "GET",
+    url: "boxes/relational",
+  })
+
+  return response;
+}
 
 const update = async (
   id: string,
@@ -49,5 +58,6 @@ export const BoxService = {
   create,
   update,
   deleteBox,
+  getWithRelationalData,
   getAll,
 };

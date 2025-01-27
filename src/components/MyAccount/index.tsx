@@ -4,6 +4,8 @@ import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { getInitials } from "@/utils/utils";
 import { getUserLocalStorage } from "@/utils/auth";
+import { Link } from "react-router-dom";
+import { PrivateRoutes } from "@/shared/enums/routes";
 
 interface MyAccountAvatarProps {
   isCollapsed?: boolean;
@@ -35,10 +37,15 @@ export function MyAccountAvatar({ isCollapsed = false }: MyAccountAvatarProps) {
             <User className="mr-2 h-4 w-4" />
             Ver Perfil
           </Button>
-          <Button variant="ghost" className="w-full justify-start text-sm">
-            <Settings className="mr-2 h-4 w-4" />
-            Configurações
-          </Button>
+          <Link
+            to={PrivateRoutes.Settings}
+            className="flex flex-col items-center text-center"
+          >
+            <Button variant="ghost" className="w-full justify-start text-sm">
+              <Settings className="mr-2 h-4 w-4" />
+              Configurações
+            </Button>
+          </Link>
           <Button variant="ghost" className="w-full justify-start text-sm">
             <Bell className="mr-2 h-4 w-4" />
             Atualizações

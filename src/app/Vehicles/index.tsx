@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   Search,
   File,
@@ -8,16 +8,16 @@ import {
   Trash2,
   ChevronDown,
   ChevronUp,
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -26,7 +26,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -34,8 +34,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { ScrollArea } from "@/components/ui/scroll-area"
+} from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Pagination,
   PaginationContent,
@@ -43,49 +43,49 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { Input } from "@/components/ui/input"
-import { useVehicles } from "./hooks/use-vehicle"
-import { useUpdateVehicle } from "./hooks/use-update-vehicles"
-import { useSortableTable } from "@/hooks/use-sortable-table"
-import { IVehicle } from "@/shared/types/vehicles.interface"
-import { SortableHeader } from "@/components/SortableHeader"
-import { Spinner } from "@/components/Spinner"
-import VehicleCreationDialog from "./CreateVehicle"
+} from "@/components/ui/pagination";
+import { Input } from "@/components/ui/input";
+import { useVehicles } from "./hooks/use-vehicle";
+import { useUpdateVehicle } from "./hooks/use-update-vehicles";
+import { useSortableTable } from "@/hooks/use-sortable-table";
+import { IVehicle } from "@/shared/types/vehicles.interface";
+import { SortableHeader } from "@/components/SortableHeader";
+import { Spinner } from "@/components/Spinner";
+import VehicleCreationDialog from "./CreateVehicle";
 
 export function Vehicle() {
-  const [page, setPage] = useState(1)
-  const perPage = 20
+  const [page, setPage] = useState(1);
+  const perPage = 20;
 
-  const { data, error, isLoading } = useVehicles()
+  const { data, error, isLoading } = useVehicles();
 
   const { handleEdit, handleDelete, editingVehicle, setEditingVehicle } =
-    useUpdateVehicle(() => setEditingVehicle(null))
-
+    useUpdateVehicle(() => setEditingVehicle(null));
+  editingVehicle;
   const { sortedData, sortField, sortOrder, handleSort } =
-    useSortableTable<IVehicle>(data?.data || [], "plate")
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
-  const [searchTerm, setSearchTerm] = useState<string>("")
-  const [filteredData, setFilteredData] = useState<IVehicle[]>([])
+    useSortableTable<IVehicle>(data?.data || [], "plate");
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<IVehicle[]>([]);
 
   useEffect(() => {
     const filtered = sortedData.filter((vehicle) =>
       vehicle.plate.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    setFilteredData(filtered)
-  }, [sortedData, searchTerm])
+    );
+    setFilteredData(filtered);
+  }, [sortedData, searchTerm]);
 
   if (error) {
-    return <div>Ocorreu um erro: {error.message}</div>
+    return <div>Ocorreu um erro: {error.message}</div>;
   }
 
   const activeVehicles = filteredData
     .filter((vehicle) => vehicle.isActive === true)
-    .length.toString()
+    .length.toString();
 
   const toggleRowExpansion = (id: string) => {
-    setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }))
-  }
+    setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const renderMobileCard = (vehicle: IVehicle) => (
     <Card key={vehicle.id} className="mb-4">
@@ -158,7 +158,7 @@ export function Vehicle() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 
   const renderDesktopTable = () => (
     <Table>
@@ -219,17 +219,17 @@ export function Vehicle() {
         ))}
       </TableBody>
     </Table>
-  )
+  );
 
   const handlePreviousPage = () => {
-    setPage((p) => Math.max(1, p - 1))
-  }
+    setPage((p) => Math.max(1, p - 1));
+  };
 
   const handleNextPage = () => {
     if (filteredData.length === perPage) {
-      setPage((p) => p + 1)
+      setPage((p) => p + 1);
     }
-  }
+  };
 
   return (
     <ScrollArea>
@@ -245,7 +245,8 @@ export function Vehicle() {
                     <CardHeader>
                       <CardTitle>Gestão de Veículos</CardTitle>
                       <CardDescription className="max-w-lg text-balance leading-relaxed">
-                        Gerencie e acompanhe os veículos cadastrados na sua frota.
+                        Gerencie e acompanhe os veículos cadastrados na sua
+                        frota.
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex flex-wrap gap-5">
@@ -256,7 +257,9 @@ export function Vehicle() {
                   <Card className="pb-4">
                     <CardHeader className="pb-2">
                       <CardDescription>Ativos</CardDescription>
-                      <CardTitle className="text-4xl">{activeVehicles}</CardTitle>
+                      <CardTitle className="text-4xl">
+                        {activeVehicles}
+                      </CardTitle>
                     </CardHeader>
                   </Card>
                 </div>
@@ -311,8 +314,8 @@ export function Vehicle() {
                           <PaginationPrevious
                             href="#"
                             onClick={(e) => {
-                              e.preventDefault()
-                              handlePreviousPage()
+                              e.preventDefault();
+                              handlePreviousPage();
                             }}
                           />
                         </PaginationItem>
@@ -325,8 +328,8 @@ export function Vehicle() {
                           <PaginationNext
                             href="#"
                             onClick={(e) => {
-                              e.preventDefault()
-                              handleNextPage()
+                              e.preventDefault();
+                              handleNextPage();
                             }}
                           />
                         </PaginationItem>
@@ -346,5 +349,5 @@ export function Vehicle() {
         />
       )} */}
     </ScrollArea>
-  )
+  );
 }

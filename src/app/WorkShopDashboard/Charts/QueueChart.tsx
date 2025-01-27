@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -15,59 +14,19 @@ import {
 } from "@/components/ui/chart";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { MaintenanceStatus } from "@/shared/enums/work-order";
+import { useQueueChart } from "../hooks/use-queue-chart";
+import { Spinner } from "@/components/Spinner";
 
-interface QueueChartProps {
-  workOrders: IWorkOrder[];
-}
+export function QueueChart() {
+  const { data, isLoading: isQueueCharloading } = useQueueChart();
+  const queueChart = data?.data;
 
-export function QueueChart({ workOrders }: QueueChartProps) {
-  const areaChartData = useMemo(() => {
-    const now = new Date();
-    const sevenHoursAgo = new Date(now.getTime() - 7 * 60 * 60 * 1000);
-
-    const hourlyData = new Array(7).fill(0).map((_, index) => {
-      const hour = new Date(now.getTime() - (6 - index) * 60 * 60 * 1000);
-      return {
-        hour: hour.getHours().toString().padStart(2, "0") + ":00",
-        count: 0,
-      };
-    });
-
-    workOrders.forEach((order) => {
-      if (order.status === MaintenanceStatus.FILA && order.entryQueue) {
-        const entryTime = new Date(order.entryQueue);
-        if (entryTime >= sevenHoursAgo && entryTime <= now) {
-          const index = hourlyData.findIndex(
-            (data) =>
-              data.hour ===
-              entryTime.getHours().toString().padStart(2, "0") + ":00"
-          );
-          if (index !== -1) {
-            hourlyData[index].count++;
-          }
-        }
-      }
-    });
-
-    return hourlyData;
-  }, [workOrders]);
-
-  const totalQueueCount = areaChartData.reduce(
-    (sum, data) => sum + data.count,
-    0
-  );
-  const previousTotalQueueCount = workOrders.filter(
-    (order) =>
-      order.status === MaintenanceStatus.FILA &&
-      new Date(order.entryQueue!) <
-        new Date(new Date().getTime() - 14 * 60 * 60 * 1000)
-  ).length;
-
-  const percentageChange =
-    ((totalQueueCount - previousTotalQueueCount) / previousTotalQueueCount) *
-    100;
+  if (isQueueCharloading) {
+    return <Spinner />;
+  }
+  if (!queueChart) {
+    return <div>Deu erro</div>;
+  }
 
   const areaChartConfig = {
     queue: {
@@ -82,11 +41,11 @@ export function QueueChart({ workOrders }: QueueChartProps) {
         <CardTitle>Fluxo de Frotas em Fila</CardTitle>
         <CardDescription>Frotas em fila nas últimas 7 horas</CardDescription>
       </CardHeader>
-      <CardContent className="w-60 sm:w-[408px]">
+      <CardContent className="w-full">
         <ChartContainer config={areaChartConfig}>
           <AreaChart
             accessibilityLayer
-            data={areaChartData}
+            data={queueChart.hourlyData}
             margin={{
               left: 0,
               right: 0,
@@ -130,22 +89,22 @@ export function QueueChart({ workOrders }: QueueChartProps) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          {percentageChange >= 0 ? (
+          {queueChart.percentageChange >= 0 ? (
             <>
-              Aumento de {percentageChange.toFixed(1)}% em relação às 7 horas
-              anteriores
+              Aumento de {queueChart.percentageChange.toFixed(1)}% em relação às
+              7 horas anteriores
               <TrendingUp className="h-4 w-4" />
             </>
           ) : (
             <>
-              Diminuição de {Math.abs(percentageChange).toFixed(1)}% em relação
-              às 7 horas anteriores
+              Diminuição de {Math.abs(queueChart.percentageChange).toFixed(1)}%
+              em relação às 7 horas anteriores
               <TrendingDown className="h-4 w-4" />
             </>
           )}
         </div>
         <div className="leading-none text-muted-foreground">
-          Baseado nos dados das últimas 14 horas
+          Baseado nos dados das últimas 7 horas
         </div>
       </CardFooter>
     </Card>

@@ -34,6 +34,7 @@ export const carrierColumns: ColumnDef<ICarrier>[] = [
         {row.getValue("carrierName")}
       </div>
     ),
+    enableColumnFilter: true
   },
   {
     accessorKey: "managerName",

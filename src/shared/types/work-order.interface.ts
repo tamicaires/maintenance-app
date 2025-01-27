@@ -95,3 +95,25 @@ export interface IFinishWaitingParts {
   status: MaintenanceStatus;
   endWaitingParts: Date;
 }
+
+interface Metric {
+  value: number
+  change: number
+}
+
+export interface IDailyWorkOrdersData {
+  workOrders: IWorkOrder[]
+  statistics: {
+    countFrotasEmFila: number
+    countFrotasEmManutencao: number
+    countFinalizadas: number
+    mediaTempoFila: number
+    mediaTempoPreventiva: number
+    mediaTempoCorretiva: number
+    queueCount: Metric
+    avgQueueTime: Metric
+    avgPVTime: Metric
+    avgCOTime: Metric
+    releasedCount: Metric
+  }
+}

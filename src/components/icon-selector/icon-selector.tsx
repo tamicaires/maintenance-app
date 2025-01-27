@@ -168,7 +168,7 @@ export function IconSelector({
             <button
               key={index}
               className={`w-2 h-2 rounded-full transition-colors ${
-                page === index ? "bg-primary" : "bg-gray-200"
+                page === index ? "bg-red-500" : "bg-gray-200"
               }`}
               onClick={() => setPage(index)}
             />

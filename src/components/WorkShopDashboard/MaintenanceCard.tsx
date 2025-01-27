@@ -2,25 +2,20 @@ import { CheckCircleIcon, ClockIcon, Eye, Truck } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { calculateMaintenanceDuration } from "@/utils/work-order";
-import { boxToNumber } from "@/utils/utils";
+import { calculateDuration } from "@/utils/work-order";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { motion } from "framer-motion";
 import { formatDuration } from "@/utils/time";
+import { IBoxWithRelationalData } from "@/shared/types/box";
+import { WorkOrderDetails } from "@/app/work-order/components/work-order-details";
 
 interface MaintenanceCardProps {
-  workOrder: IWorkOrder;
-  onShowDetails: (workOrder: IWorkOrder) => void;
+  box: IBoxWithRelationalData;
 }
 
-export function MaintenanceCard({
-  workOrder,
-  onShowDetails,
-}: MaintenanceCardProps) {
-  const maintenanceDuration = calculateMaintenanceDuration(workOrder);
-  const progress = 65;
+export function MaintenanceCard({ box }: MaintenanceCardProps) {
+  const maintenanceDuration = calculateDuration(box.workOrder.entryMaintenance);
 
   return (
     <motion.div
@@ -37,20 +32,20 @@ export function MaintenanceCard({
                 <Truck className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="font-semibold">Frota {workOrder.fleetNumber}</h3>
-                <p className="text-xs text-muted-foreground">
-                  {workOrder.typeOfMaintenance}
-                </p>
+                <h3 className="font-semibold">
+                  Frota {box.workOrder.fleet.fleetNumber}
+                </h3>
+                <p className="text-xs text-muted-foreground"></p>
               </div>
             </div>
           </div>
 
           <div className="relative mb-4">
             <div className="absolute -top-12 -right-4 text-8xl font-bold text-primary opacity-10 select-none">
-              {boxToNumber(workOrder.box)}
+              {box.name}
             </div>
             <div className="text-3xl font-bold text-primary">
-              Box {boxToNumber(workOrder.box)}
+              Box {box.name}
             </div>
           </div>
 
@@ -62,9 +57,9 @@ export function MaintenanceCard({
               <div className="flex items-center space-x-2">
                 <ClockIcon className="h-4 w-4 text-muted-foreground" />
                 <span>
-                  {workOrder.entryMaintenance
+                  {box.workOrder.entryMaintenance
                     ? format(
-                        new Date(workOrder.entryMaintenance),
+                        new Date(box.workOrder.entryMaintenance),
                         "dd/MM HH:mm",
                         { locale: ptBR }
                       )
@@ -90,20 +85,23 @@ export function MaintenanceCard({
           <div className="space-y-2 mb-4">
             <div className="flex justify-between text-xs">
               <span className="font-medium">Progresso</span>
-              <span className="text-muted-foreground">{progress}%</span>
+              <span className="text-muted-foreground">{box.progress}%</span>
             </div>
-            <Progress value={progress} className="h-1" />
+            <Progress value={box.progress} className="h-1" />
           </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onShowDetails(workOrder)}
-            className="w-full transition-all hover:bg-primary hover:text-primary-foreground"
-          >
-            <Eye className="h-4 w-4 mr-2" />
-            Detalhes
-          </Button>
+          <WorkOrderDetails
+            workOrderId={box.workOrder.id}
+            trigger={
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full transition-all hover:bg-primary hover:text-primary-foreground"
+              >
+                <Eye className="h-4 w-4 mr-2" />
+                Detalhes
+              </Button>
+            }
+          />
         </CardContent>
       </Card>
     </motion.div>

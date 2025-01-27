@@ -10,10 +10,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Switch } from "@/components/ui/switch"
-import { Select } from "@/components/CustomCombobox"
+import { Select } from "@/components/custom-combobox"
 import { useUpdateFleet } from "../hooks/use-update-fleet"
 import { Loader2, Pencil } from "lucide-react"
-import { useCarrier } from "@/app/Carrier/hooks/use-carrier"
+import { useCarrier } from "@/app/carrier/hooks/use-carrier"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { CustomDialogHeader } from "@/components/CustomDialogHeader"
 import { IFleet } from "@/shared/types/fleet.interface"

@@ -22,7 +22,7 @@ const updateWorkOrderSchema = z
     severityLevel: z.string().optional(),
     fleetId: z.string(),
     typeOfMaintenance: z.string(),
-    box: z.string(),
+    boxId: z.string().uuid().optional(),
   })
   .refine(
     (data) => {
@@ -89,7 +89,7 @@ export function useUpdateWorkOrder(
     severityLevel: workOrder.severityLevel,
     fleetId: workOrder.fleetId,
     typeOfMaintenance: workOrder.typeOfMaintenance,
-    box: workOrder.box,
+    boxId: workOrder.box!.id,
   };
 
   const updateWorkOrderForm = useForm<UpdateWorkOrderData>({
@@ -138,7 +138,6 @@ export function useUpdateWorkOrder(
       status: data.status,
       fleetId: data.fleetId,
       typeOfMaintenance: data.typeOfMaintenance,
-      box: data.box,
       severityLevel: data.severityLevel,
     };
 

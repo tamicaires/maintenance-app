@@ -29,31 +29,10 @@ import {
   ChevronLeftIcon,
   CheckCircleIcon,
 } from "lucide-react";
-import { FormFields, useUpdateEmployee } from "../hooks/use-update-employee";
+import { useUpdateEmployee } from "../hooks/use-update-employee";
 import { useJobTitle } from "@/app/JobTitle/hooks/use-job";
-import { IEmployee } from "@/shared/types/employee.interface";
-
-const steps: Array<{
-  title: string;
-  fields: (keyof FormFields)[];
-  labels: string[];
-}> = [
-  {
-    title: "Informações Pessoais",
-    fields: ["name"],
-    labels: ["Nome"],
-  },
-  {
-    title: "Informações Profissionais",
-    fields: ["workShift", "jobTitleId"],
-    labels: ["Turno de Trabalho", "Cargo"],
-  },
-  {
-    title: "Status",
-    fields: ["status"],
-    labels: ["Status"],
-  },
-];
+import type { IEmployee } from "@/shared/types/employee.interface";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function EmployeeEditDialog({
   employee,
@@ -96,8 +75,13 @@ export default function EmployeeEditDialog({
   }, [isSuccess]);
 
   const handleNext = async () => {
-    const fieldsToValidate = steps[step - 1].fields;
-    const isStepValid = await trigger(fieldsToValidate);
+    const isStepValid = await trigger(
+      step === 1
+        ? ["name"]
+        : step === 2
+        ? ["workShift", "jobTitleId"]
+        : ["isActive"]
+    );
     if (isStepValid) {
       setStep(step + 1);
     }
@@ -122,7 +106,7 @@ export default function EmployeeEditDialog({
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex justify-between mb-4">
-              {steps.map((_, i) => (
+              {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
                   className={`w-1/3 h-1 rounded-full ${
@@ -141,21 +125,50 @@ export default function EmployeeEditDialog({
                   transition={{ duration: 0.3 }}
                 >
                   <h3 className="text-lg font-semibold mb-4">
-                    {steps[step - 1].title}
+                    {step === 1 && "Informações Pessoais"}
+                    {step === 2 && "Informações Profissionais"}
+                    {step === 3 && "Status"}
                   </h3>
-                  {steps[step - 1].fields.map((field, index) => (
+                  {step === 1 && (
                     <FormField
-                      key={field}
                       control={control}
-                      name={field}
-                      render={({ field: formField }) => (
+                      name="name"
+                      render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{steps[step - 1].labels[index]}</FormLabel>
+                          <FormLabel>Nome</FormLabel>
                           <FormControl>
-                            {field === "jobTitleId" ? (
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                  {step === 2 && (
+                    <>
+                      <FormField
+                        control={control}
+                        name="workShift"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Turno de Trabalho</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={control}
+                        name="jobTitleId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Cargo</FormLabel>
+                            <FormControl>
                               <Select
-                                onValueChange={formField.onChange}
-                                value={formField.value?.toString()}
+                                onValueChange={field.onChange}
+                                value={field.value?.toString()}
                               >
                                 <SelectTrigger>
                                   <SelectValue placeholder="Selecione um cargo" />
@@ -171,30 +184,32 @@ export default function EmployeeEditDialog({
                                   ))}
                                 </SelectContent>
                               </Select>
-                            ) : field === "status" ? (
-                              <Select
-                                onValueChange={formField.onChange}
-                                value={formField.value}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Selecione o status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="ATIVO">ATIVO</SelectItem>
-                                  <SelectItem value="INATIVO">
-                                    INATIVO
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                            ) : (
-                              <Input {...formField} />
-                            )}
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
+                  {step === 3 && (
+                    <FormField
+                      control={control}
+                      name="isActive"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-4 mt-4">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
                           </FormControl>
-                          <FormMessage />
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>Ativo</FormLabel>
+                          </div>
                         </FormItem>
                       )}
                     />
-                  ))}
+                  )}
                 </motion.div>
               )}
               {step === 4 && (

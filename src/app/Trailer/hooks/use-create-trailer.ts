@@ -11,7 +11,7 @@ import { z } from "zod";
 
 const createTrailerSchema = z.object({
   plate: z.string().min(1, "Plate is required"),
-  position: z.number().nullable(),
+  position: z.string().nullable(),
   isActive: z.boolean(),
   fleetId: z.string().nullable(),
 });

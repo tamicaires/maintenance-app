@@ -1,19 +1,23 @@
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { formatDuration } from "@/utils/time";
 
 interface CardProps {
   title: string;
-  value: string | number;
-  change: number;
+  value?: string | number;
+  isTimeValue?: boolean;
+  change?: number;
   expectedTime?: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  isLoading?: boolean;
 }
 
 export function AnalyticsCard({
   title,
-  value,
-  change,
+  value = 0,
+  isTimeValue,
+  change = 0,
   icon: Icon,
   expectedTime,
 }: CardProps) {
@@ -23,7 +27,12 @@ export function AnalyticsCard({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <h3 className="text-2xl font-bold mt-1">{value}</h3>
+            <h3 className="text-2xl font-bold mt-1">
+              {/* {typeof value === "string" && value}{" "} */}
+              {isTimeValue && typeof value === "number"
+                ? formatDuration(value)
+                : value}
+            </h3>
           </div>
           <div
             className={`p-2 rounded-full ${
@@ -50,7 +59,7 @@ export function AnalyticsCard({
               change >= 0 ? "text-green-600" : "text-red-600"
             }`}
           >
-            {Math.abs(change)}%
+            {Math.round(Math.abs(change))}%
           </span>
         </div>
         {expectedTime && (

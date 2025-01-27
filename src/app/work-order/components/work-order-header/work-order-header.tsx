@@ -9,6 +9,7 @@ import {
   XCircle,
   Pause,
   CornerUpLeft,
+  Play,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,12 +56,23 @@ import { StartWaitingPartsDialog } from "../actions-dialogs/start-waiting-parts-
 import { Profile } from "@/components/Profile";
 import { BackToQueueWorkOrderDialog } from "../actions-dialogs/back-to-queue";
 import { formatDuration } from "@/utils/time";
+import { StartChecklistDialog } from "@/app/checklist/components/start-checklist-dialog";
+import { useChecklistByWorkOrder } from "@/app/checklist/checklist/hooks/use-checklist-by-work-order";
+import { IChecklistWithRelationalData } from "@/shared/types/checklist/checklist";
+import { Spinner } from "@/components/Spinner";
+import ChecklistItems from "@/app/checklist/components/checklist-items";
 
 export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
   const { addToast, ToastComponent } = useToast();
 
   const { handleCancelWorkOrder, isCancelPending } =
     useCancelWorkOrder(addToast);
+
+  const { data, isLoading: isChecklistLoading } = useChecklistByWorkOrder(
+    workOrder.id
+  );
+  const checklist = data?.data;
+
 
   const statusInfo = getMaintenanceStatusInfo(workOrder.status);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
@@ -81,6 +93,36 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
     // Simular o envio de e-mail (em um cenário real, isso seria feito no servidor)
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("E-mail enviado para:", email);
+  };
+
+  const renderChecklist = (
+    checklist: IChecklistWithRelationalData | null | undefined
+  ) => {
+    if (isChecklistLoading) {
+      return <Spinner size="small" />;
+    }
+    console.log("checklsitdata", checklist);
+    if (!checklist) {
+      return (
+        <StartChecklistDialog
+          workOrderId={workOrder.id}
+          trigger={
+            <Button variant="default">
+              <Play className="w-4 h-4 mr-2" />
+              Iniciar Checklist
+            </Button>
+          }
+        />
+      );
+    }
+
+    return (
+      <ChecklistItems
+        checklistId={checklist.id}
+        checklistData={checklist}
+        trigger={<Button>Ver Checklist</Button>}
+      />
+    );
   };
   return (
     <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b">
@@ -249,9 +291,8 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
                   </div>
                 </HoverCardContent>
               </HoverCard>
-              {workOrder.status === MaintenanceStatus.MANUTENCAO && (
-                <Button variant="outline">Iniciar Checklist</Button>
-              )}
+              {workOrder.status === MaintenanceStatus.MANUTENCAO &&
+                renderChecklist(checklist)}
             </div>
           </div>
         </div>

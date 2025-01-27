@@ -39,7 +39,7 @@ export function ServiceActionDialog({
 }: ServiceActionDialogProps) {
   const { addToast, ToastComponent } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
-
+  isDialogOpen
   const {
     changeServiceAssignmentStatusForm,
     handleSubmit,

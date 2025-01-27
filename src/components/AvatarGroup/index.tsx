@@ -23,7 +23,7 @@ import { EmployeeBasicInfo } from "@/shared/types/employee.interface";
 import { useToast } from "../Toast/toast";
 import { useAddEmployeeToServiceAssignment } from "@/app/EmployeeServiceAssigment/hooks/use-add-service-employee";
 import { useEmployee } from "@/app/Employee/hooks/use-employee";
-import { Select as CustomSelect } from "../CustomCombobox";
+import { Select as CustomSelect } from "../custom-combobox";
 import { CustomDialogHeader } from "../CustomDialogHeader";
 
 type EmployeeAvatarGroupSize = "sm" | "md" | "lg";

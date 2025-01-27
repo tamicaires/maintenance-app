@@ -38,6 +38,16 @@ const deleteTrailer = async (
   return response;
 };
 
+const getByWorkOrder = async (
+  workOrderId: string
+): Promise<IApiResponse<ITrailer[]>> => {
+  const response = await handleRequest<ITrailer[]>({
+    method: "GET",
+    url: `/trailers/work-order/${workOrderId}`,
+  });
+
+  return response;
+}
 const getAll = async (): Promise<IApiResponse<ITrailer[]>> => {
   const response = await handleRequest<ITrailer[]>({
     method: "GET",
@@ -51,5 +61,6 @@ export const TrailerService = {
   create,
   update,
   deleteTrailer,
+  getByWorkOrder,
   getAll,
 };

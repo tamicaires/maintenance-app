@@ -16,22 +16,27 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { calculateMaintenanceDuration } from "@/utils/work-order";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
+import {
+  IBoxWithRelationalData,
+  IWorkOrderBoxRelationalData,
+} from "@/shared/types/box";
 
 interface MaintenanceTableProps {
-  workOrders: IWorkOrder[];
+  workOrders: IWorkOrderBoxRelationalData[];
+  box: IBoxWithRelationalData;
   onStatusChange: (id: string, status: string) => void;
   onShowDetails: (workOrder: any) => void;
 }
 
 export function MaintenanceTable({
   workOrders,
+  box,
   onStatusChange,
   onShowDetails,
 }: MaintenanceTableProps) {
   const progress = 65;
+  onShowDetails
   return (
     <Table>
       <TableHeader>
@@ -49,11 +54,17 @@ export function MaintenanceTable({
         {workOrders.map((workOrder) => (
           <TableRow key={workOrder.id}>
             <TableCell className="font-medium">
-              {workOrder.fleetNumber}
+              {box.workOrder.fleet.fleetNumber}
             </TableCell>
-            <TableCell>{workOrder.typeOfMaintenance}</TableCell>
-            <TableCell>{workOrder.entryQueue}</TableCell>
-            <TableCell>{calculateMaintenanceDuration(workOrder)}</TableCell>
+            <TableCell>
+              {box.workOrder.typeOfMaintenance}
+              {/* {workOrder.typeOfMaintenance} */}
+            </TableCell>
+            <TableCell>
+              {box.workOrder.entryMaintenance}
+              {/* {workOrder.entryMaintenance} */}
+            </TableCell>
+            <TableCell>{"12:00"}</TableCell>
             <TableCell>
               <div className="flex items-center space-x-2">
                 <Progress value={progress} className="w-[60px]" />
@@ -63,7 +74,9 @@ export function MaintenanceTable({
             <TableCell>
               <Badge
                 variant={
-                  workOrder.status === MaintenanceStatus.MANUTENCAO ? "default" : "secondary"
+                  workOrder.status === MaintenanceStatus.MANUTENCAO
+                    ? "default"
+                    : "secondary"
                 }
                 className={`${
                   workOrder.status === MaintenanceStatus.MANUTENCAO
@@ -76,11 +89,7 @@ export function MaintenanceTable({
             </TableCell>
             <TableCell>
               <div className="flex space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onShowDetails(workOrder)}
-                >
+                <Button variant="outline" size="sm" onClick={() => {}}>
                   Detalhes
                 </Button>
                 {workOrder.status === MaintenanceStatus.MANUTENCAO && (

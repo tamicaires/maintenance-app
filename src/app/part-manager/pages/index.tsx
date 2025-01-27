@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -18,12 +18,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParts } from "../hooks/use-parts";
 import { InventoryTable } from "@/components/InventoryTable";
-import { RequestTable } from "@/components/RequestTable";
-import { usePartRequests } from "@/app/part-request/hooks/use-part-requests";
 import { OpenRequestsList } from "@/components/OpenRequestsList";
-import { RequestStatus } from "@/shared/enums/part-request";
 import { Button } from "@/components/ui/button";
-import { IPartRequest } from "@/shared/types/part-request";
+import { PartRequestTable } from "@/app/part-request/components/part-request-table";
 
 export enum PartLocation {
   ESTOQUE = "ESTOQUE",
@@ -46,31 +43,13 @@ const chartData = [
 ];
 
 export function PartsManager() {
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const [isConsumptionCollapsed, setIsConsumptionCollapsed] = useState(true);
+
   const { data, error, isLoading } = useParts();
-  const { data: partRequestData, isLoading: isPartRequestLoading } =
-    usePartRequests();
-  const [partRequests, setPartRequests] = useState<IPartRequest[]>([]);
 
   const parts = data?.data || [];
-  const requests = partRequestData?.data || [];
-  const filteredParts = parts.filter((part) =>
-    part.name.toLowerCase().includes(search.toLowerCase())
-  );
-  useEffect(() => {
-    if (partRequestData?.data) {
-      setPartRequests(partRequestData.data);
-    }
-  }, [partRequestData]);
 
-  const handleUpdateRequests = (updatedRequests: IPartRequest[]) => {
-    setPartRequests(updatedRequests);
-  };
-
-  if (isPartRequestLoading) {
-    return <div>Loading...</div>;
-  }
   const totalParts = parts.length;
   const lowStockParts = parts.filter((part) => part.stockQuantity < 10).length;
   const newParts = parts.filter(
@@ -99,7 +78,7 @@ export function PartsManager() {
   return (
     <div className="container flex flex-col lg:flex-row gap-4 mx-auto p-4 pt-16">
       <div className="flex flex-col w-full lg:w-3/4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -144,20 +123,47 @@ export function PartsManager() {
           </Card>
         </div>
         <Card className="col-span-1 lg:col-span-2 min-h-[65vh]">
-          <CardHeader>
-            <CardTitle>Gestão de Peças</CardTitle>
-          </CardHeader>
           <CardContent>
             <Tabs defaultValue="inventory" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="inventory">Inventário</TabsTrigger>
-                <TabsTrigger value="requests">Solicitações</TabsTrigger>
-              </TabsList>
+              <div className="flex items-center">
+                <CardHeader className="w-full">
+                  <CardTitle>Gestão de Peças</CardTitle>
+                </CardHeader>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="inventory">Inventário</TabsTrigger>
+                  <TabsTrigger value="requests">Solicitações</TabsTrigger>
+                </TabsList>
+              </div>
               <TabsContent value="inventory">
-                <InventoryTable parts={filteredParts} />
+                <InventoryTable parts={parts} />
               </TabsContent>
               <TabsContent value="requests">
-                <RequestTable partRequests={requests} />
+                {/* <RequestTable partRequests={requests} /> */}
+                {/* <ReportHeader
+                  title="Solicitações de Peças"
+                  description="Gerencie as solicitações de peças"
+                >
+                  <Button variant="secondary">Exportar Relatório</Button>
+                  <Button>Nova Solicitação</Button>
+                </ReportHeader> */}
+                {/* <ReportTable
+                  columns={partRequestColumns}
+                  data={requests}
+                  tabs={tabs}
+                  filterOptions={filterOptions}
+                  isloadingData={isPartRequestLoading}
+                  pagination={{
+                    pageIndex: currentPage - 1,
+                    pageSize: itemsPerPage,
+                    pageCount: Math.ceil(totalRequests / itemsPerPage),
+                    onPageChange: (newPage) => setCurrentPage(newPage + 1),
+                    onPageSizeChange: (newPageSize) => {
+                      setItemsPerPage(newPageSize);
+                      setCurrentPage(1);
+                    },
+                  }}
+                /> */}
+                <PartRequestTable />
               </TabsContent>
             </Tabs>
           </CardContent>
@@ -201,12 +207,7 @@ export function PartsManager() {
             )}
           </CardContent>
         </Card>
-        <OpenRequestsList
-          requests={partRequests.filter(
-            (request) => request.status === RequestStatus.PENDING
-          )}
-          onUpdateRequests={handleUpdateRequests}
-        />
+        <OpenRequestsList />
       </div>
     </div>
   );

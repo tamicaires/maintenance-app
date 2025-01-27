@@ -4,7 +4,7 @@ import { getTokenLocalStorage } from "@/utils/auth";
 const token = getTokenLocalStorage();
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://31a7-186-227-185-108.ngrok-free.app/",
   headers: {
     Authorization: `Bearer ${token}`,
   },

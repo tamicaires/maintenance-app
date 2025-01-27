@@ -110,7 +110,7 @@ export function useUpdateWorkOrder(onClose: () => void) {
         exitSupervisor: data.exitSupervisor,
         fleetId: data.fleetId,
         typeOfMaintenance: data.typeOfMaintenance,
-        box: data.box,
+        // box: data.box,
         status: data.status,
       };
 
@@ -142,7 +142,9 @@ export function useUpdateWorkOrder(onClose: () => void) {
       exitSupervisor: workOrder.exitSupervisor || "",
       fleetId: workOrder.fleetId,
       typeOfMaintenance: workOrder.typeOfMaintenance as TypeOfMaintenance,
-      box: workOrder.box as Box,
+      // box: {
+      //   id: workOrder.box!.id
+      // },
       status: workOrder.status,
     });
   };

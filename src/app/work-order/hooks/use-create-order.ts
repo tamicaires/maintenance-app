@@ -13,6 +13,7 @@ import {
   SeverityLevel,
   TypeOfMaintenance,
 } from "@/shared/enums/work-order";
+import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 type CreateWorkOrderData = z.infer<typeof createWorkOrderSchema>;
 
@@ -49,7 +50,7 @@ export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void, add
   } = useMutation<IApiResponse<IWorkOrder>, Error, CreateWorkOrderData>({
     mutationFn: WorkOrderService.create,
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["work-orders"] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Work_Order, QueryKeysEnum.Dashboard] });
       if (response.success && response.data) {
         addToast({
           type: "success",

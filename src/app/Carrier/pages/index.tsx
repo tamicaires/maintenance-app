@@ -32,9 +32,9 @@ export function Carrier() {
   const { data: carrierData, isLoading } = useCarrier();
   const carriers = getDataOrDefault(carrierData, [], "data");
 
-  if (isLoading) {
-    return <div>Carregando...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Carregando...</div>;
+  // }
 
   const handleOpenModal = () => {
     setIsDialogOpen(true);
@@ -52,9 +52,13 @@ export function Carrier() {
         </ReportHeader>
         <ReportTable
           columns={carrierColumns}
+          searchColumn="carrierName"
           data={carriers}
           tabs={tabs}
           filterOptions={filterOptions}
+          isloadingData={isLoading}
+          onPaginationChange={() => {}}
+          totalItems={carriers.length}
         />
         <CreateCarrier
           isDialogOpen={isDialogOpen}
