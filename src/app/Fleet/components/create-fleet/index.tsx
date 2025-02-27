@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/custom-combobox";
 import { useCreateFleet } from "../../hooks/use-create-fleet";
 import { Loader2, Plus } from "lucide-react";
-import { useCarrier } from "@/app/carrier/hooks/use-carrier";
+import { useCarrier } from "@/app/carriers/hooks/use-carrier";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { SuccessMessage } from "@/components/SucessMessage";

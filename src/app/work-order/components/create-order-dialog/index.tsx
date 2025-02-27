@@ -25,7 +25,7 @@ import {
   TypeOfMaintenance,
 } from "@/shared/enums/work-order";
 import { Select as CustomSelect } from "@/components/custom-combobox/index";
-import { useBoxes } from "@/app/box/hooks/use-box";
+import { useBoxes } from "@/app/boxes/hooks/use-box";
 import { useFleet } from "@/app/Fleet/hooks/use-fleet";
 import { useCreateWorkOrder } from "@/app/work-order/hooks/use-create-order";
 import { useToast } from "@/components/Toast/toast";

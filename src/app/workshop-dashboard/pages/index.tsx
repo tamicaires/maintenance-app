@@ -26,7 +26,7 @@ import { QueueChart } from "../components/charts/QueueChart";
 import { TypeMaintenanceChart } from "../components/charts/TypeMaintenaceChart";
 import { ServiceChart } from "../components/charts/ServicesChart";
 import type { IWorkOrder } from "@/shared/types/work-order.interface";
-import { Boxes } from "../../box/pages";
+import { Boxes } from "../../boxes/pages";
 import { useDailyWorkOrders } from "../../work-order/hooks/use-daily-work-orders";
 import { dateUtil } from "@/utils/date";
 import { getDataOrDefault } from "@/utils/data";

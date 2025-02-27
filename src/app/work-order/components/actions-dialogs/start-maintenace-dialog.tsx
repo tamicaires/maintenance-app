@@ -20,7 +20,7 @@ import { dateUtil } from "@/utils/date";
 import { useStartMaintenance } from "../../hooks/use-start-work-order";
 import { useToast } from "@/components/Toast/toast";
 import { useState } from "react";
-import { useBoxes } from "../../../box/hooks/use-box";
+import { useBoxes } from "@/app/boxes/hooks/use-box";
 import {
   Select,
   SelectContent,
