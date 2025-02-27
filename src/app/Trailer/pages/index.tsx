@@ -3,7 +3,6 @@ import {
   Search,
   File,
   ListFilter,
-  MoreHorizontal,
   Edit,
   Trash2,
   ChevronDown,
@@ -22,7 +21,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -47,21 +45,27 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
-import { useTrailer } from "./hooks/use-trailer";
-import { useUpdateTrailer } from "./hooks/use-update-trailer";
+import { useTrailer } from "../hooks/use-trailer";
+import { useUpdateTrailer } from "../hooks/use-update-trailer";
 import { Spinner } from "@/components/Spinner";
 import { ITrailer } from "@/shared/types/trailer.interface";
-import TrailerCreationDialog from "./CreateTrailer";
+import { TrailerCreationDialog } from "../components/create-trailer";
+import { useToast } from "@/components/Toast/toast";
+import { TrailerDropDown } from "../components/trailer-dropdown-menu/trailer-dropdown-menu";
 
 export function Trailer() {
   const [page, setPage] = useState(1);
   const perPage = 20;
 
   const { data, error, isLoading } = useTrailer();
+  const { toast } = useToast();
 
-  const { handleEdit, handleDelete, setEditingTrailer } =
-    useUpdateTrailer(() => setEditingTrailer(null));
-
+  const [selectedTrailer, setSelectedTrailer] = useState<ITrailer | null>(null);
+  const { handleEdit, handleDelete } = useUpdateTrailer({
+    toast,
+    onClose: () => setSelectedTrailer(null),
+  });
+  selectedTrailer
   const { sortedData, sortField, sortOrder, handleSort } =
     useSortableTable<ITrailer>(data?.data || [], "plate");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
@@ -189,25 +193,7 @@ export function Trailer() {
               </Badge>
             </TableCell>
             <TableCell>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Abrir menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => handleEdit(trailer)}>
-                    <Edit className="mr-2 h-4 w-4" />
-                    Editar
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleDelete(trailer.id)}>
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Excluir
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <TrailerDropDown trailer={trailer} onDelete={handleDelete} />
             </TableCell>
           </TableRow>
         ))}
@@ -241,7 +227,11 @@ export function Trailer() {
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-5">
                     <Button variant="secondary">Exportar Relatório</Button>
-                    <TrailerCreationDialog />
+                    <TrailerCreationDialog
+                      trigger={
+                        <Button variant="default">Cadastrar Reboque</Button>
+                      }
+                    />
                   </CardContent>
                 </Card>
                 <Card className="pb-4">

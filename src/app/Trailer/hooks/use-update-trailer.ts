@@ -2,23 +2,30 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { IApiResponse } from "@/services/api";
 import { queryClient } from "@/services/query-client";
 import { ITrailer, ITrailerCreateAndUpdate } from "@/shared/types/trailer.interface";
 import { TrailerService } from "@/services/trailer";
+import { QueryKeysEnum } from "@/shared/enums/query-keys";
+import { ToastHandler } from "@/components/Toast/toast";
 
 const trailerSchema = z.object({
   plate: z.string().min(1, "Placa é obrigatório"),
-  position: z.string(),
+  position: z.number(),
   fleetId: z.string().optional(),
   isActive: z.boolean().default(true),
 });
 
 export type FormFields = z.infer<typeof trailerSchema>;
 
-export function useUpdateTrailer(onClose: () => void) {
+export type UseUpdateTrailerProps = {
+  toast: ToastHandler;
+  onClose: () => void;
+};
+
+export function useUpdateTrailer({ onClose }: UseUpdateTrailerProps) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [editingTrailer, setEditingTrailer] = useState<ITrailer | null>(
     null
@@ -29,7 +36,7 @@ export function useUpdateTrailer(onClose: () => void) {
     resolver: zodResolver(trailerSchema),
     defaultValues: {
       plate: "",
-      position: "",
+      position: 0,
       fleetId: "",
       isActive: true,
     },
@@ -45,19 +52,22 @@ export function useUpdateTrailer(onClose: () => void) {
       return TrailerService.update(editingTrailer.id, data);
     },
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["trailers"] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Trailer] });
       if (response.success && response.data) {
         console.log("Trailer updated:", response.data);
         setIsSuccess(true);
-        toast.success("Reboque atualizado com sucesso!");
+        // toast({
+
+        // })
+        // toast.success("Reboque atualizado com sucesso!");
       }
     },
     onError: (error) => {
       console.error("Error updating employee:", error);
-      toast.error(
-        error.message ||
-        "Ocorreu um erro ao atualizar o Reboque. Tente novamente."
-      );
+      // toast.error(
+      //   error.message ||
+      //   "Ocorreu um erro ao atualizar o Reboque. Tente novamente."
+      // );
     },
     onSettled: () => {
       setIsSubmitting(false);
@@ -68,14 +78,14 @@ export function useUpdateTrailer(onClose: () => void) {
     mutationFn: TrailerService.deleteTrailer,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["trailers"] });
-      toast.success("Reboque excluído com sucesso!");
+      // toast.success("Reboque excluído com sucesso!");
     },
     onError: (error) => {
       console.error("Error deleting trailer:", error);
-      toast.error(
-        error.message ||
-        "Ocorreu um erro ao excluir o reboque. Tente novamente."
-      );
+      // toast.error(
+      //   error.message ||
+      //   "Ocorreu um erro ao excluir o reboque. Tente novamente."
+      // );
     },
   });
 
