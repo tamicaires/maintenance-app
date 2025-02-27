@@ -21,3 +21,16 @@ export const selectMembership = createDraftSafeSelector(
     loading: membership.status === "loading",
   })
 );
+
+export const selectNotification = createDraftSafeSelector(
+  (state: RootState) => state.notification,
+  (notification) => ({
+    isOpen: notification.isOpen,
+    type: notification.type,
+    title: notification.title,
+    description: notification.description,
+    primaryAction: notification.primaryAction,
+    secondaryAction: notification.secondaryAction,
+    footer: notification.footer,
+  })
+);
