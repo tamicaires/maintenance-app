@@ -1,10 +1,11 @@
 import { EmptyCard } from "@/components/EmptyCard";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useActiveBoxes } from "../hooks/use-active-boxes";
 import { IBoxWithRelationalData } from "@/shared/types/box";
-import { MaintenanceCard } from "@/components/WorkShopDashboard/MaintenanceCard";
+import { MaintenanceCard } from "@/app/workshop-dashboard/components/maintenance-card";
 import { getDataOrDefault } from "@/utils/data";
 import { Spinner } from "@/components/Spinner";
+import { ReportTable } from "@/components/data-table/data-table";
+import { boxesColumns } from "../data/boxes-collums";
 
 interface BoxesSectionProps {
   viewMode: "grid" | "list";
@@ -20,14 +21,13 @@ export function Boxes({ viewMode }: BoxesSectionProps) {
 
   if (viewMode === "list") {
     return (
-      <ScrollArea className="h-[600px] rounded-md border">
-        {/* <MaintenanceTable
-          box={boxes}
-          workOrders={boxesWithWorkOrders}
-          onStatusChange={onStatusChange}
-          onShowDetails={onShowDetails}
-        /> */}
-      </ScrollArea>
+      <ReportTable
+        columns={boxesColumns}
+        data={boxes}
+        isloadingData={isLoading}
+        totalItems={boxes.length}
+        onPaginationChange={() => {}}
+      />
     );
   }
 

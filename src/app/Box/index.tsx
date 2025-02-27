@@ -51,7 +51,7 @@ import { Spinner } from "@/components/Spinner";
 import { IBox } from "@/shared/types/box";
 import { useBoxes } from "./hooks/use-box";
 import { useUpdateBox } from "./hooks/use-update-box";
-import { BoxCreationDialog } from "./CreateBoxForm/create-box-form";
+import { BoxCreationDialog } from "./components/create-box/create-box-form";
 
 export function BoxManagement() {
   const [page, setPage] = useState(1);

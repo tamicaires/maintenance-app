@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { useCreateBox } from "../hooks/use-create-box"
+import { useCreateBox } from "../../hooks/use-create-box"
 import { Loader2 } from "lucide-react"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { CustomDialogHeader } from "@/components/CustomDialogHeader"
