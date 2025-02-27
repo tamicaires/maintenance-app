@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/chart";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { useQueueChart } from "../hooks/use-queue-chart";
+import { useQueueChart } from "../../hooks/use-queue-chart";
 import { Spinner } from "@/components/Spinner";
 
 export function QueueChart() {

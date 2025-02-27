@@ -35,7 +35,7 @@ export function FinishWaitingPartsDialog({
   workOrderId,
 }: FinishWaitingPartsDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
 
   const {
     control,

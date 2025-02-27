@@ -20,7 +20,7 @@ import { dateUtil } from "@/utils/date";
 import { useStartMaintenance } from "../../hooks/use-start-work-order";
 import { useToast } from "@/components/Toast/toast";
 import { useState } from "react";
-import { useBoxes } from "@/app/Box/hooks/use-box";
+import { useBoxes } from "@/app/box/hooks/use-box";
 import {
   Select,
   SelectContent,
@@ -43,7 +43,7 @@ export function StartMaintenanceDialog({
   workOrderId,
 }: StartMaintenanceDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
   const { data: boxes, isLoading: isBoxesLoading } = useBoxes();
 
   const {

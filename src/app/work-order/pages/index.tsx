@@ -45,7 +45,7 @@ export default function Order() {
         (activeTab === "aguard-peca" &&
           order.status === MaintenanceStatus.AGUARDANDO_PECA);
 
-      const matchesSearch = order.fleetInfo.fleetNumber
+      const matchesSearch = order.fleet.fleetNumber
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
 

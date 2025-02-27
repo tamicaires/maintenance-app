@@ -1,4 +1,3 @@
-import { CheckCircle, Clock, Pause, UndoDot, Wrench } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -9,55 +8,23 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { HistoryItem } from "./work-order-history-item";
+import { useEventByWorkOrder } from "@/app/event/hooks/use-events-by-work-order";
+import { getDataOrDefault } from "@/utils/data";
+import { IEventRelationalData } from "@/shared/types/event";
+import {
+  IUpdatesTimeline,
+} from "@/components/UpdatesTimeLine";
+import { transformEventToUpdate } from "@/utils/event";
 
 export function WorkOrderHistory({ workOrder }: { workOrder: IWorkOrder }) {
-  const history = [
-    {
-      id: "1",
-      date: workOrder.entryQueue,
-      description: "Frota recebida em Fila",
-      user: "João Silva",
-      details: "Aguardando inicio da manutenção",
-      icon: Clock,
-      color: "yellow",
-    },
-    {
-      id: "2",
-      date: workOrder.entryMaintenance,
-      description: "Manutenção iniciada",
-      user: "João Silva",
-      details: "Início do periodo de manutenção",
-      icon: Wrench,
-      color: "blue",
-    },
-    {
-      id: "3",
-      date: workOrder.startWaitingParts,
-      description: "Manutenção parou",
-      user: "João Silva",
-      details: "Início do periodo de aguardando peças",
-      icon: Pause,
-      color: "red",
-    },
-    {
-      id: "4",
-      date: workOrder.endWaitingParts,
-      description: "Retorno da Manutenção",
-      user: "João Silva",
-      details: "Fim do periodo de aguardando peças",
-      icon: UndoDot,
-      color: "orange",
-    },
-    {
-      id: "5",
-      date: workOrder.exitMaintenance,
-      description: "Frota liberada",
-      user: "João Silva",
-      details: "Fim do periodo de manutenção",
-      icon: CheckCircle,
-      color: "green",
-    },
-  ];
+  const { data: historyData } = useEventByWorkOrder(workOrder.id);
+  const eventHistory = getDataOrDefault<IEventRelationalData[]>(
+    historyData,
+    [],
+    "data"
+  );
+
+  const events: IUpdatesTimeline[] = eventHistory.map(transformEventToUpdate);
 
   return (
     <Card>
@@ -68,20 +35,7 @@ export function WorkOrderHistory({ workOrder }: { workOrder: IWorkOrder }) {
       <CardContent>
         <ScrollArea className="h-[400px] pr-4">
           <div className="space-y-8">
-            {history.map(
-              (event) =>
-                event.date && (
-                  <HistoryItem
-                    id={event.id}
-                    date={event.date}
-                    description={event.description}
-                    user={event.user}
-                    details={event.details}
-                    icon={event.icon}
-                    color={event.color}
-                  />
-                )
-            )}
+            {events.map((event) => event.date && <HistoryItem event={event} />)}
           </div>
         </ScrollArea>
       </CardContent>

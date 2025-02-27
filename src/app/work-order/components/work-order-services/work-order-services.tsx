@@ -35,7 +35,7 @@ export function WorkOrderServices({ workOrder }: WorkOrderServicesProps) {
         {!isStatusClosed && (
           <ServiceAssignmentCreationDialog
             workOrderId={workOrder.id}
-            trailers={workOrder.fleetInfo.trailers}
+            trailers={workOrder.fleet.trailers}
             isDisabled={isStatusClosed}
           />
         )}

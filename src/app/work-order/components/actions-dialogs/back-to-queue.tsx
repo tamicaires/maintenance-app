@@ -25,7 +25,7 @@ export function BackToQueueWorkOrderDialog({
   setIsAlertDialogOpen,
   children,
 }: BackToQueueWorkOrderDialogProps) {
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
   const { handleBackToQueueWorkOrder, isBackToQueuePending } =
     useBackToQueueWorkOrder(addToast);
 

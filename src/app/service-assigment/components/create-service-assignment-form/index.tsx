@@ -36,7 +36,7 @@ export function ServiceAssignmentCreationDialog({
   isDisabled,
   iconButton,
 }: ServiceAssignmentCreationDialogProps) {
-  const { ToastComponent, addToast } = useToast();
+  const { ToastComponent, toast: addToast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {

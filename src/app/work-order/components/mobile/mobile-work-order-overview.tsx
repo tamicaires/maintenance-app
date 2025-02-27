@@ -19,7 +19,7 @@ export function MobileWorkOrderOverview({ workOrder, statusInfo }: MobileWorkOrd
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p className="text-xs text-muted-foreground">Número</p>
-              <p className="text-sm font-semibold">{workOrder.fleetInfo.fleetNumber}</p>
+              <p className="text-sm font-semibold">{workOrder.fleet.fleetNumber}</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Placa</p>

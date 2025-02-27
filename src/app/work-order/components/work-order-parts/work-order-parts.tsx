@@ -28,7 +28,7 @@ export function WorkOrderParts({ workOrder }: PartRequestsProps) {
         <BatchPartRequestDialog
           workOrderDisplayId={workOrder.displayId}
           workOrderId={workOrder.id}
-          trailers={workOrder.fleetInfo.trailers}
+          trailers={workOrder.fleet.trailers}
         />
       </CardHeader>
       <CardContent>

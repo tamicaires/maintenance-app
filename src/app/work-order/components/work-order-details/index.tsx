@@ -9,7 +9,7 @@ import { WorkOrderHistory } from "@/app/work-order/components/work-order-history
 import { WorkOrderQuickActions } from "@/app/work-order/components/work-order-quick-actions/work-order-quick-actions"
 import { WorkOrderParts } from "@/app/work-order/components/work-order-parts/work-order-parts"
 import { useWorkOrderById } from "../../hooks/use-work-order-by-id"
-import { Spinner } from "@/components/Spinner"
+import { WorkOrderSkeleton } from "../work-order-skeleton/work-order-skeleton"
 
 type WorkOrderDetailsProps = {
   workOrderId: string
@@ -24,15 +24,18 @@ export function WorkOrderDetails({
   isDialogOpen: externalIsDialogOpen,
   setIsDialogOpen: externalSetIsDialogOpen,
 }: WorkOrderDetailsProps) {
-  const { data, isLoading } = useWorkOrderById(workOrderId)
   const [activeTab, setActiveTab] = useState("overview")
   const [internalIsDialogOpen, setInternalIsDialogOpen] = useState(false)
+  const [shouldFetchData, setShouldFetchData] = useState(false)
 
   const isControlled = externalIsDialogOpen !== undefined
   const isOpen = isControlled ? externalIsDialogOpen : internalIsDialogOpen
 
   const onOpenChange = useCallback(
     (open: boolean) => {
+      if (open) {
+        setShouldFetchData(true)
+      }
       if (isControlled) {
         externalSetIsDialogOpen?.(open)
       } else {
@@ -41,45 +44,53 @@ export function WorkOrderDetails({
     },
     [isControlled, externalSetIsDialogOpen],
   )
+  
+  const { data, isLoading } = useWorkOrderById(workOrderId, {
+    enabled: shouldFetchData,
+  })
+
 
   const workOrder = data?.data
-
-  if (!workOrder) {
-    return <Spinner size="small" />
-  }
-
+console.log("workOrder", workOrder)
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger className="w-full">{trigger}</DialogTrigger>
-      {isLoading && <Spinner />}
       <DialogContent className="max-w-4xl h-[95vh] p-0 gap-0">
         <ScrollArea className="h-full">
-          <div className="flex flex-col h-full">
-            <WorkOrderHeader workOrder={workOrder} />
-            <div className="flex-1 px-6 py-3 pb-32">
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="mb-1">
-                  <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-                  <TabsTrigger value="services">Serviços</TabsTrigger>
-                  <TabsTrigger value="parts">Peças</TabsTrigger>
-                  <TabsTrigger value="history">Histórico</TabsTrigger>
-                </TabsList>
-                <TabsContent value="overview">
-                  <WorkOrderOverview workOrder={workOrder} />
-                </TabsContent>
-                <TabsContent value="services">
-                  <WorkOrderServices workOrder={workOrder} />
-                </TabsContent>
-                <TabsContent value="parts">
-                  <WorkOrderParts workOrder={workOrder} />
-                </TabsContent>
-                <TabsContent value="history">
-                  <WorkOrderHistory workOrder={workOrder} />
-                </TabsContent>
-              </Tabs>
+          {isLoading ? (
+            <div className="p-6">
+              <WorkOrderSkeleton />
             </div>
-            <WorkOrderQuickActions workOrder={workOrder} onClose={() => onOpenChange(false)} />
-          </div>
+          ) : workOrder ? (
+            <div className="flex flex-col h-full">
+              <WorkOrderHeader workOrder={workOrder} />
+              <div className="flex-1 px-6 py-3 pb-32">
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                  <TabsList className="mb-1">
+                    <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+                    <TabsTrigger value="services">Serviços</TabsTrigger>
+                    <TabsTrigger value="parts">Peças</TabsTrigger>
+                    <TabsTrigger value="history">Histórico</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="overview">
+                    <WorkOrderOverview workOrder={workOrder} />
+                  </TabsContent>
+                  <TabsContent value="services">
+                    <WorkOrderServices workOrder={workOrder} />
+                  </TabsContent>
+                  <TabsContent value="parts">
+                    <WorkOrderParts workOrder={workOrder} />
+                  </TabsContent>
+                  <TabsContent value="history">
+                    <WorkOrderHistory workOrder={workOrder} />
+                  </TabsContent>
+                </Tabs>
+              </div>
+              <WorkOrderQuickActions workOrder={workOrder} onClose={() => onOpenChange(false)} />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-full">Nenhum dado encontrado</div>
+          )}
         </ScrollArea>
       </DialogContent>
     </Dialog>

@@ -53,12 +53,12 @@ export function MobileWorkOrderHeader({
       
       <div className="flex items-center gap-2 mb-3">
         <Avatar className="h-8 w-8">
-          <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${workOrder.fleetInfo.carrierName}`} />
+          <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${workOrder.fleet.carrierName}`} />
           <AvatarFallback>TR</AvatarFallback>
         </Avatar>
         <div>
-          <p className="text-sm font-medium">{workOrder.fleetInfo.carrierName}</p>
-          <p className="text-xs text-muted-foreground">Frota: {workOrder.fleetInfo.fleetNumber}</p>
+          <p className="text-sm font-medium">{workOrder.fleet.carrierName}</p>
+          <p className="text-xs text-muted-foreground">Frota: {workOrder.fleet.fleetNumber}</p>
         </div>
       </div>
 

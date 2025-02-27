@@ -35,7 +35,7 @@ export function WorkOrderOverview({ workOrder }: { workOrder: IWorkOrder }) {
                       Número da Frota
                     </p>
                     <p className="text-2xl font-bold">
-                      {workOrder.fleetInfo.fleetNumber}
+                      {workOrder.fleet.fleetNumber}
                     </p>
                   </div>
                   {workOrder.box && (
@@ -51,17 +51,17 @@ export function WorkOrderOverview({ workOrder }: { workOrder: IWorkOrder }) {
                   <div className="flex items-center gap-4">
                     <Avatar className="h-10 w-10">
                       <AvatarImage
-                        src={`https://api.dicebear.com/7.x/initials/svg?seed=${workOrder.fleetInfo.carrierName}`}
+                        src={`https://api.dicebear.com/7.x/initials/svg?seed=${workOrder.fleet.carrierName}`}
                       />
                       <AvatarFallback>
-                        {workOrder.fleetInfo.carrierName
+                        {workOrder.fleet.carrierName
                           .slice(0, 2)
                           .toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-medium">
-                        {workOrder.fleetInfo.carrierName}
+                        {workOrder.fleet.carrierName}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Transportadora
@@ -107,9 +107,9 @@ export function WorkOrderOverview({ workOrder }: { workOrder: IWorkOrder }) {
           </Card>
 
           {/* Quick Stats */}
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-2.5 w-56">
             <QuickStatCard
-              title="Peças"
+              title="Peças Solicitadas"
               value="4"
               unit="itens"
               icon={Package}

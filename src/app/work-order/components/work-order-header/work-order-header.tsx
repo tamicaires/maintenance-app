@@ -63,7 +63,7 @@ import { Spinner } from "@/components/Spinner";
 import ChecklistItems from "@/app/checklist/components/checklist-items";
 
 export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
 
   const { handleCancelWorkOrder, isCancelPending } =
     useCancelWorkOrder(addToast);

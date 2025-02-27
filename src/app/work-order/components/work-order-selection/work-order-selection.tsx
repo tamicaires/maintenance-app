@@ -17,7 +17,7 @@ export function WorkOrderSelection({
     (workOrder) => ({
       id: workOrder.id,
       title: workOrder.displayId,
-      description: `Frota - ${workOrder.fleetInfo.fleetNumber}`,
+      description: `Frota - ${workOrder.fleet.fleetNumber}`,
     })
   );
 
