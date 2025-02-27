@@ -10,6 +10,8 @@ export const eventActionToPortuguese: Record<EventActionEnum, string> = {
   [EventActionEnum.Stopped]: "Parado",
   [EventActionEnum.Scheduled]: "Agendado",
   [EventActionEnum.Requested]: "solicitou",
+  [EventActionEnum.Queued]: "Enfileirado",
+  [EventActionEnum.Finished]: "Finalizado",
 }
 
 export const subjectToPortuguese: Record<SubjectEnum, string> = {
@@ -20,7 +22,7 @@ export const subjectToPortuguese: Record<SubjectEnum, string> = {
   [SubjectEnum.Carrier]: "Transportadora",
   [SubjectEnum.Service]: "Serviço",
   [SubjectEnum.Checklist]: "Checklist",
-  [SubjectEnum.Template_Checklist]: "Template de Checklist", 
-  [SubjectEnum.Part_Request]: "Requisição de Peça", 
+  [SubjectEnum.Template_Checklist]: "Template de Checklist",
+  [SubjectEnum.Part_Request]: "Requisição de Peça",
 }
 

@@ -1,5 +1,5 @@
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { MaintenanceStatus } from "@/shared/enums/work-order";
+import { MaintenanceStatus, SeverityLevel } from "@/shared/enums/work-order";
 import { AlertOctagon, CheckCircle, Clock, Package, Wrench } from "lucide-react";
 
 export function calculateDuration(
@@ -116,13 +116,30 @@ export function getStatusColor(status: string) {
   return colors[status as keyof typeof colors] || colors.pending
 }
 
-export function getSeverityColor(severity: string) {
-  const colors = {
-    BAIXA: "text-green-500",
-    NORMAL: "text-blue-500",
-    ALTA: "text-orange-500",
-    URGENTE: "text-red-500",
-  }
-  return colors[severity as keyof typeof colors] || colors.NORMAL
+export function getSeverityInfo(severity: SeverityLevel) {
+  const severityMap = {
+    BAIXA: {
+      color: "green",
+      label: "Baixa",
+    },
+    NORMAL: {
+      color: "blue",
+      label: "Normal",
+    },
+    ALTA: {
+      color: "orange",
+      label: "Alta",
+    },
+    URGENTE: {
+      color: "red",
+      label: "Urgente",
+    },
+  };
+
+  const severityKey = severity.toUpperCase() as keyof typeof severityMap;
+
+  return severityMap[severityKey] ?? severityMap.NORMAL;
 }
+
+
 

@@ -9,7 +9,7 @@ import { INote } from "./note";
 export interface IWorkOrder {
   id: string;
   displayId: string;
-  fleetInfo: {
+  fleet: {
     fleetNumber: string;
     carrierName: string;
     trailers: IActiveTrailer[];

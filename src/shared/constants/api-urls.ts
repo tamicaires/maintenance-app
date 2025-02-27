@@ -35,5 +35,6 @@ export const ApiEndpoints = {
   },
   EVENT: {
     LIST: SubjectUrl.EVENT,
+    GET_BY_WORK_ORDER: (workOrderId: string) => `${SubjectUrl.EVENT}/work-order/${workOrderId}`
   }
 };
