@@ -31,7 +31,7 @@ export function AddTemplateCategory({
   isOpen,
   onOpenChange,
 }: CategoryProps) {
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
 
   const { createChecklistCategoryForm, handleSubmit, control } =
     useCreateChecklistTemplateCategory(templateId, addToast, () =>

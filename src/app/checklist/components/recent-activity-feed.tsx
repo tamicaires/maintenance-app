@@ -21,7 +21,7 @@ export default function RecentActivityFeed() {
         ? SubjectEnum.Service
         : undefined,
   });
-
+  console.log("data");
   const activities = data?.data || [];
   const checklistActivities: ActivityItemProps[] = activities.map(
     (activity) => {
@@ -51,7 +51,7 @@ export default function RecentActivityFeed() {
     },
     {
       value: "templates" as TabValue,
-      label: "Templates",
+      label: "Ordens de Serviço",
       count: activities.filter(
         (a) => a.subject === SubjectEnum.Template_Checklist
       ).length,

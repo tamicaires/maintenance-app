@@ -30,7 +30,7 @@ export default function CreateTemplateDialog({
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [isAddItemDialogOpen, setAddItemDialogOpen] = useState<boolean>(false);
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
 
   const {
     createChecklistTemplateForm,

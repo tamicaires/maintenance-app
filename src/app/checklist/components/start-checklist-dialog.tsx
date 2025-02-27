@@ -55,7 +55,7 @@ export function StartChecklistDialog({
   console.log(open, workOrderId)
   const [itemStatuses, setItemStatuses] = useState<IItemStatus>({});
 
-  const { addToast: toast, ToastComponent } = useToast();
+  const { toast: toast, ToastComponent } = useToast();
 
   const handleCloseDialog = () => {
     setOpen(false);

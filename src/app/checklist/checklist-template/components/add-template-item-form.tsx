@@ -39,7 +39,7 @@ export function AddChecklistTemplateItemForm({
   templateId,
   templateCategoryId,
 }: ChecklistItem) {
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
 
   const handleSucess = () => {
     onOpenChange(false);

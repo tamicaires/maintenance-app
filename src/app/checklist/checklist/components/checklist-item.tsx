@@ -35,7 +35,7 @@ export default function ChecklistItem({
   templateItem,
   trailers,
 }: TChecklistItemProps) {
-  const { addToast: toast, ToastComponent } = useToast();
+  const { toast: toast, ToastComponent } = useToast();
   categoryId
   const {
     updateItemConformity,
