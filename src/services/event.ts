@@ -22,6 +22,15 @@ const list = async (params: ListEventsParams): Promise<IApiResponse<IEventRelati
   return response;
 };
 
+const getByWorkOrder = async (workOrderId: string): Promise<IApiResponse<IEventRelationalData[]>> => {
+  return await handleRequest<IEventRelationalData[]>({
+    method: "GET",
+    url: ApiEndpoints.EVENT.GET_BY_WORK_ORDER(workOrderId),
+  });
+
+}
+
 export const EventService = {
   list,
+  getByWorkOrder,
 };

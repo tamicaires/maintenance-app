@@ -8,6 +8,7 @@ import {
   IWorkOrder,
 } from "@/shared/types/work-order.interface";
 import { handleRequest, IApiResponse } from "@/services/api";
+import { IWorkOrderFilters } from "@/app/work-order/hooks/use-work-order";
 
 const create = async (
   data: ICreateWorkOrder
@@ -51,13 +52,7 @@ const getById = async (workOrderId: string): Promise<IApiResponse<IWorkOrder>> =
 }
 
 const getAll = async (
-  filters?: {
-    page?: string;
-    perPage?: string;
-    status?: string;
-    startDate?: string;
-    endDate?: string;
-  }
+  filters?: IWorkOrderFilters
 ): Promise<IApiResponse<IWorkOrder[]>> => {
   const params = new URLSearchParams(filters as Record<string, string>);
 
