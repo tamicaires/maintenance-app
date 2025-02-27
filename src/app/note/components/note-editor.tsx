@@ -18,7 +18,7 @@ export function NoteEditor({
   setIsDialogOpen,
 }: NoteEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { addToast } = useToast();
+  const { toast: addToast } = useToast();
 
   const { handleSubmit, createNoteForm, isSubmitting, isPending, control } =
     useCreateNote(setIsDialogOpen, addToast, workOrderId, onCancel);

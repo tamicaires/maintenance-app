@@ -34,7 +34,7 @@ interface NoteItemProps {
 export function NoteItem({ note }: NoteItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const { addToast } = useToast();
+  const { toast: addToast } = useToast();
 
   const { editNoteForm, handleSubmit, isSubmitting, isPending, control } =
     useEditNote(setIsEditing, addToast, note.id, note.content);
