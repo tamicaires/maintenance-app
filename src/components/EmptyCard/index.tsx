@@ -16,11 +16,11 @@ export const EmptyCard: React.FC<EmptyCardProps> = ({ boxNumber }) => {
       className="h-full"
     >
       <Card className="relative h-full flex flex-col overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gray-300" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gray-500/15" />
         <CardContent className="flex flex-col h-full pt-4 px-4">
           <div className="flex items-center justify-between mb-2 pt-5">
             <div className="flex items-center space-x-2">
-              <div className="p-2 bg-gray-200 text-gray-500 rounded-full">
+              <div className="p-2 bg-gray-500/15 text-gray-500 rounded-full">
                 <TruckIcon className="h-5 w-5" />
               </div>
               <div>
@@ -31,7 +31,7 @@ export const EmptyCard: React.FC<EmptyCardProps> = ({ boxNumber }) => {
           </div>
 
           <div className="relative mb-4">
-            <div className="absolute -top-12 -right-4 text-8xl font-bold text-gray-200 opacity-40 select-none">
+            <div className="absolute -top-12 -right-4 text-8xl font-bold text-gray-500/25 opacity-40 select-none">
               {boxNumber}
             </div>
             <div className="text-2xl font-bold text-gray-500">
@@ -61,8 +61,8 @@ export const EmptyCard: React.FC<EmptyCardProps> = ({ boxNumber }) => {
           </div>
 
           <div className="mt-auto pt-4">
-            <div className="w-full h-6 bg-gray-100 rounded-full overflow-hidden">
-              <div className="w-full h-full bg-gray-200 flex items-center justify-center text-xs text-gray-500 font-medium">
+            <div className="w-full h-6 bg-gray-500/10 rounded-full overflow-hidden">
+              <div className="w-full h-full bg-gray-500/10 flex items-center justify-center text-xs text-gray-500 font-medium">
                 0%
               </div>
             </div>

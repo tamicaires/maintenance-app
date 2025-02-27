@@ -58,7 +58,7 @@ export default function WorkOrderCard({
               <p className="text-xl md:text-2xl font-semibold flex items-center mt-1">
                 Frota{" "}
                 <span className="ml-2">
-                  {highlightMatch(workOrder.fleetInfo.fleetNumber)}
+                  {highlightMatch(workOrder.fleet.fleetNumber)}
                 </span>
               </p>
             </div>
@@ -104,7 +104,7 @@ export default function WorkOrderCard({
             <div>
               <p className="text-sm font-medium">Transportadora</p>
               <p className="text-muted-foreground">
-                {workOrder.fleetInfo.carrierName}
+                {workOrder.fleet.carrierName}
               </p>
             </div>
             <div>

@@ -11,6 +11,8 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
+export type ToastHandler = (toast: Omit<ToastProps, "id" | "onClose">) => void;
+
 interface ToastProps {
   id: number;
   title?: string;
@@ -88,7 +90,9 @@ function Toast({
         )}
         <div className="flex-1 min-w-0">
           {title && <h3 className="font-semibold text-gray-900">{title}</h3>}
-          {userName && <h3 className="font-semibold text-gray-900">{userName}</h3>}
+          {userName && (
+            <h3 className="font-semibold text-gray-900">{userName}</h3>
+          )}
           <p className="text-sm text-gray-600">{message}</p>
           {actions && (
             <div className="mt-3 flex gap-3">
@@ -136,7 +140,7 @@ function ToastContainer({ children }: ToastContainerProps) {
 export function useToast() {
   const [toasts, setToasts] = useState<ToastProps[]>([]);
 
-  const addToast = (toast: Omit<ToastProps, "id" | "onClose">) => {
+  const toast: ToastHandler = (toast) => {
     const id = Date.now();
     setToasts((prevToasts) => [
       ...prevToasts,
@@ -156,5 +160,5 @@ export function useToast() {
     </ToastContainer>
   );
 
-  return { addToast, ToastComponent };
+  return { toast, ToastComponent };
 }

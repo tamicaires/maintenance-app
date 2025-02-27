@@ -84,6 +84,7 @@ const Sidebar = () => {
       label: "Gestão",
       hasSubmenu: true,
       children: [
+        { icon: Wrench, label: "Manutenções", path: PrivateRoutes.Maintenance },
         { icon: Truck, label: "Transportadoras", path: PrivateRoutes.Carrier },
         { icon: Briefcase, label: "Frotas", path: PrivateRoutes.Fleet },
         { icon: FileText, label: "Serviços", path: PrivateRoutes.Services },

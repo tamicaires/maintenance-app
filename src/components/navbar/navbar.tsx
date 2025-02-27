@@ -42,8 +42,8 @@ export function NavBar({ isCompanySelection = false }: NavBarProps) {
             {isCompanySelection ? (
               ""
             ) : isHome ? (
-              <div className="text-lg">
-                Olá ,<strong>{user?.name}!</strong>
+              <div className="ml-4 text-lg">
+                Olá, <strong>{user?.name}!</strong>
               </div>
             ) : (
               <BreadCrumb />

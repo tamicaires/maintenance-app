@@ -51,7 +51,7 @@ export default function EmployeeAvatarGroup({
   serviceAssignmentId,
 }: EmployeeAvatarGroupProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { addToast, ToastComponent } = useToast();
+  const { toast: addToast, ToastComponent } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
   const { data, isLoading: isEmployeeLoading } = useEmployee();
