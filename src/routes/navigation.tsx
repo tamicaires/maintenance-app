@@ -7,18 +7,19 @@ import { Subscription } from "@/app/Settings/components/Subscription";
 import { Carrier } from "@/app/carrier/pages/index";
 import { Login } from "@/app/Login";
 import Order from "@/app/work-order/pages";
-import WorkShopDashboard from "@/app/WorkShopDashboard/pages";
+import WorkShopDashboard from "@/app/workshop-dashboard/pages";
 import { Employee } from "@/app/Employee";
 import { Service } from "@/app/Services";
 import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/app/part-manager/pages";
 import CompanySelection from "@/app/SelectCompany";
-import { Trailer } from "@/app/Trailer";
+import { Trailer } from "@/app/Trailer/pages";
 import { Checklist } from "@/app/checklist/pages";
 import { Vehicle } from "@/app/Vehicles";
-import { Fleet } from "@/app/Fleet";
-import { BoxManagement } from "@/app/Box";
+import { Fleet } from "@/app/Fleet/pages";
+import { BoxManagement } from "@/app/box";
 import { RootLayout } from "@/components/Layout/root-layout";
+import { MaintenanceReport } from "@/app/maintenance/page";
 
 export function Navigation() {
   return (
@@ -38,6 +39,7 @@ export function Navigation() {
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
           <Route path={PrivateRoutes.Box} element={<BoxManagement />} />
+          <Route path={PrivateRoutes.Maintenance} element={<MaintenanceReport />} />
           <Route
             path={PrivateRoutes.PartsManagement}
             element={<PartsManager />}
