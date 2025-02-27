@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/custom-combobox";
-import { Loader2, PackagePlus, Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -37,6 +37,7 @@ import EmptyState from "@/components/empty-state";
 import { useParts } from "@/app/part-manager/hooks/use-parts";
 import { useCreatePartRequestBatch } from "@/app/part-request/hooks/use-create-part-request-batch";
 import { usePartRequestItems } from "../../hooks/use-handle-item";
+import { FaUserPlus } from "react-icons/fa";
 
 type BatchPartRequestDialogProps = {
   workOrderDisplayId?: string;
@@ -92,10 +93,10 @@ export function BatchPartRequestDialog({
       <DialogTrigger asChild>
         <Button variant="secondary">
           {iconButton ? (
-            <PackagePlus className="h-4 w-4" />
+            <FaUserPlus className="h-4 w-4" />
           ) : (
             <div className="flex gap-1">
-              <PackagePlus className="mr-2 h-4 w-4" />
+              <FaUserPlus className="mr-2 h-4 w-4" />
               Solicitar Peça
             </div>
           )}

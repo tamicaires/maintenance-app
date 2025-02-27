@@ -6,7 +6,7 @@ import { RequestStatus } from "@/shared/enums/part-request";
 import { getRequestStatusInfo } from "@/utils/part-request";
 import { Profile } from "@/components/Profile";
 import { InfoDisplay } from "@/components/InfoDisplay";
-import { UpdatesTimeline, Update } from "@/components/UpdatesTimeLine";
+import { UpdatesTimeline, IUpdatesTimeline } from "@/components/UpdatesTimeLine";
 
 type PartRequestCardProps = {
   partRequest: IPartRequest;
@@ -23,7 +23,7 @@ export function PartRequestCard({
 }: PartRequestCardProps) {
   const statusInfo = getRequestStatusInfo(partRequest.status);
 
-  const updates: Update[] = [
+  const updates: IUpdatesTimeline[] = [
     {
       date: partRequest.requestedAt,
       message: "Registro de solicitação de peça",

@@ -166,7 +166,7 @@ export function PartRequestDetailsDialog({
                 onReject={handleLocalAction.bind(null, "reject")}
                 isApprovePending={isApprovePending}
                 isRejectPending={isRejectPending}
-              />
+              /> 
             ))}
           </div>
         </ScrollArea>
