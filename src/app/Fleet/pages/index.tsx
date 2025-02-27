@@ -36,7 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useFleet } from "./hooks/use-fleet";
+import { useFleet } from "../hooks/use-fleet";
 import { useSortableTable } from "@/hooks/use-sortable-table";
 import { SortableHeader } from "@/components/SortableHeader";
 import { IFleet } from "@/shared/types/fleet.interface";
@@ -49,9 +49,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
-import UpdateFleetDialog from "./EditFleet";
-import { FleetCreationDialog } from "./CreateFleet";
-import { useUpdateFleet } from "./hooks/use-update-fleet";
+import UpdateFleetDialog from "../components/edit-fleet";
+import { FleetCreationDialog } from "../components/create-fleet";
+import { useUpdateFleet } from "../hooks/use-update-fleet";
 
 export function Fleet() {
   const [page, setPage] = useState(1);

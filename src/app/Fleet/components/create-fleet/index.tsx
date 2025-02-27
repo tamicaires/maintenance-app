@@ -11,14 +11,16 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/custom-combobox";
-import { useCreateFleet } from "../hooks/use-create-fleet";
+import { useCreateFleet } from "../../hooks/use-create-fleet";
 import { Loader2, Plus } from "lucide-react";
 import { useCarrier } from "@/app/carrier/hooks/use-carrier";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { SuccessMessage } from "@/components/SucessMessage";
+import { useNotification } from "@/components/notification-card/notification-card";
 
 export function FleetCreationDialog() {
+  const { showNotification, NotificationComponent } = useNotification();
   const {
     createFleetForm,
     handleSubmit,
@@ -28,8 +30,8 @@ export function FleetCreationDialog() {
     open,
     setOpen,
     reset,
-    control
-  } = useCreateFleet();
+    control,
+  } = useCreateFleet(showNotification);
 
   const { data: carrierData } = useCarrier();
   const carriers =
@@ -42,6 +44,7 @@ export function FleetCreationDialog() {
     setOpen(newOpen);
     if (!newOpen) {
       reset();
+      setOpen(false);
       console.log("fechando ....");
       setStep(1);
     }
@@ -52,7 +55,7 @@ export function FleetCreationDialog() {
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <Button>
-            <Plus className="mr-2 h-4 w-4" /> Criar Nova Frota
+            <Plus className="mr-2 h-4 w-4" /> Cadastrar Frota
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
@@ -141,6 +144,7 @@ export function FleetCreationDialog() {
             />
           )}
         </DialogContent>
+        <NotificationComponent />
       </Dialog>
     </div>
   );
