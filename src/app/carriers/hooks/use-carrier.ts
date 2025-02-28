@@ -1,6 +1,6 @@
 import { ICarrier } from "@/shared/types/carrier";
-import { IApiResponse } from "@/services/api";
-import { CarrierService } from "@/services/carrier";
+import { IApiResponse } from "@/shared/services/api";
+import { CarrierService } from "@/shared/services/carrier";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 

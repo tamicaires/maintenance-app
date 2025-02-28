@@ -1,7 +1,7 @@
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from "@tanstack/react-query";
 import { IEventRelationalData } from "@/shared/types/event";
-import { EventService } from "@/services/event";
+import { EventService } from "@/shared/services/event";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 export function useEventByWorkOrder(workOrderId: string) {

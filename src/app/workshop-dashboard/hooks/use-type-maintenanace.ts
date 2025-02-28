@@ -1,8 +1,8 @@
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
-import { DashboardService } from "@/services/dashboard";
-import { queryClient } from "@/services/query-client";
+import { DashboardService } from "@/shared/services/dashboard";
+import { queryClient } from "@/shared/services/query-client";
 import { ITypeMaintenanceChartData } from "@/shared/types/dashboard";
 
 export function useTypeMaintenanceChart() {

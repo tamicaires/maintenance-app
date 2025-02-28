@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { createWorkOrderSchema } from "@/validations/create-work-order";
-import { queryClient } from "@/services/query-client";
+import { queryClient } from "@/shared/services/query-client";
 import { z } from "zod";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { WorkOrderService } from "@/services/work-order";
+import { WorkOrderService } from "@/shared/services/work-order";
 import {
   MaintenanceStatus,
   SeverityLevel,

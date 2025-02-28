@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ICompany } from "@/shared/types/company.interface";
-import { getCookie } from "@/services/cookie";
+import { getCookie } from "@/shared/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
 import { Spinner } from "../Spinner";
 

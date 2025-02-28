@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import { z } from "zod"
-import { queryClient } from "@/services/query-client"
-import { IApiResponse } from "@/services/api"
+import { queryClient } from "@/shared/services/query-client"
+import { IApiResponse } from "@/shared/services/api"
 import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment"
 import { ChangeStatusRequestType, ChangeStatusResponseType } from "@/shared/types/service-assigment"
-import { ServiceAssignmentService } from "@/services/service-assigment"
+import { ServiceAssignmentService } from "@/shared/services/service-assigment"
 
 const changeServiceAssignmentStatusSchema = z.object({
   serviceAssignmentId: z.string().min(1, "O ID do serviço é obrigatório"),

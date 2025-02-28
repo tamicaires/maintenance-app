@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCompany } from "./useCompany";
 import { useNavigate } from "react-router-dom";
-import { getCookie, setCookie } from "@/services/cookie";
+import { getCookie, setCookie } from "@/shared/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
 import { PrivateRoutes } from "@/shared/enums/routes";
 import { ICompany } from "@/shared/types/company.interface";

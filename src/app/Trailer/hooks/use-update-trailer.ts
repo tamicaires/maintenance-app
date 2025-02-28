@@ -4,10 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 // import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { IApiResponse } from "@/services/api";
-import { queryClient } from "@/services/query-client";
+import { IApiResponse } from "@/shared/services/api";
+import { queryClient } from "@/shared/services/query-client";
 import { ITrailer, ITrailerCreateAndUpdate } from "@/shared/types/trailer.interface";
-import { TrailerService } from "@/services/trailer";
+import { TrailerService } from "@/shared/services/trailer";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { ToastHandler } from "@/components/Toast/toast";
 

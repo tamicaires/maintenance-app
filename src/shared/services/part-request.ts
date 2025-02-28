@@ -1,5 +1,5 @@
 import { ICreatePartRequest, ICreatePartRequestBatch, IPartRequest, IUpdatePartRequest, THandledPartRequestResponse } from "@/shared/types/part-request";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { IPartRequestsRelationalDataList } from "@/shared/types/part-request-relational-data";
 
 const create = async (

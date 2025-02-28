@@ -4,10 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { FleetService } from "@/services/fleet";
+import { FleetService } from "@/shared/services/fleet";
 import { IFleet, IFleetUpdate } from "@/shared/types/fleet.interface";
-import { IApiResponse } from "@/services/api";
-import { queryClient } from "@/services/query-client";
+import { IApiResponse } from "@/shared/services/api";
+import { queryClient } from "@/shared/services/query-client";
 
 
 const fleetSchema = z.object({

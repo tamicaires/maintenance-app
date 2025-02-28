@@ -1,6 +1,6 @@
 import { IJob } from "@/shared/types/job.interface";
-import { IApiResponse } from "@/services/api";
-import { JobService } from "@/services/job";
+import { IApiResponse } from "@/shared/services/api";
+import { JobService } from "@/shared/services/job";
 import { useQuery } from "@tanstack/react-query";
 
 export function useJobTitle(page: number = 1, perPage: number = 10) {

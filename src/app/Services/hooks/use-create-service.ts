@@ -3,14 +3,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { queryClient } from "@/services/query-client";
-import { IApiResponse } from "@/services/api";
+import { queryClient } from "@/shared/services/query-client";
+import { IApiResponse } from "@/shared/services/api";
 import {
   IService,
   IServiceCreateAndUpdate,
 } from "@/shared/types/service.interface";
 
-import { ServicesService } from "@/services/service";
+import { ServicesService } from "@/shared/services/service";
 import {
   CreateServiceData,
   createServiceSchema,

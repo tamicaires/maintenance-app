@@ -4,10 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { IApiResponse } from "@/services/api";
-import { queryClient } from "@/services/query-client";
+import { IApiResponse } from "@/shared/services/api";
+import { queryClient } from "@/shared/services/query-client";
 import { IVehicle, IVehicleCreateAndUpdate } from "@/shared/types/vehicles.interface";
-import { VehicleService } from "@/services/vehicle";
+import { VehicleService } from "@/shared/services/vehicle";
 
 const vehicleSchema = z.object({
   plate: z.string().min(1, "Placa é obrigatória"),

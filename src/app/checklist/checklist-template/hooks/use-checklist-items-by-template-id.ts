@@ -1,7 +1,7 @@
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from '@tanstack/react-query';
 import { IChecklistItemTemplate } from "@/shared/types/checklist";
-import { ChecklistTemplateItemService } from "@/services/checklist/checklist-template-item";
+import { ChecklistTemplateItemService } from "@/shared/services/checklist/checklist-template-item";
 
 export function useChecklistTemplateItemByTemplateId(templateId: string) {
   const { data, isLoading, error } = useQuery<IApiResponse<IChecklistItemTemplate[]>>({

@@ -1,5 +1,5 @@
 import { ICompany } from "@/shared/types/company.interface";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 
 const getAll = async (): Promise<IApiResponse<ICompany[]>> => {
   const response = await handleRequest<ICompany[]>({

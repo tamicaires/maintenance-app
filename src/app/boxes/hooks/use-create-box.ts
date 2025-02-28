@@ -2,10 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { queryClient } from "@/services/query-client";
-import { BoxService } from "@/services/box";
+import { queryClient } from "@/shared/services/query-client";
+import { BoxService } from "@/shared/services/box";
 import { toast } from "sonner";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
 import { CreateBoxData, createBoxSchema } from "@/validations/create-box";
 

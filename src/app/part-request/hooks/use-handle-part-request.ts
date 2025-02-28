@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { PartRequestService } from "@/services/part-request";
+import { PartRequestService } from "@/shared/services/part-request";
 import { toast } from "sonner";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { THandledPartRequestResponse } from "@/shared/types/part-request";
 
 export function useHandlePartRequest() {

@@ -1,7 +1,6 @@
-// membershipSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IMembership } from '@/shared/types/membership';
-import { MembershipService } from '@/services/membership';
+import { MembershipService } from '@/shared/services/membership';
 
 interface MembershipState {
   currentMembership: IMembership | null;
@@ -15,7 +14,6 @@ const initialState: MembershipState = {
   error: null,
 };
 
-// Async thunk para buscar o membership atual
 export const fetchCurrentMembership = createAsyncThunk(
   'membership/fetchCurrent',
   async (_, { rejectWithValue }) => {

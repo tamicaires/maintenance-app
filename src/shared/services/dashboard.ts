@@ -1,4 +1,4 @@
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { ApiEndpoints } from "@/shared/constants/api-urls";
 import { IQueueChartData, ITypeMaintenanceChartData } from "@/shared/types/dashboard";
 

@@ -8,9 +8,9 @@ import {
   IService,
   IServiceCreateAndUpdate,
 } from "@/shared/types/service.interface";
-import { IApiResponse } from "@/services/api";
-import { ServicesService } from "@/services/service";
-import { queryClient } from "@/services/query-client";
+import { IApiResponse } from "@/shared/services/api";
+import { ServicesService } from "@/shared/services/service";
+import { queryClient } from "@/shared/services/query-client";
 
 const serviceSchema = z.object({
   serviceName: z.string().min(1, "Nome do serviço é obrigatório"),

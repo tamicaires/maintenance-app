@@ -3,7 +3,7 @@ import {
   IServiceCreateAndUpdate,
   IServiceWithEmployee,
 } from "@/shared/types/service.interface";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 
 const create = async (
   data: IServiceCreateAndUpdate

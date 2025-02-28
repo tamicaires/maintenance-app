@@ -1,7 +1,7 @@
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from '@tanstack/react-query';
-import { WorkOrderService } from '@/services/work-order';
+import { WorkOrderService } from '@/shared/services/work-order';
 
 export function useWorkOrderById(workOrderId: string, options = {}) {
 

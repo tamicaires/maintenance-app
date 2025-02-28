@@ -33,7 +33,7 @@ import { getDataOrDefault } from "@/utils/data";
 import { QueueTable } from "../components/tables/queue-table";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { ReleasedTable } from "../components/tables/released-table";
-import { queryClient } from "@/services/query-client";
+import { queryClient } from "@/shared/services/query-client";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 export type DailyData = {

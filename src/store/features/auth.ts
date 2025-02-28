@@ -6,8 +6,8 @@ import {
   getUserLocalStorage,
   setUserLocalStorage,
 } from "@/utils/auth";
-import { AuthService } from "@/services/auth";
-import { setCookie } from "@/services/cookie";
+import { AuthService } from "@/shared/services/auth";
+import { setCookie } from "@/shared/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
 
 interface AuthState {

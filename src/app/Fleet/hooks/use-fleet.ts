@@ -1,6 +1,6 @@
 import { IFleet } from "@/shared/types/fleet.interface";
-import { IApiResponse } from "@/services/api";
-import { FleetService } from "@/services/fleet";
+import { IApiResponse } from "@/shared/services/api";
+import { FleetService } from "@/shared/services/fleet";
 import { useQuery } from "@tanstack/react-query";
 
 export function useFleet(page: number = 1, perPage: number = 10) {

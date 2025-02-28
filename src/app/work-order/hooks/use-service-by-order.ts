@@ -1,6 +1,6 @@
 import { IServiceWithEmployee } from "@/shared/types/service.interface";
-import { IApiResponse } from "@/services/api";
-import { ServicesService } from "@/services/service";
+import { IApiResponse } from "@/shared/services/api";
+import { ServicesService } from "@/shared/services/service";
 import { useQuery } from "@tanstack/react-query";
 
 export function useWorkOrderServices(workOrderId: string) {

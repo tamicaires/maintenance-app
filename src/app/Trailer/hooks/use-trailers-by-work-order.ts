@@ -1,6 +1,6 @@
 import { ITrailer } from "@/shared/types/trailer.interface";
-import { IApiResponse } from "@/services/api";
-import { TrailerService } from "@/services/trailer";
+import { IApiResponse } from "@/shared/services/api";
+import { TrailerService } from "@/shared/services/trailer";
 import { useQuery } from "@tanstack/react-query";
 
 export function useTrailerByWorkOrder(workOrderId: string) {

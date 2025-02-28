@@ -1,6 +1,6 @@
 import { ICompany } from "@/shared/types/company.interface";
-import { IApiResponse } from "@/services/api";
-import { CompanyService } from "@/services/company";
+import { IApiResponse } from "@/shared/services/api";
+import { CompanyService } from "@/shared/services/company";
 import { useQuery } from "@tanstack/react-query";
 
 export function useCompany() {

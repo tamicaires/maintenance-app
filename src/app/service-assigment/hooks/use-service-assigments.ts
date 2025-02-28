@@ -1,5 +1,5 @@
-import { IApiResponse } from "@/services/api";
-import { ServiceAssignmentService } from "@/services/service-assigment";
+import { IApiResponse } from "@/shared/services/api";
+import { ServiceAssignmentService } from "@/shared/services/service-assigment";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { IServiceAssignment } from "@/shared/types/service-assigment";
 import { useQuery } from "@tanstack/react-query";

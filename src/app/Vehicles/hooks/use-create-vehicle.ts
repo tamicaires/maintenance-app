@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { queryClient } from "@/services/query-client";
-import { VehicleService } from "@/services/vehicle";
-import { IApiResponse } from "@/services/api";
+import { queryClient } from "@/shared/services/query-client";
+import { VehicleService } from "@/shared/services/vehicle";
+import { IApiResponse } from "@/shared/services/api";
 import * as z from "zod";
 import { IVehicle, IVehicleCreateAndUpdate } from "@/shared/types/vehicles.interface";
 

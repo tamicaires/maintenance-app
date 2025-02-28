@@ -1,6 +1,6 @@
 import { IBox } from "@/shared/types/box";
-import { IApiResponse } from "@/services/api";
-import { BoxService } from "@/services/box";
+import { IApiResponse } from "@/shared/services/api";
+import { BoxService } from "@/shared/services/box";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 

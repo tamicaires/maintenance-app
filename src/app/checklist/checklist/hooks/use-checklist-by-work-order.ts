@@ -1,6 +1,6 @@
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from '@tanstack/react-query';
-import { ChecklistService } from "@/services/checklist/checklist";
+import { ChecklistService } from "@/shared/services/checklist/checklist";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { IChecklistWithRelationalData } from "@/shared/types/checklist/checklist";
 

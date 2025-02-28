@@ -1,5 +1,5 @@
-import { IApiResponse } from "@/services/api";
-import { WorkOrderService } from "@/services/work-order";
+import { IApiResponse } from "@/shared/services/api";
+import { WorkOrderService } from "@/shared/services/work-order";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useBackToQueueWorkOrder(

@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import { queryClient } from "@/services/query-client"
-import { IApiResponse } from "@/services/api"
+import { queryClient } from "@/shared/services/query-client"
+import { IApiResponse } from "@/shared/services/api"
 import { useState } from "react"
-import { ChecklistItemService } from "@/services/checklist/checklist-item"
+import { ChecklistItemService } from "@/shared/services/checklist/checklist-item"
 import { IChecklistItem } from "@/shared/types/checklist"
 import { QueryKeysEnum } from "@/shared/enums/query-keys"
 

@@ -2,9 +2,9 @@
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { z } from "zod";
-// import { queryClient } from "@/services/query-client";
-// import { IApiResponse } from "@/services/api";
-// import { ChecklistTemplateItemService } from "@/services/checklist/checklist-template-item";
+// import { queryClient } from "@/shared/services/query-client";
+// import { IApiResponse } from "@/shared/services/api";
+// import { ChecklistTemplateItemService } from "@/shared/services/checklist/checklist-template-item";
 // import { useState } from "react";
 // import { ICreateChecklistTemplateItem } from "@/shared/types/checklist/checklist-template-item";
 

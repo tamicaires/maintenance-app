@@ -1,5 +1,5 @@
 import { IPart, IPartCreateAndUpdate } from "@/shared/types/part";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 
 const create = async (
   data: IPartCreateAndUpdate

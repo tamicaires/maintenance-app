@@ -2,10 +2,10 @@
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { useState } from "react";
-// import { queryClient } from "@/services/query-client";
-// import { PartRequestService } from "@/services/part-request";
+// import { queryClient } from "@/shared/services/query-client";
+// import { PartRequestService } from "@/shared/services/part-request";
 // import { toast } from "sonner";
-// import { IApiResponse } from "@/services/api";
+// import { IApiResponse } from "@/shared/services/api";
 // import { CreatePartRequestData, createPartRequestSchema } from "@/validations/create-part-request";
 // import { RequestStatus } from "@/shared/enums/part-request";
 // import { ICreatePartRequest, IPartRequest } from "@/shared/types/part-request";

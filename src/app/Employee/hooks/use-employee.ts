@@ -1,6 +1,6 @@
 import { IEmployee } from "@/shared/types/employee.interface";
-import { IApiResponse } from "@/services/api";
-import { EmployeeService } from "@/services/employee";
+import { IApiResponse } from "@/shared/services/api";
+import { EmployeeService } from "@/shared/services/employee";
 import { useQuery } from "@tanstack/react-query";
 
 export function useEmployee(page: number = 1, perPage: number = 10) {

@@ -1,4 +1,4 @@
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { ICreateNote, INote } from "@/shared/types/note";
 
 const create = async (

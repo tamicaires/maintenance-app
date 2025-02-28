@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import store from "./store/store.ts";
 import { ThemeProvider } from "./components/ThemeProvider/index.tsx";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/services/query-client";
+import { queryClient } from "@/shared/services/query-client";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 

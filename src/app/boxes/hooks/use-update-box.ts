@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { BoxService } from "@/services/box";
-import { IApiResponse } from "@/services/api";
-import { queryClient } from "@/services/query-client";
+import { BoxService } from "@/shared/services/box";
+import { IApiResponse } from "@/shared/services/api";
+import { queryClient } from "@/shared/services/query-client";
 import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
 
 const boxSchema = z.object({

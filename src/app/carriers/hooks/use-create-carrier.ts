@@ -4,11 +4,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { createCarrierSchema } from "@/validations/create-carrier";
-import { queryClient } from "@/services/query-client";
-import { CarrierService } from "@/services/carrier";
+import { queryClient } from "@/shared/services/query-client";
+import { CarrierService } from "@/shared/services/carrier";
 import { ICarrier } from "@/shared/types/carrier";
 import { toast } from "sonner";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 type CreateCarrierData = z.infer<typeof createCarrierSchema>;

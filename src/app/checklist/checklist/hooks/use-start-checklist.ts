@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useState } from "react";
-import { ChecklistService } from "@/services/checklist/checklist";
-import { ChecklistItemService } from "@/services/checklist/checklist-item";
+import { ChecklistService } from "@/shared/services/checklist/checklist";
+import { ChecklistItemService } from "@/shared/services/checklist/checklist-item";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import {
   IChecklist,

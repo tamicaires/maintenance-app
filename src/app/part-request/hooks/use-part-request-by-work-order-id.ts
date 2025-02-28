@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { IPartRequest } from "@/shared/types/part-request";
-import { PartRequestService } from "@/services/part-request";
+import { PartRequestService } from "@/shared/services/part-request";
 
 export function usePartRequestByWorkOrderId(workOrderId: string) {
   return useQuery<IApiResponse<IPartRequest[]>>({

@@ -1,5 +1,5 @@
 import { IJob } from "@/shared/types/job.interface";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 
 // const create = async (data: IEmployeeCreate): Promise<IApiResponse<IJob>> => {
 //   const response = await handleRequest<IJob>({

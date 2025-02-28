@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import { z } from "zod"
-import { queryClient } from "@/services/query-client"
-import { IApiResponse } from "@/services/api"
-import { EmployeeServiceAssigmentService } from "@/services/employee-service-assigment"
+import { queryClient } from "@/shared/services/query-client"
+import { IApiResponse } from "@/shared/services/api"
+import { EmployeeServiceAssigmentService } from "@/shared/services/employee-service-assigment"
 import { EmployeeServiceAssigmentType } from "@/shared/types/employee-service-assigment"
 
 const addEmployeeToServiceAssignmentSchema = z.object({

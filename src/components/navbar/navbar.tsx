@@ -6,7 +6,7 @@ import { ICompany } from "@/shared/types/company.interface";
 import { Webhook } from "lucide-react";
 import { MyAccountAvatar } from "../MyAccount";
 import { useCompany } from "@/app/SelectCompany/hooks/useCompany";
-import { setCookie } from "@/services/cookie";
+import { setCookie } from "@/shared/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BreadCrumb } from "../breadcrumb/breadcrumb";

@@ -1,8 +1,8 @@
-import type { IApiResponse } from "@/services/api"
-import { PartRequestService } from "@/services/part-request"
+import type { IApiResponse } from "@/shared/services/api"
+import { PartRequestService } from "@/shared/services/part-request"
 import { useQuery } from "@tanstack/react-query"
 import { QueryKeysEnum } from "@/shared/enums/query-keys"
-import { queryClient } from "@/services/query-client"
+import { queryClient } from "@/shared/services/query-client"
 import { IPartRequestsRelationalDataList } from "@/shared/types/part-request-relational-data"
 import { RequestStatus } from "@/shared/enums/part-request"
 

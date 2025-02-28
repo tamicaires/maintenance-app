@@ -1,4 +1,4 @@
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { IChecklistTemplate, ICreateChecklistTemplate } from "@/shared/types/checklist";
 
 const create = async (

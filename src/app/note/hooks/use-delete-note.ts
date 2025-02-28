@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import { queryClient } from "@/services/query-client"
-import { IApiResponse } from "@/services/api"
+import { queryClient } from "@/shared/services/query-client"
+import { IApiResponse } from "@/shared/services/api"
 import { INote } from "@/shared/types/note"
-import { NoteService } from "@/services/note"
+import { NoteService } from "@/shared/services/note"
 import { useEffect } from "react"
 import { useLoader } from "@/store/hook/use-loader"
 

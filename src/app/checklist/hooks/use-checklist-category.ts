@@ -1,7 +1,7 @@
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from '@tanstack/react-query';
 import { IChecklistCategory } from "@/shared/types/checklist";
-import { ChecklistCategoryService } from "@/services/checklist/checklist-category";
+import { ChecklistCategoryService } from "@/shared/services/checklist/checklist-category";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 export function useChecklistCategory(templateId: string) {

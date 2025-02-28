@@ -2,15 +2,15 @@
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { useEffect, useState } from "react";
-// import { queryClient } from "@/services/query-client";
+// import { queryClient } from "@/shared/services/query-client";
 // import { z } from "zod";
-// import { IApiResponse } from "@/services/api";
+// import { IApiResponse } from "@/shared/services/api";
 // import { createChecklistTemplateSchema } from "@/validations/create-checklist-template";
 // import {
 //   IChecklistTemplate,
 //   ICreateChecklistTemplate,
 // } from "@/shared/types/checklist";
-// import { ChecklistTemplateService } from "@/services/checklist/checklist-template";
+// import { ChecklistTemplateService } from "@/shared/services/checklist/checklist-template";
 
 // type CreateChecklistTemplateData = z.infer<
 //   typeof createChecklistTemplateSchema

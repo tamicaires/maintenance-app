@@ -2,18 +2,18 @@ import {
   IEmployee,
   IEmployeeCreateAndUpdate,
 } from "@/shared/types/employee.interface";
-import { handleRequest, IApiResponse } from "@/services/api";
-import { EmployeeServiceAssigmentCreateType, EmployeeServiceAssigmentType } from "@/shared/types/employee-service-assigment";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 
-const addServiceEmployee = async (
-  data: EmployeeServiceAssigmentCreateType
-): Promise<IApiResponse<EmployeeServiceAssigmentType>> => {
-  const response = await handleRequest<EmployeeServiceAssigmentType>({
+const create = async (
+  data: IEmployeeCreateAndUpdate
+): Promise<IApiResponse<IEmployee>> => {
+  const response = await handleRequest<IEmployee>({
     method: "POST",
-    url: "/employee-service-assigment",
+    url: "/employees",
     data,
   });
-
+  console.log("data", data);
+  console.log("response", response);
   return response;
 };
 
@@ -23,7 +23,7 @@ const update = async (
 ): Promise<IApiResponse<IEmployee>> => {
   const response = await handleRequest<IEmployee>({
     method: "PUT",
-    url: `/employee-service-assigment/${employeeId}`,
+    url: `/employees/${employeeId}`,
     data,
   });
 
@@ -35,7 +35,7 @@ const deleteEmployee = async (
 ): Promise<IApiResponse<void>> => {
   const response = await handleRequest<void>({
     method: "DELETE",
-    url: `/employee-service-assigment/${employeeId}`,
+    url: `/employees/${employeeId}`,
   });
 
   return response;
@@ -47,15 +47,15 @@ const getAll = async (
 ): Promise<IApiResponse<IEmployee[]>> => {
   const response = await handleRequest<IEmployee[]>({
     method: "GET",
-    url: "/employee-service-assigment",
+    url: "/employees",
     params: { page, perPage },
   });
 
   return response;
 };
 
-export const EmployeeServiceAssigmentService = {
-  addServiceEmployee,
+export const EmployeeService = {
+  create,
   update,
   deleteEmployee,
   getAll,

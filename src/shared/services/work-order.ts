@@ -7,7 +7,7 @@ import {
   IStartWaitingParts,
   IWorkOrder,
 } from "@/shared/types/work-order.interface";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { IWorkOrderFilters } from "@/app/work-order/hooks/use-work-order";
 
 const create = async (

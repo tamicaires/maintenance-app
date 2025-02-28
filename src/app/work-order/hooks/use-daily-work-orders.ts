@@ -1,8 +1,8 @@
-import { IApiResponse } from "@/services/api";
+import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from '@tanstack/react-query';
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { IDailyWorkOrdersData } from "@/shared/types/work-order.interface";
-import { WorkOrderService } from "@/services/work-order";
+import { WorkOrderService } from "@/shared/services/work-order";
 
 export function useDailyWorkOrders(startDate: string, endDate: string) {
   const { data, isLoading, error } = useQuery<IApiResponse<IDailyWorkOrdersData>>({

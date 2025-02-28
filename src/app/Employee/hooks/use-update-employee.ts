@@ -4,13 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { EmployeeService } from "@/services/employee";
+import { EmployeeService } from "@/shared/services/employee";
 import {
   IEmployee,
   IEmployeeCreateAndUpdate,
 } from "@/shared/types/employee.interface";
-import { IApiResponse } from "@/services/api";
-import { queryClient } from "@/services/query-client";
+import { IApiResponse } from "@/shared/services/api";
+import { queryClient } from "@/shared/services/query-client";
 
 const employeeSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),

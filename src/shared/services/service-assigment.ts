@@ -1,7 +1,7 @@
 import {
   IServiceCreateAndUpdate,
 } from "@/shared/types/service.interface";
-import { handleRequest, IApiResponse } from "@/services/api";
+import { handleRequest, IApiResponse } from "@/shared/services/api";
 import {
   ChangeStatusRequestType,
   ChangeStatusResponseType,
