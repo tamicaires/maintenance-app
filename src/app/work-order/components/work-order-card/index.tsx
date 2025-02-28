@@ -15,12 +15,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  ClockIcon,
-  WrenchIcon,
   AlertTriangleIcon,
   CalendarIcon,
   Eye,
   Pause,
+  Timer,
+  LucideIcon,
+  Wrench,
 } from "lucide-react";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { format } from "date-fns";
@@ -28,7 +29,15 @@ import { ptBR } from "date-fns/locale";
 import WorkOrderStatusBadge from "../work-order-status-badge";
 import { WorkOrderDetails } from "@/app/work-order/components/work-order-details";
 import { Profile } from "../../../../components/Profile";
-import { dateUtil } from "@/utils/date";
+import { DurationCard } from "./duration-card";
+
+type DurationInfoType = {
+  title: string;
+  condition: boolean;
+  start: string | undefined;
+  end: string | undefined;
+  icon: LucideIcon;
+};
 
 interface WorkOrderCardProps {
   workOrder: IWorkOrder;
@@ -42,6 +51,30 @@ export default function WorkOrderCard({
   const hasEntryQueue = workOrder.entryQueue !== null;
   const hasEntryMaintenance = workOrder.entryMaintenance !== null;
   const hasWaitingParts = workOrder.startWaitingParts !== null;
+
+  const durationInfo: DurationInfoType[] = [
+    {
+      title: "T. em Fila",
+      start: workOrder.entryQueue,
+      end: workOrder.entryMaintenance,
+      condition: hasEntryQueue,
+      icon: Timer,
+    },
+    {
+      title: "T. Manutenção",
+      start: workOrder.entryMaintenance,
+      end: workOrder.exitMaintenance,
+      condition: hasEntryMaintenance,
+      icon: Wrench,
+    },
+    {
+      title: "T. Aguard. Peça",
+      start: workOrder.startWaitingParts,
+      end: workOrder.endWaitingParts,
+      condition: hasWaitingParts,
+      icon: Pause,
+    },
+  ];
 
   return (
     <motion.div
@@ -134,65 +167,17 @@ export default function WorkOrderCard({
           </div>
           <div className="flex">
             <div className="flex items-center justify-end pr-4">
-              {hasEntryQueue && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center w-24">
-                        <ClockIcon className="mr-1 h-4 w-4 text-primary" />
-                        <p className="text-sm">
-                          {dateUtil.calculateDuration(
-                            workOrder.entryQueue,
-                            workOrder.entryMaintenance
-                          )}
-                        </p>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Tempo em fila</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-              {hasEntryMaintenance && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center w-24">
-                        <WrenchIcon className="mr-1 h-4 w-4 text-primary" />
-                        <p className="text-sm">
-                          {dateUtil.calculateDuration(
-                            workOrder.entryMaintenance,
-                            workOrder.exitMaintenance
-                          )}
-                        </p>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Tempo em manutenção</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-              {hasWaitingParts && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center w-24">
-                        <Pause className="mr-1 h-4 w-4 text-primary" />
-                        <p className="text-sm">
-                          {dateUtil.calculateDuration(
-                            workOrder.startWaitingParts,
-                            workOrder.endWaitingParts
-                          )}
-                        </p>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Tempo aguardando peças</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              {durationInfo.map(
+                (duration, index) =>
+                  duration.condition && (
+                    <DurationCard
+                      key={index}
+                      title={duration.title}
+                      start={duration.start}
+                      end={duration.end}
+                      icon={duration.icon}
+                    />
+                  )
               )}
             </div>
             <WorkOrderDetails
