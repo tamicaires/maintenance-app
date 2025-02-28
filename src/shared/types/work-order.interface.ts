@@ -36,6 +36,10 @@ export interface IWorkOrder {
     name: string;
     isActive: boolean
   }
+  openedBy: {
+    id: string;
+    name: string;
+  }
   notes: INote[];
 }
 

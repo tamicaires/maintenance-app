@@ -44,8 +44,32 @@ export const dateUtil = {
       startDate,
       endDate,
     };
+  },
+  calculateDuration(entry?: string, exit?: string): string {
+    if (!entry) return "I/D";
 
+    const entryDate = new Date(entry);
+    const exitDate = exit ? new Date(exit) : new Date();
+
+    const diffMs = exitDate.getTime() - entryDate.getTime();
+    if (diffMs < 0) return "I/D";
+
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    const remainingHours = diffHours % 24;
+    const remainingMinutes = diffMinutes % 60;
+
+    const formattedTime = `${String(remainingHours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}`;
+
+    if (diffDays > 0) {
+      return `${diffDays}d ${formattedTime}`;
+    }
+    return formattedTime;
   }
+
+
 }
 
 export const dateLabels = {

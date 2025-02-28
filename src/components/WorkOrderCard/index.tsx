@@ -8,7 +8,6 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Tooltip,
   TooltipContent,
@@ -21,12 +20,15 @@ import {
   AlertTriangleIcon,
   CalendarIcon,
   Eye,
+  Pause,
 } from "lucide-react";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import WorkOrderStatusBadge from "../WorkOrderStatusBadge";
 import { WorkOrderDetails } from "@/app/work-order/components/work-order-details";
+import { Profile } from "../Profile";
+import { dateUtil } from "@/utils/date";
 
 interface WorkOrderCardProps {
   workOrder: IWorkOrder;
@@ -37,6 +39,10 @@ export default function WorkOrderCard({
   workOrder,
   highlightMatch,
 }: WorkOrderCardProps) {
+  const hasEntryQueue = workOrder.entryQueue !== null;
+  const hasEntryMaintenance = workOrder.entryMaintenance !== null;
+  const hasWaitingParts = workOrder.startWaitingParts !== null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -50,7 +56,7 @@ export default function WorkOrderCard({
             <div className="mb-2 md:mb-0">
               <Badge
                 variant="secondary"
-                className="bg-blue-100 text-blue-700 hover:bg-blue-200"
+                className="bg-blue-700/15 text-blue-600 hover:bg-blue-200"
               >
                 {workOrder.displayId}
               </Badge>
@@ -118,56 +124,81 @@ export default function WorkOrderCard({
           </div>
         </CardContent>
         <CardFooter className="bg-muted/50 flex flex-col md:flex-row justify-between items-start md:items-center pt-6">
-          <div className="flex items-center mb-4 md:mb-0">
-            <Avatar className="h-8 w-8 mr-2">
-              <AvatarImage
-                src="/placeholder-avatar.jpg"
-                alt={workOrder.createdBy}
-              />
-              <AvatarFallback>
-                {workOrder.createdBy &&
-                  workOrder.createdBy
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium">{workOrder.createdBy}</p>
-              <p className="text-xs text-muted-foreground">Criado por</p>
-            </div>
+          <div className="w-1/3">
+            <Profile
+              name={workOrder.openedBy.name}
+              description="Criado por"
+              descriptionPosition="top"
+              showAvatar
+            />
           </div>
-          <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 items-start md:items-center">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center">
-                    <ClockIcon className="mr-1 h-4 w-4 text-primary" />
-                    <p className="text-sm">{workOrder.queueDuration}</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Tempo em fila</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center">
-                    <WrenchIcon className="mr-1 h-4 w-4 text-primary" />
-                    <p className="text-sm">{workOrder.maintenanceDuration}</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Tempo em manutenção</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+          <div className="flex">
+            <div className="flex items-center justify-end pr-4">
+              {hasEntryQueue && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center w-24">
+                        <ClockIcon className="mr-1 h-4 w-4 text-primary" />
+                        <p className="text-sm">
+                          {dateUtil.calculateDuration(
+                            workOrder.entryQueue,
+                            workOrder.entryMaintenance
+                          )}
+                        </p>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Tempo em fila</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {hasEntryMaintenance && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center w-24">
+                        <WrenchIcon className="mr-1 h-4 w-4 text-primary" />
+                        <p className="text-sm">
+                          {dateUtil.calculateDuration(
+                            workOrder.entryMaintenance,
+                            workOrder.exitMaintenance
+                          )}
+                        </p>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Tempo em manutenção</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {hasWaitingParts && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center w-24">
+                        <Pause className="mr-1 h-4 w-4 text-primary" />
+                        <p className="text-sm">
+                          {dateUtil.calculateDuration(
+                            workOrder.startWaitingParts,
+                            workOrder.endWaitingParts
+                          )}
+                        </p>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Tempo aguardando peças</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </div>
             <WorkOrderDetails
               workOrderId={workOrder.id}
               trigger={
-                <Button variant="default" size="sm">
+                <Button variant="default" size="sm" className="ml-auto">
                   <Eye className="h-4 w-4 mr-2" />
                   VER DETALHES
                 </Button>
