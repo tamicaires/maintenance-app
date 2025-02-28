@@ -47,9 +47,10 @@ export function WorkOrderQuickActions({
             Fechar
           </Button>
           {isInQueue && (
-            <StartMaintenanceDialog workOrderId={workOrder.id}>
-              <Button>Iniciar Manutenção</Button>
-            </StartMaintenanceDialog>
+            <StartMaintenanceDialog
+              workOrderId={workOrder.id}
+              trigger={<Button>Iniciar Manutenção</Button>}
+            />
           )}
           {isInProgress && (
             <FinishMaintenanceDialog workOrderId={workOrder.id}>
@@ -57,9 +58,10 @@ export function WorkOrderQuickActions({
             </FinishMaintenanceDialog>
           )}
           {isWaitingPartsWorkOrder && (
-            <FinishWaitingPartsDialog workOrderId={workOrder.id}>
-              <Button>Retornar Manutenção</Button>
-            </FinishWaitingPartsDialog>
+            <FinishWaitingPartsDialog
+              workOrderId={workOrder.id}
+              trigger={<Button>Retornar Manutenção</Button>}
+            />
           )}
         </div>
       </div>

@@ -24,14 +24,14 @@ import { useFinishWaitingParts } from "../../hooks/actions/use-finish-waiting-pa
 
 type FinishWaitingPartsDialogProps = {
   onClick?: () => void;
-  children?: React.ReactNode;
+  trigger?: React.ReactNode;
   onClose?: () => void;
   workOrderId: string;
 };
 
 export function FinishWaitingPartsDialog({
   onClose,
-  children,
+  trigger,
   workOrderId,
 }: FinishWaitingPartsDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,7 +52,7 @@ export function FinishWaitingPartsDialog({
   };
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         className="sm:max-w-[425px]"
         onInteractOutside={(e) => e.preventDefault()}
