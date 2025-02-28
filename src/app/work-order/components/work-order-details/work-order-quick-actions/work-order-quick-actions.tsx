@@ -3,10 +3,10 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import type { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
-import { StartMaintenanceDialog } from "../actions-dialogs/start-maintenace-dialog";
-import { FinishMaintenanceDialog } from "../actions-dialogs/finish-maintenance-dialog";
+import { StartMaintenanceDialog } from "../../actions-dialogs/start-maintenace-dialog";
+import { FinishMaintenanceDialog } from "../../actions-dialogs/finish-maintenance-dialog";
 import { validateWorkOrderState } from "@/utils/work-order";
-import { FinishWaitingPartsDialog } from "../actions-dialogs/finish-waiting-parts";
+import { FinishWaitingPartsDialog } from "../../actions-dialogs/finish-waiting-parts";
 
 type WorkOrderQuickActionsProps = {
   workOrder: IWorkOrder;

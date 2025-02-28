@@ -25,9 +25,9 @@ import {
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import WorkOrderStatusBadge from "../WorkOrderStatusBadge";
+import WorkOrderStatusBadge from "../../../../components/WorkOrderStatusBadge";
 import { WorkOrderDetails } from "@/app/work-order/components/work-order-details";
-import { Profile } from "../Profile";
+import { Profile } from "../../../../components/Profile";
 import { dateUtil } from "@/utils/date";
 
 interface WorkOrderCardProps {

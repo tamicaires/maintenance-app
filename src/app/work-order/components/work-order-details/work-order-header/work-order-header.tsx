@@ -37,7 +37,7 @@ import {
   getMaintenanceStatusInfo,
   validateWorkOrderState,
 } from "@/utils/work-order";
-import { useCancelWorkOrder } from "../../hooks/use-cancel-work-order";
+import { useCancelWorkOrder } from "../../../hooks/use-cancel-work-order";
 import { useToast } from "@/components/Toast/toast";
 import {
   AlertDialog,
@@ -52,9 +52,9 @@ import {
 import { useState } from "react";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { ShareContent } from "@/components/share-content/share-content";
-import { StartWaitingPartsDialog } from "../actions-dialogs/start-waiting-parts-dialog";
+import { StartWaitingPartsDialog } from "../../actions-dialogs/start-waiting-parts-dialog";
 import { Profile } from "@/components/Profile";
-import { BackToQueueWorkOrderDialog } from "../actions-dialogs/back-to-queue";
+import { BackToQueueWorkOrderDialog } from "../../actions-dialogs/back-to-queue";
 import { formatDuration } from "@/utils/time";
 import { StartChecklistDialog } from "@/app/checklist/components/start-checklist-dialog";
 import { useChecklistByWorkOrder } from "@/app/checklist/checklist/hooks/use-checklist-by-work-order";

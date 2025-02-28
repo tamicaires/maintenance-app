@@ -18,7 +18,7 @@ import { WorkOrderCreationDialog } from "@/app/work-order/components/create-orde
 import { useWorkOrder } from "../hooks/use-work-order";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/empty-state";
-import WorkOrderCard from "@/components/WorkOrderCard";
+import WorkOrderCard from "@/app/work-order/components/work-order-card";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
 import { Schedule } from "@/components/schedule/schedule";
@@ -189,8 +189,8 @@ export default function Order() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Schedule showCalendarOnly />
             <ScrollArea className="shadow-lg rounded-xl p-4 md:p-6 bg-card">
+              <Schedule showCalendarOnly />
               <div className="pb-5">
                 <h2 className="text-2xl font-semibold leading-tight tracking-tight">
                   Resumo do dia

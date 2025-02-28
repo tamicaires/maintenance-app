@@ -12,7 +12,7 @@ import type { IWorkOrder } from "@/shared/types/work-order.interface";
 import { getDataOrDefault } from "@/utils/data";
 import { maintenanceColumns } from "../data/collumns";
 import type { ITableFilterOption } from "@/components/data-table/data-table-toolbar";
-import WorkOrderFilters from "@/app/work-order/components/work-order-filter/work-order-filters";
+import WorkOrderFilters from "@/app/work-order/components/work-order-details/work-order-filter/work-order-filters";
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import ExportButton from "@/components/export-button/export-button";
