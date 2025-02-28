@@ -20,22 +20,21 @@ import {
   WrenchIcon,
   AlertTriangleIcon,
   CalendarIcon,
+  Eye,
 } from "lucide-react";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import WorkOrderStatusBadge from "../WorkOrderStatusBadge";
-
+import { WorkOrderDetails } from "@/app/work-order/components/work-order-details";
 
 interface WorkOrderCardProps {
   workOrder: IWorkOrder;
-  handleOpenDialog: (workOrder: IWorkOrder) => void;
   highlightMatch: (text: string) => React.ReactNode;
 }
 
 export default function WorkOrderCard({
   workOrder,
-  handleOpenDialog,
   highlightMatch,
 }: WorkOrderCardProps) {
   return (
@@ -165,13 +164,15 @@ export default function WorkOrderCard({
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => handleOpenDialog(workOrder)}
-            >
-              VER DETALHES
-            </Button>
+            <WorkOrderDetails
+              workOrderId={workOrder.id}
+              trigger={
+                <Button variant="default" size="sm">
+                  <Eye className="h-4 w-4 mr-2" />
+                  VER DETALHES
+                </Button>
+              }
+            />
           </div>
         </CardFooter>
       </Card>

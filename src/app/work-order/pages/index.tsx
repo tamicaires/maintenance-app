@@ -13,11 +13,9 @@ import {
   CalendarIcon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { WorkOrderDetails } from "../components/work-order-details";
 import { DailyChart } from "@/components/DailyChart/DailyChart";
 import { WorkOrderCreationDialog } from "@/app/work-order/components/create-order-dialog";
 import { useWorkOrder } from "../hooks/use-work-order";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/empty-state";
 import WorkOrderCard from "@/components/WorkOrderCard";
@@ -27,12 +25,9 @@ import { Schedule } from "@/components/schedule/schedule";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [selectedWorkOrder, setSelectedWorkOrder] =
-    useState<IWorkOrder | null>();
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { data, isLoading, invalidateWorkOrders } = useWorkOrder();
+  const { data, isLoading } = useWorkOrder();
   const workOrders = data?.data || [];
 
   const filteredWorkOrders = useMemo(() => {
@@ -86,16 +81,6 @@ export default function Order() {
     { numero: "22455", transportador: "Truck Diesel", ultima: "12/03/2024" },
     { numero: "22533", transportador: "Solimões LTDA", ultima: "12/03/2024" },
   ];
-
-  const handleOpenDialog = (workOrder: IWorkOrder) => {
-    setSelectedWorkOrder(workOrder);
-    setIsDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    invalidateWorkOrders(); // Invalidate and refetch when dialog closes
-  };
 
   const getEmptyStateMessage = () => {
     if (searchQuery) {
@@ -154,18 +139,10 @@ export default function Order() {
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="my-6">
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 rounded-xl p-1">
-              <TabsTrigger value="todas">
-                Todas
-              </TabsTrigger>
-              <TabsTrigger value="fila">
-                Fila
-              </TabsTrigger>
-              <TabsTrigger value="manutencao">
-                Manutenção
-              </TabsTrigger>
-              <TabsTrigger value="aguard-peca">
-                Aguard. Peça
-              </TabsTrigger>
+              <TabsTrigger value="todas">Todas</TabsTrigger>
+              <TabsTrigger value="fila">Fila</TabsTrigger>
+              <TabsTrigger value="manutencao">Manutenção</TabsTrigger>
+              <TabsTrigger value="aguard-peca">Aguard. Peça</TabsTrigger>
             </TabsList>
           </Tabs>
 
@@ -199,7 +176,6 @@ export default function Order() {
                 <WorkOrderCard
                   key={workOrder.id}
                   workOrder={workOrder}
-                  handleOpenDialog={handleOpenDialog}
                   highlightMatch={highlightMatch}
                 />
               ))}
@@ -213,7 +189,7 @@ export default function Order() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Schedule showCalendarOnly/>
+            <Schedule showCalendarOnly />
             <ScrollArea className="shadow-lg rounded-xl p-4 md:p-6 bg-card">
               <div className="pb-5">
                 <h2 className="text-2xl font-semibold leading-tight tracking-tight">
@@ -287,13 +263,6 @@ export default function Order() {
             </ScrollArea>
           </motion.div>
         </aside>
-        {selectedWorkOrder && (
-          <WorkOrderDetails
-            workOrderId={selectedWorkOrder.id}
-            isDialogOpen={isDialogOpen}
-            setIsDialogOpen={handleCloseDialog}
-          />
-        )}
       </div>
     </div>
   );
