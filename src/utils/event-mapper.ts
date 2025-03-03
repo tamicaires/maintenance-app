@@ -24,5 +24,8 @@ export const subjectToPortuguese: Record<SubjectEnum, string> = {
   [SubjectEnum.Checklist]: "Checklist",
   [SubjectEnum.Template_Checklist]: "Template de Checklist",
   [SubjectEnum.Part_Request]: "Requisição de Peça",
+  [SubjectEnum.Work_Order]: "Ordem de Serviço",
+  [SubjectEnum.Maintenance]: "Manutenção",
+  [SubjectEnum.WaitingParts]: "Aguardando Peças",
 }
 

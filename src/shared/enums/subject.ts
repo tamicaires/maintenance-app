@@ -9,7 +9,8 @@ export enum SubjectEnum {
   Part_Request = 'PartRequest',
   Work_Order = "WorkOrder",
   Maintenance = "Maintenance",
-  WaitingParts = "WaitingParts"
+  WaitingParts = "WaitingParts",
+  Template_Checklist = "TemplateChecklist",
 }
 
 export type TSubject = keyof typeof SubjectEnum;

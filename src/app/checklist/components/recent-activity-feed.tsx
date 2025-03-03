@@ -43,19 +43,6 @@ export default function RecentActivityFeed() {
 
   const tabs = [
     { value: "all" as TabValue, label: "Todas", count: activities.length },
-    {
-      value: "checklists" as TabValue,
-      label: "Checklists",
-      count: activities.filter((a) => a.subject === SubjectEnum.Checklist)
-        .length,
-    },
-    {
-      value: "templates" as TabValue,
-      label: "Ordens de Serviço",
-      count: activities.filter(
-        (a) => a.subject === SubjectEnum.Template_Checklist
-      ).length,
-    },
   ];
 
   return (
