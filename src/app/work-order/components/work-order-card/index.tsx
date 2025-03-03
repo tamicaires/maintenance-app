@@ -159,7 +159,7 @@ export default function WorkOrderCard({
         <CardFooter className="bg-muted/50 flex flex-col md:flex-row justify-between items-start md:items-center pt-6">
           <div className="w-1/3">
             <Profile
-              name={workOrder.openedBy.name}
+              name={workOrder.user.name}
               description="Criado por"
               descriptionPosition="top"
               showAvatar

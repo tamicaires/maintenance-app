@@ -25,7 +25,6 @@ export interface IWorkOrder {
   waitingPartsDuration?: number;
   exitSupervisor?: string;
   fleetId: string;
-  user?: string;
   typeOfMaintenance: string;
   isCancelled: boolean;
   createdBy: string;
@@ -37,6 +36,10 @@ export interface IWorkOrder {
     isActive: boolean
   }
   openedBy: {
+    id: string;
+    name: string;
+  }
+  user: {
     id: string;
     name: string;
   }
