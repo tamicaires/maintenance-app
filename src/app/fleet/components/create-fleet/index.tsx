@@ -18,8 +18,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { SuccessMessage } from "@/components/SucessMessage";
 import { useNotification } from "@/components/notification-card/notification-card";
+import { useState } from "react";
 
-export function FleetCreationDialog() {
+type FleetCreationProps = {
+  trigger: React.ReactNode;
+};
+
+export function FleetCreationDialog({ trigger }: FleetCreationProps) {
   const { showNotification, NotificationComponent } = useNotification();
   const {
     createFleetForm,

@@ -32,10 +32,6 @@ export function Carrier() {
   const { data: carrierData, isLoading } = useCarrier();
   const carriers = getDataOrDefault(carrierData, [], "data");
 
-  // if (isLoading) {
-  //   return <div>Carregando...</div>;
-  // }
-
   const handleOpenModal = () => {
     setIsDialogOpen(true);
   };
