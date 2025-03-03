@@ -12,4 +12,5 @@ export enum QueryKeysEnum {
   Service_Assigment = "service-assignments",
   Trailer = "trailers",
   Work_Order = "work-orders",
+  Fleet = "fleets",
 }
