@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import {
   ClockIcon,
@@ -13,7 +12,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WorkOrderCreationDialog } from "@/app/work-order/components/create-order-dialog";
-import { useWorkOrder } from "../hooks/use-work-order";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/empty-state";
 import WorkOrderCard from "@/app/work-order/components/work-order-card";
@@ -25,16 +23,30 @@ import {
 } from "../components/maintenance-summary/maintenance-summary";
 import { WorkOrderHeader } from "../components/work-order-header/work-order-header";
 import { getMaintenanceEmptyStateMessage } from "@/utils/work-order";
+import { dateUtil } from "@/utils/date";
+import { useDailyWorkOrders } from "../hooks/use-daily-work-orders";
+import { getDataOrDefault } from "@/utils/data";
+import { IWorkOrder } from "@/shared/types/work-order.interface";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { data, isLoading } = useWorkOrder();
-  const workOrders = data?.data || [];
+  const today = dateUtil.getTodayInterval();
+  const { data: dailyOsData, isLoading: isDailyOSLoading } = useDailyWorkOrders(
+    today.startDate.toISOString(),
+    today.endDate.toISOString()
+  );
+
+  const dailyWorkOrders = getDataOrDefault<IWorkOrder[]>(
+    dailyOsData,
+    [],
+    "data.workOrders"
+  );
+  console.log("dailyWorkOrders", dailyWorkOrders);
 
   const filteredWorkOrders = useMemo(() => {
-    return workOrders.filter((order) => {
+    return dailyWorkOrders.filter((order) => {
       const matchesTab =
         activeTab === "todas" ||
         (activeTab === "fila" && order.status === MaintenanceStatus.FILA) ||
@@ -49,13 +61,13 @@ export default function Order() {
 
       return matchesTab && matchesSearch;
     });
-  }, [activeTab, workOrders, searchQuery]);
+  }, [activeTab, dailyWorkOrders, searchQuery]);
 
   const summaryItems: SummaryItem[] = [
     {
       icon: ClockIcon,
       label: "Frotas em fila",
-      value: workOrders
+      value: dailyWorkOrders
         .filter((order) => order.status === MaintenanceStatus.FILA)
         .length.toString(),
       color: "yellow",
@@ -63,7 +75,7 @@ export default function Order() {
     {
       icon: WrenchIcon,
       label: "Frotas em Manutenção",
-      value: workOrders
+      value: dailyWorkOrders
         .filter((order) => order.status === MaintenanceStatus.MANUTENCAO)
         .length.toString(),
       color: "blue",
@@ -71,7 +83,7 @@ export default function Order() {
     {
       icon: CheckCircleIcon,
       label: "Frotas Finalizado",
-      value: workOrders
+      value: dailyWorkOrders
         .filter((order) => order.status === MaintenanceStatus.FINALIZADA)
         .length.toString(),
       color: "green",
@@ -137,7 +149,7 @@ export default function Order() {
 
           <div className="overflow-y-auto max-h-screen">
             <AnimatePresence>
-              {!isLoading && filteredWorkOrders.length === 0 && (
+              {!isDailyOSLoading && filteredWorkOrders.length === 0 && (
                 <EmptyState
                   message={getMaintenanceEmptyStateMessage(
                     searchQuery,
