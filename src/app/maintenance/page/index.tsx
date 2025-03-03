@@ -25,7 +25,7 @@ export function MaintenanceReport() {
     status: [MaintenanceStatus.FINALIZADA, MaintenanceStatus.CANCELADA],
   });
   const maintenanceData = getDataOrDefault<IWorkOrder[]>(data, [], "data");
-  console.log("filters", filters);
+
   const handleFiltersChange = (newFilters: Partial<IWorkOrderFilters>) => {
     setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
   };
@@ -64,7 +64,7 @@ export function MaintenanceReport() {
         </ReportHeader>
         <ReportTable
           columns={maintenanceColumns}
-          searchColumn="carrierName"
+          searchColumn="displayId"
           data={maintenanceData}
           filterOptions={filterOptions}
           isloadingData={isLoading}

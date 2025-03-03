@@ -48,10 +48,8 @@ export function WorkOrderDetails({
   const { data, isLoading } = useWorkOrderById(workOrderId, {
     enabled: shouldFetchData,
   })
-
-
   const workOrder = data?.data
-console.log("workOrder", workOrder)
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger className="w-full">{trigger}</DialogTrigger>
