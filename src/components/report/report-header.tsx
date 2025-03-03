@@ -20,7 +20,7 @@ export function ReportHeader({
         </span>
       </div>
       {children && (
-        <div className="flex flex-wrap gap-3 mt-2 sm:mt-0">{children}</div>
+        <div className="flex gap-3 mt-2 sm:mt-0">{children}</div>
       )}
     </div>
   );
