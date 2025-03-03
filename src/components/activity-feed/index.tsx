@@ -24,9 +24,10 @@ export function ActivityFeed({
     return <div>Erro ao carregar atividades recentes: {error.message}</div>;
   }
 
+  const isTabActive = tabs && onTabChange && selectedTab;
   return (
     <Card className="shadow-lg">
-      <CardHeader className="px-6 pb-4">
+      <CardHeader className="px-3 pb-1">
         <div className="flex flex-wrap items-center justify-between mb-4">
           <div className="flex gap-3 items-center">
             <div className="bg-primary p-2 rounded-md">
@@ -44,11 +45,13 @@ export function ActivityFeed({
             </Button>
           )}
         </div>
-        <ActivityTabs
-          tabs={tabs}
-          selectedTab={selectedTab}
-          onTabChange={onTabChange}
-        />
+        {isTabActive && (
+          <ActivityTabs
+            tabs={tabs}
+            selectedTab={selectedTab}
+            onTabChange={onTabChange}
+          />
+        )}
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[calc(68vh-200px)]">

@@ -81,6 +81,22 @@ export const getMaintenanceStatusInfo = (status: MaintenanceStatus) => {
   }
 };
 
+export const getMaintenanceEmptyStateMessage = (searchQuery: string, activeTab: string): string => {
+  if (searchQuery) {
+    return `Nenhuma ordem de serviço encontrada para "${searchQuery}".`;
+  }
+  switch (activeTab) {
+    case "fila":
+      return "Não há ordens de serviço em fila no momento.";
+    case "manutencao":
+      return "Não há ordens de serviço em manutenção no momento.";
+    case "aguard-peca":
+      return "Não há ordens de serviço aguardando peças no momento.";
+    default:
+      return "Não há ordens de serviço disponíveis.";
+  }
+};
+
 export const calculateProgress = (workOrderStatus: MaintenanceStatus) => {
   switch (workOrderStatus) {
     case MaintenanceStatus.FILA:

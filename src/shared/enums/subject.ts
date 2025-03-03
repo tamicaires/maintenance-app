@@ -6,8 +6,10 @@ export enum SubjectEnum {
   Carrier = 'Carrier',
   Service = 'Service',
   Checklist = 'Checklist',
-  Template_Checklist = 'Template_Checklist',
-  Part_Request = "PartRequest"
+  Part_Request = 'PartRequest',
+  Work_Order = "WorkOrder",
+  Maintenance = "Maintenance",
+  WaitingParts = "WaitingParts"
 }
 
 export type TSubject = keyof typeof SubjectEnum;

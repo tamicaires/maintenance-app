@@ -10,18 +10,21 @@ import {
   CheckCircleIcon,
   SearchIcon,
   XIcon,
-  CalendarIcon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DailyChart } from "@/components/DailyChart/DailyChart";
 import { WorkOrderCreationDialog } from "@/app/work-order/components/create-order-dialog";
 import { useWorkOrder } from "../hooks/use-work-order";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/empty-state";
 import WorkOrderCard from "@/app/work-order/components/work-order-card";
-import { ptBR } from "date-fns/locale";
-import { format } from "date-fns";
-import { Schedule } from "@/components/schedule/schedule";
+import WorkOrderRecentActivityFeed from "../components/recent-activity-order/recent-activity-work-order";
+import { QueueChart } from "@/app/workshop-dashboard/components/charts/QueueChart";
+import {
+  MaintenanceSummary,
+  SummaryItem,
+} from "../components/maintenance-summary/maintenance-summary";
+import { WorkOrderHeader } from "../components/work-order-header/work-order-header";
+import { getMaintenanceEmptyStateMessage } from "@/utils/work-order";
 
 export default function Order() {
   const [activeTab, setActiveTab] = useState<string>("todas");
@@ -48,7 +51,7 @@ export default function Order() {
     });
   }, [activeTab, workOrders, searchQuery]);
 
-  const summaryItems = [
+  const summaryItems: SummaryItem[] = [
     {
       icon: ClockIcon,
       label: "Frotas em fila",
@@ -75,29 +78,6 @@ export default function Order() {
     },
   ];
 
-  const planejamento = [
-    { numero: "22542", transportador: "3T Transportes", ultima: "12/03/2024" },
-    { numero: "22399", transportador: "Tecnoserv", ultima: "12/03/2024" },
-    { numero: "22455", transportador: "Truck Diesel", ultima: "12/03/2024" },
-    { numero: "22533", transportador: "Solimões LTDA", ultima: "12/03/2024" },
-  ];
-
-  const getEmptyStateMessage = () => {
-    if (searchQuery) {
-      return `Nenhuma ordem de serviço encontrada para "${searchQuery}".`;
-    }
-    switch (activeTab) {
-      case "fila":
-        return "Não há ordens de serviço em fila no momento.";
-      case "manutencao":
-        return "Não há ordens de serviço em manutenção no momento.";
-      case "aguard-peca":
-        return "Não há ordens de serviço aguardando peças no momento.";
-      default:
-        return "Não há ordens de serviço disponíveis.";
-    }
-  };
-
   const highlightMatch = (text: string) => {
     if (!searchQuery) return text;
     const parts = text.split(new RegExp(`(${searchQuery})`, "gi"));
@@ -117,26 +97,14 @@ export default function Order() {
   };
 
   return (
-    <div className="container flex flex-col bg-background mt-14 p-4 md:px-6 max-h-full">
+    <div className="container flex flex-col bg-background mt-14 p-3 md:px-6 max-h-full">
       <div className="flex flex-col lg:flex-row gap-5">
         <main className="flex-1 bg-card p-4 md:p-6 shadow-lg rounded-xl">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6"
-          >
-            <div className="mb-4 md:mb-0">
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-                Ordem de Serviços
-              </h1>
-              <p className="text-muted-foreground">
-                Gerenciamento de Ordem de Serviço abertas
-              </p>
-            </div>
-            <WorkOrderCreationDialog />
-          </motion.div>
-
+          <WorkOrderHeader
+            title="Ordens de Serviço"
+            subtitle="Gerenciamento de Ordem de Serviço abertas"
+            actionButton={<WorkOrderCreationDialog />}
+          />
           <Tabs value={activeTab} onValueChange={setActiveTab} className="my-6">
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 rounded-xl p-1">
               <TabsTrigger value="todas">Todas</TabsTrigger>
@@ -170,7 +138,12 @@ export default function Order() {
           <div className="overflow-y-auto max-h-screen">
             <AnimatePresence>
               {!isLoading && filteredWorkOrders.length === 0 && (
-                <EmptyState message={getEmptyStateMessage()} />
+                <EmptyState
+                  message={getMaintenanceEmptyStateMessage(
+                    searchQuery,
+                    activeTab
+                  )}
+                />
               )}
               {filteredWorkOrders.map((workOrder) => (
                 <WorkOrderCard
@@ -189,77 +162,10 @@ export default function Order() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <ScrollArea className="shadow-lg rounded-xl p-4 md:p-6 bg-card">
-              <Schedule showCalendarOnly />
-              <div className="pb-5">
-                <h2 className="text-2xl font-semibold leading-tight tracking-tight">
-                  Resumo do dia
-                </h2>
-                <h2 className="text-sm text-muted-foreground">
-                  {format(new Date(), "EEEE dd/MM/yyyy", {
-                    locale: ptBR,
-                  }).replace(/^\w/, (c) => c.toUpperCase())}
-                </h2>
-              </div>
-
-              <div className="space-y-4">
-                {summaryItems.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex justify-between items-center p-3 bg-muted rounded-lg"
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`bg-${item.color}-500 bg-opacity-15 border p-2 border-${item.color}-500 rounded-lg`}
-                      >
-                        <item.icon
-                          className={` h-5 w-5 text-${item.color}-500`}
-                        />
-                      </div>
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </div>
-                    <span className="text-2xl font-bold">{item.value}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <DailyChart />
-              <Separator className="my-6" />
-
-              <h2 className="text-lg font-semibold mb-4">
-                Planejamento para{" "}
-                {format(new Date(), "dd/MM/yyyy", { locale: ptBR })}
-              </h2>
-              <ScrollArea className="h-[300px] rounded-md border p-4">
-                {planejamento.map((frota, index) => (
-                  <motion.div
-                    key={index}
-                    className="my-4 last:mb-0 p-3 bg-muted rounded-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">
-                          Numero Frota: {frota.numero}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Transportador: {frota.transportador}
-                        </p>
-                      </div>
-                      <Button variant="ghost" size="sm">
-                        ▼
-                      </Button>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-2 flex items-center">
-                      <CalendarIcon className="mr-1 h-4 w-4" />
-                      Última preventiva: {frota.ultima}
-                    </p>
-                  </motion.div>
-                ))}
-              </ScrollArea>
+            <ScrollArea className="shadow-lg p-4 md:p-6 bg-card space-y-4">
+              <MaintenanceSummary items={summaryItems} />
+              <QueueChart />
+              <WorkOrderRecentActivityFeed />
             </ScrollArea>
           </motion.div>
         </aside>

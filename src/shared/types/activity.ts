@@ -30,9 +30,9 @@ export interface ActivityFeedProps {
   activities: ActivityItemProps[]
   isLoading: boolean
   error: Error | null
-  tabs: Tab[]
-  selectedTab: string
-  onTabChange: (value: string) => void
+  tabs?: Tab[]
+  selectedTab?: string
+  onTabChange?: (value: string) => void
   onViewAll?: () => void
   emptyStateMessage: string
 }
