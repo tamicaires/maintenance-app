@@ -4,6 +4,7 @@ export interface IBox {
   id: string;
   name: string;
   description: string | null;
+  position: number;
   isActive: boolean;
   companyId: string;
 }
