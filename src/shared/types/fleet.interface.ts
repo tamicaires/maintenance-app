@@ -10,11 +10,16 @@ export interface IFleet {
   createdAt?: string;
 }
 
+export interface IFleetWithCount {
+  fleets: IFleet[];
+  totalCount: number;
+}
+
 export interface IFleetCreate {
   fleetNumber: string;
   isActive: boolean;
   carrierId: string;
-} 
+}
 
 export interface IFleetUpdate {
   fleetNumber?: string;

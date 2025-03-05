@@ -2,6 +2,7 @@ import {
   IFleet,
   IFleetCreate,
   IFleetUpdate,
+  IFleetWithCount,
 } from "@/shared/types/fleet.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { IFleetFilters } from "@/app/Fleet/hooks/use-fleet";
@@ -38,14 +39,14 @@ const deleteFleet = async (id: string): Promise<IApiResponse<void>> => {
   return response;
 };
 
-const getAll = async (filters?: IFleetFilters): Promise<IApiResponse<IFleet[]>> => {
+const getAll = async (filters?: IFleetFilters): Promise<IApiResponse<IFleetWithCount>> => {
   const params = new URLSearchParams(filters as Record<string, string>);
 
-  const response = await handleRequest<IFleet[]>({
+  const response = await handleRequest<IFleetWithCount>({
     method: "GET",
     url: `/fleets?${params.toString()}`,
   });
-  console.log("response", response);
+ 
   return response;
 };
 
