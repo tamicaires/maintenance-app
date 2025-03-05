@@ -9,6 +9,9 @@ export const createServiceSchema = z.object({
     .string()
     .min(1, "Categoria do serviço é obrigatória")
     .max(50, "Categoria do serviço deve ter no máximo 50 caracteres"),
+  weight: z
+    .number()
+    .min(0.5, "Peso do serviço é obrigatória")
 });
 
 export type CreateServiceData = z.infer<typeof createServiceSchema>;

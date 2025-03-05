@@ -15,13 +15,16 @@ import {
   CreateServiceData,
   createServiceSchema,
 } from "@/validations/service-validations";
+import { QueryKeysEnum } from "@/shared/enums/query-keys";
+
 
 export function useCreateService() {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isCreateServiceOpen, setIsCreateServiceOpen] = useState(false);
 
   const defaultValues: CreateServiceData = {
     serviceName: "",
     serviceCategory: "",
+    weight: 0.5
   };
 
   const createServiceForm = useForm<CreateServiceData>({
@@ -35,18 +38,17 @@ export function useCreateService() {
     formState: { isSubmitting },
   } = createServiceForm;
 
-  const mutation = useMutation<
+  const { mutate, isPending } = useMutation<
     IApiResponse<IService>,
     Error,
     IServiceCreateAndUpdate
   >({
     mutationFn: ServicesService.create,
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["services"] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Service] });
       if (response.success && response.data) {
-        console.log("Service created:", response.data);
         toast.success("Serviço criado com sucesso!");
-        setIsSuccess(true);
+        resetForm()
       }
     },
     onError: (error) => {
@@ -56,20 +58,21 @@ export function useCreateService() {
   });
 
   const submitServiceData = (data: CreateServiceData) => {
-    mutation.mutate(data);
+    mutate(data);
   };
 
   const resetForm = () => {
     reset();
-    setIsSuccess(false);
   };
 
   return {
     createServiceForm,
     handleSubmit: handleSubmit(submitServiceData),
     isSubmitting,
-    isSuccess,
+    isPending,
     resetForm,
+    isCreateServiceOpen,
+    setIsCreateServiceOpen
   };
 }
 
