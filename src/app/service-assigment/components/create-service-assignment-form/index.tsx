@@ -15,7 +15,7 @@ import {
   Select as CustomSelect,
   IOption,
 } from "@/components/custom-combobox/index";
-import { useService } from "@/app/Services/hooks/use-service";
+import { useService } from "@/app/service/hooks/use-service";
 import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/Toast/toast";

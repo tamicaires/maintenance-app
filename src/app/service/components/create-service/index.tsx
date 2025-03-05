@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -25,13 +26,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { CheckCircleIcon } from "lucide-react";
-import { FormFields, useUpdateService } from "../hooks/use-update-service";
-import { IService } from "@/shared/types/service.interface";
+import { FormFields, useCreateService } from "../../hooks/use-create-service";
 import { ServiceCategory } from "@/shared/enums/service";
 
 const steps: Array<{
   title: string;
-  fields: (keyof FormFields)[];
+  fields: FormFields[];
   labels: string[];
 }> = [
   {
@@ -41,31 +41,18 @@ const steps: Array<{
   },
 ];
 
-export default function ServiceEditDialog({
-  service,
-  onClose,
-}: {
-  service: IService;
-  onClose: () => void;
-}) {
+export default function ServiceCreationDialog() {
   const [step, setStep] = useState(1);
+  const [open, setOpen] = useState(false);
   const {
-    form,
+    createServiceForm,
     handleSubmit,
     isSubmitting,
-    handleEdit,
-    editingService,
     isSuccess,
-    setIsSuccess,
-  } = useUpdateService(onClose);
+    resetForm,
+  } = useCreateService();
 
-  const { control } = form;
-
-  useEffect(() => {
-    if (service && !editingService) {
-      handleEdit(service);
-    }
-  }, [service, handleEdit, editingService]);
+  const { control } = createServiceForm;
 
   useEffect(() => {
     if (isSuccess) {
@@ -74,18 +61,24 @@ export default function ServiceEditDialog({
   }, [isSuccess]);
 
   const handleClose = () => {
-    onClose();
+    setOpen(false);
+    resetForm();
     setStep(1);
-    setIsSuccess(false);
   };
 
   return (
-    <Dialog open={true} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="w-full sm:w-auto">Cadastrar Novo Serviço</Button>
+      </DialogTrigger>
+      <DialogContent
+        className="sm:max-w-[425px]"
+        onInteractOutside={handleClose}
+      >
         <DialogHeader>
-          <DialogTitle>Editar Serviço</DialogTitle>
+          <DialogTitle>Adicionar Novo Serviço</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
+        <Form {...createServiceForm}>
           <form onSubmit={handleSubmit} className="space-y-4">
             <AnimatePresence mode="wait">
               {step === 1 && (
@@ -149,10 +142,10 @@ export default function ServiceEditDialog({
                 >
                   <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" />
                   <h3 className="text-2xl font-bold mb-2">
-                    Serviço Atualizado com Sucesso!
+                    Serviço Criado com Sucesso!
                   </h3>
                   <p className="text-gray-600">
-                    As informações do serviço foram atualizadas no sistema
+                    O Serviço foi adicionado ao sistema
                   </p>
                 </motion.div>
               )}
@@ -165,7 +158,7 @@ export default function ServiceEditDialog({
                     className="ml-auto"
                     disabled={isSubmitting}
                   >
-                    Atualizar Serviço
+                    Criar Serviço
                   </Button>
                 )}
                 {step === 2 && (

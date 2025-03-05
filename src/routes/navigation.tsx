@@ -9,7 +9,7 @@ import { Login } from "@/app/Login";
 import Order from "@/app/work-order/pages";
 import WorkShopDashboard from "@/app/workshop-dashboard/pages";
 import { Employee } from "@/app/Employee";
-import { Service } from "@/app/Services";
+import { Service } from "@/app/service/page";
 import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/app/part-manager/pages";
 import CompanySelection from "@/app/SelectCompany";
