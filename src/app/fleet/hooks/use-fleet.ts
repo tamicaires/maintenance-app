@@ -1,4 +1,4 @@
-import { IFleet } from "@/shared/types/fleet.interface";
+import { IFleetWithCount } from "@/shared/types/fleet.interface";
 import { IApiResponse } from "@/shared/services/api";
 import { FleetService } from "@/shared/services/fleet";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ export interface IFleetFilters {
 }
 
 export function useFleet(filters: IFleetFilters = {}) {
-  return useQuery<IApiResponse<IFleet[]>>({
+  return useQuery<IApiResponse<IFleetWithCount>>({
     queryKey: [QueryKeysEnum.Fleet, filters],
     queryFn: () => FleetService.getAll(filters),
     staleTime: 60 * 5 * 1000,

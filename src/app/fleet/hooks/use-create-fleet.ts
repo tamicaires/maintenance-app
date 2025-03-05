@@ -9,9 +9,14 @@ import { IFleet, IFleetCreate } from "@/shared/types/fleet.interface";
 import { CreateFleetData, createFleetSchema } from "@/validations/create-fleet";
 import { ShowNotificationProps } from "@/components/notification-card/notification-card";
 
-export function useCreateFleet(showNotification: ShowNotificationProps) {
+type CreateFleetHookProps = {
+  showNotification: ShowNotificationProps,
+  isOpen: boolean,
+}
+
+export function useCreateFleet({ isOpen, showNotification }: CreateFleetHookProps) {
   const [step, setStep] = useState<number>(1);
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(isOpen);
   const defaultValues: CreateFleetData = {
     fleetNumber: "",
     carrierId: "",
