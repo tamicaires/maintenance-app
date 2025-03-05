@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
-import { useEmployee } from "@/app/employees/hooks/use-employee";
+import { useEmployee } from "@/app/employee/hooks/use-employee";
 import { useFinishMaintenance } from "../../hooks/use-finish-maintenance";
 
 type FinishMaintenanceDialogProps = {

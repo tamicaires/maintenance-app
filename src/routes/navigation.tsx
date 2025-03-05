@@ -8,7 +8,7 @@ import { Carrier } from "@/app/carriers/pages/index";
 import { Login } from "@/app/Login";
 import Order from "@/app/work-order/pages";
 import WorkShopDashboard from "@/app/workshop-dashboard/pages";
-import { Employee } from "@/app/Employee";
+import { Employee } from "@/app/employee/page";
 import { Service } from "@/app/service/page";
 import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/app/part-manager/pages";
