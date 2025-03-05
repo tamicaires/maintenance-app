@@ -16,7 +16,7 @@ import CompanySelection from "@/app/SelectCompany";
 import { Trailer } from "@/app/Trailer/pages";
 import { Checklist } from "@/app/checklist/pages";
 import { Vehicle } from "@/app/Vehicles";
-import { Fleet } from "@/app/Fleet/pages";
+import { Fleet } from "@/app/fleet/pages";
 import { BoxManagement } from "@/app/boxes";
 import { RootLayout } from "@/components/Layout/root-layout";
 import { MaintenanceReport } from "@/app/maintenance/page";
