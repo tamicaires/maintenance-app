@@ -20,3 +20,8 @@ export interface IEmployeeCreateAndUpdate {
   jobTitleId: string;
   isActive: boolean;
 }
+
+export interface IEmployeeWithCount {
+  employees: IEmployee[];
+  totalCount: number;
+}

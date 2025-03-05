@@ -3,6 +3,7 @@ import {
   IEmployeeCreateAndUpdate,
 } from "@/shared/types/employee.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
+import { EmployeeFiltersType } from "@/app/employee/hooks/use-employee";
 
 const create = async (
   data: IEmployeeCreateAndUpdate
@@ -12,8 +13,7 @@ const create = async (
     url: "/employees",
     data,
   });
-  console.log("data", data);
-  console.log("response", response);
+
   return response;
 };
 
@@ -42,13 +42,13 @@ const deleteEmployee = async (
 };
 
 const getAll = async (
-  page: number = 1,
-  perPage: number = 3
+  filters?: EmployeeFiltersType
 ): Promise<IApiResponse<IEmployee[]>> => {
+  const params = new URLSearchParams(filters as Record<string, string>);
+
   const response = await handleRequest<IEmployee[]>({
     method: "GET",
-    url: "/employees",
-    params: { page, perPage },
+    url: `/employees?${params.toString()}`,
   });
 
   return response;
