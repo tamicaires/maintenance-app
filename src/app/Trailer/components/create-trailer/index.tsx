@@ -56,7 +56,7 @@ export function TrailerCreationDialog({
 
   const { data: fleetsData } = useFleet();
   const fleets =
-    fleetsData?.data?.map((fleet: IFleet) => ({
+    fleetsData?.data?.fleets.map((fleet: IFleet) => ({
       value: fleet.id,
       label: fleet.fleetNumber,
     })) || [];
