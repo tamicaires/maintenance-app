@@ -28,7 +28,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useCreateTrailer } from "@/app/Trailer/hooks/use-create-trailer";
-import { useFleet } from "@/app/Fleet/hooks/use-fleet";
+import { useFleet } from "@/app/fleet/hooks/use-fleet";
 import type { IFleet } from "@/shared/types/fleet.interface";
 import { useNotification } from "@/components/notification-card/notification-card";
 import { Switch } from "@/components/ui/switch";
@@ -56,7 +56,7 @@ export function TrailerCreationDialog({
 
   const { data: fleetsData } = useFleet();
   const fleets =
-    fleetsData?.data?.fleets.map((fleet: IFleet) => ({
+    fleetsData?.fleets.map((fleet: IFleet) => ({
       value: fleet.id,
       label: fleet.fleetNumber,
     })) || [];
