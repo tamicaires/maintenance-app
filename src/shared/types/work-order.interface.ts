@@ -124,3 +124,8 @@ export interface IDailyWorkOrdersData {
     releasedCount: Metric
   }
 }
+
+export interface IWorkOrderWithCount {
+  workOrders: IWorkOrder[]
+  totalCount: number
+}

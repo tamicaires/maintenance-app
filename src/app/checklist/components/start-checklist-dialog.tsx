@@ -52,7 +52,7 @@ export function StartChecklistDialog({
   const [workOrderId, setWorkOrderId] = useState<string>(
     initialWorkOrderId || ""
   );
-  console.log(open, workOrderId)
+  console.log(open, workOrderId);
   const [itemStatuses, setItemStatuses] = useState<IItemStatus>({});
 
   const { toast: toast, ToastComponent } = useToast();
@@ -81,9 +81,12 @@ export function StartChecklistDialog({
 
   const isStartChecklistFlowLoading =
     isStartChecklistLoading || isCreateBatchLoading;
-  console.log("is loading", isStartChecklistFlowLoading);
+
   const { data: workOrderData } = useWorkOrder(filters);
-  const workOrders = getDataOrDefault<IWorkOrder[]>(workOrderData, [], "data");
+  const workOrders = getDataOrDefault<IWorkOrder[]>(
+    workOrderData?.workOrders,
+    []
+  );
 
   const { data: templateData } = useChecklistTemplate();
   const templates = getDataOrDefault<IChecklistTemplate[]>(

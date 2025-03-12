@@ -6,6 +6,7 @@ import {
   IStartMaintenance,
   IStartWaitingParts,
   IWorkOrder,
+  IWorkOrderWithCount,
 } from "@/shared/types/work-order.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { IWorkOrderFilters } from "@/app/work-order/hooks/use-work-order";
@@ -53,10 +54,10 @@ const getById = async (workOrderId: string): Promise<IApiResponse<IWorkOrder>> =
 
 const getAll = async (
   filters?: IWorkOrderFilters
-): Promise<IApiResponse<IWorkOrder[]>> => {
+): Promise<IApiResponse<IWorkOrderWithCount>> => {
   const params = new URLSearchParams(filters as Record<string, string>);
 
-  const response = await handleRequest<IWorkOrder[]>({
+  const response = await handleRequest<IWorkOrderWithCount>({
     method: "GET",
     url: `/work-orders?${params.toString()}`,
   });
