@@ -19,8 +19,8 @@ export function Fleet() {
   const [filters, setFilters] = useState<IWorkOrderFilters>({});
   const { data, isLoading: isFleetsLoading } = useFleet(filters);
   const fleetData: IFleetWithCount = {
-    fleets: getDataOrDefault<IFleet[]>(data?.data, [], "fleets"),
-    totalCount: getDataOrDefault<number>(data?.data, 0, "totalCount"),
+    fleets: getDataOrDefault<IFleet[]>(data, [], "fleets"),
+    totalCount: getDataOrDefault<number>(data, 0, "totalCount"),
   };
 
   // const handleFiltersChange = (newFilters: Partial<IWorkOrderFilters>) => {

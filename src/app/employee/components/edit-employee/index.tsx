@@ -29,10 +29,10 @@ import {
   ChevronLeftIcon,
   CheckCircleIcon,
 } from "lucide-react";
-import { useUpdateEmployee } from "../hooks/use-update-employee";
 import { useJobTitle } from "@/app/JobTitle/hooks/use-job";
 import type { IEmployee } from "@/shared/types/employee.interface";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useUpdateEmployee } from "../../hooks/use-update-employee";
 
 export default function EmployeeEditDialog({
   employee,

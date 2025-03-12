@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
@@ -19,50 +18,26 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
-  CheckCircleIcon,
-} from "lucide-react";
-import {
-  type FormFields,
-  useCreateEmployee,
-} from "@/app/employee/hooks/use-create-employee";
+import { useCreateEmployee } from "@/app/employee/hooks/use-create-employee";
 import { useJobTitle } from "@/app/JobTitle/hooks/use-job";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
-const steps: Array<{
-  title: string;
-  fields: FormFields[];
-  labels: string[];
-}> = [
-  {
-    title: "Informações Pessoais",
-    fields: ["name"],
-    labels: ["Nome"],
-  },
-  {
-    title: "Informações Profissionais",
-    fields: ["workShift", "jobTitleId", "isActive"],
-    labels: ["Turno de Trabalho", "Cargo", "Status"],
-  },
-];
+import { CustomDialogHeader } from "@/components/CustomDialogHeader";
+import { Switch } from "@/components/ui/switch";
 
 export default function EmployeeCreationDialog() {
-  const [step, setStep] = useState(1);
-  const [open, setOpen] = useState(false);
   const {
     createEmployeeForm,
     handleSubmit,
     isSubmitting,
-    isSuccess,
+    isPending,
+    isCreateEmployeeOpen,
+    setIsCreateEmployeeOpen,
     resetForm,
   } = useCreateEmployee();
 
@@ -73,35 +48,15 @@ export default function EmployeeCreationDialog() {
       label: job.jobTitle,
     })) || [];
 
-  const { control, trigger } = createEmployeeForm;
-
-  useEffect(() => {
-    if (isSuccess) {
-      setStep(3);
-    }
-  }, [isSuccess]);
-
-  const handleNext = async () => {
-    const isStepValid = await trigger(
-      step === 1 ? ["name"] : ["workShift", "jobTitleId", "isActive"]
-    );
-    if (isStepValid) {
-      setStep(step + 1);
-    }
-  };
-
-  const handleBack = () => {
-    setStep(step - 1);
-  };
+  const { control } = createEmployeeForm;
 
   const handleClose = () => {
-    setOpen(false);
+    setIsCreateEmployeeOpen(false);
     resetForm();
-    setStep(1);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isCreateEmployeeOpen} onOpenChange={setIsCreateEmployeeOpen}>
       <DialogTrigger asChild>
         <Button>Cadastrar Novo Profissional</Button>
       </DialogTrigger>
@@ -110,38 +65,48 @@ export default function EmployeeCreationDialog() {
         onInteractOutside={handleClose}
       >
         <DialogHeader>
-          <DialogTitle>Adicionar Novo Colaborador</DialogTitle>
+          <DialogTitle hidden>Adicionar Novo Colaborador</DialogTitle>
+          <CustomDialogHeader
+            title="Cadastro de Profissional Técnico"
+            subtitle="Preencha os campos abaixo para criar um novo serviço"
+          />
         </DialogHeader>
         <Form {...createEmployeeForm}>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex justify-between mb-4">
-              {steps.map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-1/3 h-1 rounded-full ${
-                    i + 1 <= step ? "bg-primary" : "bg-gray-200"
-                  }`}
-                />
-              ))}
-            </div>
             <AnimatePresence mode="wait">
-              {step === 1 && (
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <FormField
+                  control={control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome do Profissional</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="text" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+              <div className="flex gap-5 w-full">
                 <motion.div
-                  key={step}
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-lg font-semibold mb-4">
-                    Informações Pessoais
-                  </h3>
                   <FormField
                     control={control}
-                    name="name"
+                    name="workShift"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nome</FormLabel>
+                      <FormItem className="w-full">
+                        <FormLabel>Turno de Trabalhos</FormLabel>
                         <FormControl>
                           <Input {...field} type="text" />
                         </FormControl>
@@ -150,36 +115,17 @@ export default function EmployeeCreationDialog() {
                     )}
                   />
                 </motion.div>
-              )}
-              {step === 2 && (
                 <motion.div
-                  key={step}
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-lg font-semibold mb-4">
-                    Informações Profissionais
-                  </h3>
-                  <FormField
-                    control={control}
-                    name="workShift"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Turno de Trabalho</FormLabel>
-                        <FormControl>
-                          <Input {...field} type="text" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={control}
                     name="jobTitleId"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormLabel>Cargo</FormLabel>
                         <FormControl>
                           <Select
@@ -205,80 +151,49 @@ export default function EmployeeCreationDialog() {
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={control}
-                    name="isActive"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Status</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center">
-                            <Checkbox
-                              checked={field.value as boolean}
-                              onCheckedChange={(checked) =>
-                                field.onChange(checked)
-                              }
-                            />
-                            <Label className="ml-2">Ativo</Label>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                 </motion.div>
-              )}
-              {step === 3 && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-center py-8"
-                >
-                  <CheckCircleIcon className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">
-                    Colaborador Criado com Sucesso!
-                  </h3>
-                  <p className="text-gray-600">
-                    O Colaborador foi adicionado ao sistema
-                  </p>
-                </motion.div>
-              )}
+              </div>
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <FormField
+                  control={control}
+                  name="isActive"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">
+                          Status do Profissional
+                        </FormLabel>
+                        <FormDescription>
+                          Ative ou desative o profissional conforme necessário
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
             </AnimatePresence>
             <DialogFooter>
               <div className="flex justify-between w-full">
-                {step > 1 && step <= 2 && (
-                  <Button type="button" onClick={handleBack} variant="outline">
-                    <ChevronLeftIcon className="mr-2 h-4 w-4" /> Voltar
-                  </Button>
-                )}
-                {step === 1 && (
-                  <Button
-                    type="button"
-                    onClick={handleNext}
-                    className="ml-auto"
-                  >
-                    Próximo <ChevronRightIcon className="ml-2 h-4 w-4" />
-                  </Button>
-                )}
-                {step === 2 && (
-                  <Button
-                    type="submit"
-                    className="ml-auto"
-                    disabled={isSubmitting}
-                  >
-                    Criar Colaborador
-                  </Button>
-                )}
-                {step === 3 && (
-                  <Button
-                    type="button"
-                    onClick={handleClose}
-                    className="mx-auto"
-                  >
-                    Fechar
-                  </Button>
-                )}
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting || isPending}
+                >
+                  {isSubmitting || isPending
+                    ? "Cadastrando..."
+                    : "Cadastrar Profissional"}
+                </Button>
               </div>
             </DialogFooter>
           </form>

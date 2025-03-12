@@ -16,6 +16,7 @@ import {
 } from "@/validations/create-employee";
 
 export function useCreateEmployee() {
+  const [isCreateEmployeeOpen, setIsCreateEmployeeOpen] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const defaultValues: CreateEmployeeData = {
@@ -36,7 +37,7 @@ export function useCreateEmployee() {
     formState: { isSubmitting },
   } = createEmployeeForm;
 
-  const mutation = useMutation<
+  const { mutate, isPending } = useMutation<
     IApiResponse<IEmployee>,
     Error,
     IEmployeeCreateAndUpdate
@@ -45,19 +46,20 @@ export function useCreateEmployee() {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
       if (response.success && response.data) {
-        console.log("Employee created:", response.data);
         toast.success("Funcionário criado com sucesso!");
         setIsSuccess(true);
+        setIsCreateEmployeeOpen(false);
       }
     },
     onError: (error) => {
       console.error("Error in mutation:", error);
       toast.error(error.message || "Ocorreu um erro ao criar o funcionário.");
+      setIsCreateEmployeeOpen(false);
     },
   });
 
   const submitEmployeeData = (data: CreateEmployeeData) => {
-    mutation.mutate(data);
+    mutate(data);
   };
 
   const resetForm = () => {
@@ -69,7 +71,10 @@ export function useCreateEmployee() {
     createEmployeeForm,
     handleSubmit: handleSubmit(submitEmployeeData),
     isSubmitting,
+    isPending,
     isSuccess,
+    isCreateEmployeeOpen,
+    setIsCreateEmployeeOpen,
     resetForm,
   };
 }

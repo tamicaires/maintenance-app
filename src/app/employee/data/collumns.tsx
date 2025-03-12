@@ -2,6 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { IEmployee } from "@/shared/types/employee.interface";
 
+import EmployeeCard from "../components/employee-card/employee-card";
+
 export const employeeColumns: ColumnDef<IEmployee>[] = [
   {
     accessorKey: "name",
@@ -45,8 +47,23 @@ export const employeeColumns: ColumnDef<IEmployee>[] = [
   {
     accessorKey: "createdAt",
     header: "Data de Criação",
-    cell: ({ row }) => (
-      <div className="text-muted-foreground">{row.getValue("createdAt")}</div>
-    ),
+    cell: ({ row }) => {
+      const createdAt = row.getValue("createdAt") as string;
+      return (
+        <div className="text-muted-foreground  w-">
+          {new Date(createdAt).toLocaleDateString()}
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center justify-center gap-4 w-14">
+          <EmployeeCard employee={row.original} />
+        </div>
+      );
+    },
   },
 ];
