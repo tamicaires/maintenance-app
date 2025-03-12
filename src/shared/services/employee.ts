@@ -1,6 +1,7 @@
 import {
   IEmployee,
   IEmployeeCreateAndUpdate,
+  IEmployeeWithCount,
 } from "@/shared/types/employee.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { EmployeeFiltersType } from "@/app/employee/hooks/use-employee";
@@ -41,12 +42,23 @@ const deleteEmployee = async (
   return response;
 };
 
+const getById = async (
+  employeeId: string
+): Promise<IApiResponse<IEmployee>> => {
+  const response = await handleRequest<IEmployee>({
+    method: "GET",
+    url: `/employees/${employeeId}`,
+  });
+
+  return response;
+};
+
 const getAll = async (
   filters?: EmployeeFiltersType
-): Promise<IApiResponse<IEmployee[]>> => {
+): Promise<IApiResponse<IEmployeeWithCount>> => {
   const params = new URLSearchParams(filters as Record<string, string>);
 
-  const response = await handleRequest<IEmployee[]>({
+  const response = await handleRequest<IEmployeeWithCount>({
     method: "GET",
     url: `/employees?${params.toString()}`,
   });
@@ -58,5 +70,6 @@ export const EmployeeService = {
   create,
   update,
   deleteEmployee,
+  getById,
   getAll,
 };

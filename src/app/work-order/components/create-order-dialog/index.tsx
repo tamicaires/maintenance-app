@@ -26,7 +26,7 @@ import {
 } from "@/shared/enums/work-order";
 import { Select as CustomSelect } from "@/components/custom-combobox/index";
 import { useBoxes } from "@/app/boxes/hooks/use-box";
-import { useFleet } from "@/app/Fleet/hooks/use-fleet";
+import { useFleet } from "@/app/fleet/hooks/use-fleet";
 import { useCreateWorkOrder } from "@/app/work-order/hooks/use-create-order";
 import { useToast } from "@/components/Toast/toast";
 
@@ -61,7 +61,7 @@ export function WorkOrderCreationDialog() {
   } = useCreateWorkOrder(setIsDialogOpen, addToast);
 
   const { data: boxes, isLoading: isBoxesLoading } = useBoxes();
-  const { data: fleets, isLoading: isFleetsLoading } = useFleet();
+  const { data: fleetsData, isLoading: isFleetsLoading } = useFleet();
 
   const { control, watch } = createWorkOrderForm;
   const status = watch("status");
@@ -74,7 +74,7 @@ export function WorkOrderCreationDialog() {
   };
 
   const fleetOptions =
-    fleets?.data?.map((fleet) => ({
+    fleetsData?.fleets.map((fleet) => ({
       value: fleet.id,
       label: fleet.fleetNumber,
     })) || [];

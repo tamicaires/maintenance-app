@@ -29,6 +29,8 @@ import {
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { useEmployee } from "@/app/employee/hooks/use-employee";
 import { useFinishMaintenance } from "../../hooks/use-finish-maintenance";
+import { IEmployee } from "@/shared/types/employee.interface";
+import { getDataOrDefault } from "@/utils/data";
 
 type FinishMaintenanceDialogProps = {
   onClick?: () => void;
@@ -44,11 +46,12 @@ export function FinishMaintenanceDialog({
 }: FinishMaintenanceDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast: addToast, ToastComponent } = useToast();
-  const { data: employees, isLoading: isEmployeesLoading } = useEmployee();
+  const { data: employees, isLoading: isEmployeesLoading } = useEmployee({
+    jobTitle: "Supervisor"
+  });
 
-  const supervisors =
-    employees?.data?.filter((employee) => employee.jobTitle === "Supervisor") ||
-    [];
+  const supervisors = getDataOrDefault<IEmployee[]>(employees?.data, [], "employees")
+
   const {
     control,
     finishMaintenanceForm,

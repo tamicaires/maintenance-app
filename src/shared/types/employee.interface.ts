@@ -25,3 +25,16 @@ export interface IEmployeeWithCount {
   employees: IEmployee[];
   totalCount: number;
 }
+
+
+export interface IEmployeeWithMetrics {
+  id: string;
+  name: string;
+  workShift: string;
+  jobTitleId: string;
+  jobTitle: string;
+  isActive: boolean;
+  createdAt: string;
+  servicesCount: number;
+  productivity: number;
+}
