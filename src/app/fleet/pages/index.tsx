@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { type IWorkOrderFilters } from "@/app/work-order/hooks/use-work-order";
 import { ReportTable } from "@/components/data-table/data-table";
 import { ReportContainer } from "@/components/report/report-container";
@@ -18,23 +18,39 @@ export function Fleet() {
 
   const [filters, setFilters] = useState<IWorkOrderFilters>({});
   const { data, isLoading: isFleetsLoading } = useFleet(filters);
-  const fleetData: IFleetWithCount = {
-    fleets: getDataOrDefault<IFleet[]>(data, [], "fleets"),
-    totalCount: getDataOrDefault<number>(data, 0, "totalCount"),
-  };
+  const fleetData: IFleetWithCount = useMemo(
+    () => ({
+      fleets: getDataOrDefault<IFleet[]>(data, [], "fleets"),
+      totalCount: getDataOrDefault<number>(data, 0, "totalCount"),
+    }),
+    [data]
+  );
 
   // const handleFiltersChange = (newFilters: Partial<IWorkOrderFilters>) => {
   //   setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
   // };
 
-  const handleDateRangeChange = (range: { from: Date; to: Date }) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      startDate: range.from,
-      endDate: range.to,
-    }));
-  };
+  const handleDateRangeChange = useCallback(
+    (range: { from: Date; to: Date }) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        startDate: range.from,
+        endDate: range.to,
+      }));
+    },
+    []
+  );
 
+  const handlePaginationChange = useCallback(
+    (page: number, perPage: number) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        page: page.toString(),
+        perPage: perPage.toString(),
+      }));
+    },
+    []
+  );
   const filterOptions: ITableFilterOption[] = [
     // {
     //   name: "Filtrar",
@@ -45,7 +61,6 @@ export function Fleet() {
       render: <DateRangePicker onRangeChange={handleDateRangeChange} />,
     },
   ];
-
   return (
     <ScrollArea>
       <ReportContainer>
@@ -64,13 +79,7 @@ export function Fleet() {
           data={fleetData.fleets}
           filterOptions={filterOptions}
           isloadingData={isFleetsLoading}
-          onPaginationChange={(page, perPage) => {
-            setFilters((prevFilters) => ({
-              ...prevFilters,
-              page: page.toString(),
-              perPage: perPage.toString(),
-            }));
-          }}
+          onPaginationChange={handlePaginationChange}
           totalItems={fleetData.totalCount}
         />
       </ReportContainer>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   useWorkOrder,
   type IWorkOrderFilters,
@@ -36,13 +36,27 @@ export function MaintenanceReport() {
     setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
   };
 
-  const handleDateRangeChange = (range: { from: Date; to: Date }) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      startDate: range.from,
-      endDate: range.to,
-    }));
-  };
+  const handleDateRangeChange = useCallback(
+    (range: { from: Date; to: Date }) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        startDate: range.from,
+        endDate: range.to,
+      }));
+    },
+    []
+  );
+
+  const handlePaginationChange = useCallback(
+    (page: number, perPage: number) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        page: page.toString(),
+        perPage: perPage.toString(),
+      }));
+    },
+    []
+  );
 
   const filterOptions: ITableFilterOption[] = [
     {
@@ -74,13 +88,7 @@ export function MaintenanceReport() {
           data={maintenanceData.workOrders}
           filterOptions={filterOptions}
           isloadingData={isLoading}
-          onPaginationChange={(page, perPage) => {
-            setFilters((prevFilters) => ({
-              ...prevFilters,
-              page: page.toString(),
-              perPage: perPage.toString(),
-            }));
-          }}
+          onPaginationChange={handlePaginationChange}
           totalItems={maintenanceData.totalCount || 0}
         />
       </ReportContainer>
