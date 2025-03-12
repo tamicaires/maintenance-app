@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -7,9 +7,9 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -17,15 +17,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { ChevronRight, ChevronLeft, CheckCircle } from "lucide-react"
-import { useFleet } from "@/app/Fleet/hooks/use-fleet"
-import { FormFields, useCreateVehicle } from "../hooks/use-create-vehicle"
-import { Select } from "@/components/custom-combobox"
+} from "@/components/ui/form";
+import { ChevronRight, ChevronLeft, CheckCircle } from "lucide-react";
+import { useFleet } from "@/app/fleet/hooks/use-fleet";
+import { FormFields, useCreateVehicle } from "../hooks/use-create-vehicle";
+import { Select } from "@/components/custom-combobox";
 
 const steps: Array<{
-  title: string
-  fields: FormFields[]
+  title: string;
+  fields: FormFields[];
 }> = [
   {
     title: "Informações Básicas",
@@ -35,43 +35,50 @@ const steps: Array<{
     title: "Detalhes Técnicos",
     fields: ["color", "km", "power", "fleetId"],
   },
-]
+];
 
 export default function VehicleCreationDialog() {
-  const [step, setStep] = useState(1)
-  const [open, setOpen] = useState(false)
-  const { createVehicleForm, handleSubmit, isSubmitting, isSuccess, resetForm } = useCreateVehicle()
-  const { data: fleetsData, isLoading } = useFleet()
-  const fleets = fleetsData?.data?.map((fleet) => ({
-    value: fleet.id,
-    label: fleet.fleetNumber,
-  })) || []
+  const [step, setStep] = useState(1);
+  const [open, setOpen] = useState(false);
+  const {
+    createVehicleForm,
+    handleSubmit,
+    isSubmitting,
+    isSuccess,
+    resetForm,
+  } = useCreateVehicle();
+  const { data: fleetsData, isLoading } = useFleet();
+  const fleets =
+    fleetsData?.fleets.map((fleet) => ({
+      value: fleet.id,
+      label: fleet.fleetNumber,
+    })) || [];
 
-  const { control, trigger } = createVehicleForm
+  const { control, trigger } = createVehicleForm;
 
   useEffect(() => {
     if (isSuccess) {
-      setStep(3)
+      setStep(3);
     }
-  }, [isSuccess])
+  }, [isSuccess]);
 
   const handleNext = async () => {
-    const fieldsToValidate = steps[step - 1].fields
-    const isStepValid = await trigger(fieldsToValidate)
+    const fieldsToValidate = steps[step - 1].fields;
+    const isStepValid = await trigger(fieldsToValidate);
     if (isStepValid) {
-      setStep(step + 1)
+      setStep(step + 1);
     }
-  }
+  };
 
   const handleBack = () => {
-    setStep(step - 1)
-  }
+    setStep(step - 1);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-    resetForm()
-    setStep(1)
-  }
+    setOpen(false);
+    resetForm();
+    setStep(1);
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -103,7 +110,9 @@ export default function VehicleCreationDialog() {
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-lg font-semibold mb-4">{steps[step - 1].title}</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    {steps[step - 1].title}
+                  </h3>
                   {step === 1 && (
                     <>
                       <FormField
@@ -185,7 +194,9 @@ export default function VehicleCreationDialog() {
                               <Input
                                 {...field}
                                 type="number"
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -202,7 +213,9 @@ export default function VehicleCreationDialog() {
                               <Input
                                 {...field}
                                 type="number"
-                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
                               />
                             </FormControl>
                             <FormMessage />
@@ -240,8 +253,12 @@ export default function VehicleCreationDialog() {
                   className="text-center py-8"
                 >
                   <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold mb-2">Veículo Cadastrado com Sucesso!</h3>
-                  <p className="text-gray-600">O veículo foi adicionado ao sistema</p>
+                  <h3 className="text-2xl font-bold mb-2">
+                    Veículo Cadastrado com Sucesso!
+                  </h3>
+                  <p className="text-gray-600">
+                    O veículo foi adicionado ao sistema
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -253,17 +270,29 @@ export default function VehicleCreationDialog() {
                   </Button>
                 )}
                 {step < 2 && (
-                  <Button type="button" onClick={handleNext} className="ml-auto">
+                  <Button
+                    type="button"
+                    onClick={handleNext}
+                    className="ml-auto"
+                  >
                     Próximo <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
                 )}
                 {step === 2 && (
-                  <Button type="submit" className="ml-auto" disabled={isSubmitting}>
+                  <Button
+                    type="submit"
+                    className="ml-auto"
+                    disabled={isSubmitting}
+                  >
                     Cadastrar Veículo
                   </Button>
                 )}
                 {step === 3 && (
-                  <Button type="button" onClick={handleClose} className="mx-auto">
+                  <Button
+                    type="button"
+                    onClick={handleClose}
+                    className="mx-auto"
+                  >
                     Fechar
                   </Button>
                 )}
@@ -273,5 +302,5 @@ export default function VehicleCreationDialog() {
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
