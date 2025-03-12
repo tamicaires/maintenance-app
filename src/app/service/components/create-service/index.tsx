@@ -26,10 +26,8 @@ import {
 import { useCreateService } from "../../hooks/use-create-service";
 import { ServiceCategory } from "@/shared/enums/service";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
-import { useNotification } from "@/components/notification-card/notification-card";
 
 export default function ServiceCreationDialog() {
-  const { showNotification, NotificationComponent } = useNotification();
   const {
     createServiceForm,
     handleSubmit,
@@ -38,7 +36,7 @@ export default function ServiceCreationDialog() {
     resetForm,
     isCreateServiceOpen,
     setIsCreateServiceOpen,
-  } = useCreateService(showNotification);
+  } = useCreateService();
 
   const { control } = createServiceForm;
 
@@ -154,7 +152,6 @@ export default function ServiceCreationDialog() {
                   )}
                 />
               </motion.div>
-              <NotificationComponent />
             </AnimatePresence>
             <DialogFooter>
               <div className="flex justify-between w-full">

@@ -15,6 +15,7 @@ import { queryClient } from "@/shared/services/query-client";
 const serviceSchema = z.object({
   serviceName: z.string().min(1, "Nome do serviço é obrigatório"),
   serviceCategory: z.string().min(1, "Categoria do serviço é obrigatória"),
+  weight: z.number().min(0, "Peso do serviço deve ser maior que 0"),
 });
 
 export type FormFields = z.infer<typeof serviceSchema>;
@@ -29,6 +30,7 @@ export function useUpdateService(onClose: () => void) {
     defaultValues: {
       serviceName: "",
       serviceCategory: "",
+      weight: 0
     },
   });
 
@@ -53,7 +55,7 @@ export function useUpdateService(onClose: () => void) {
       console.error("Error updating service:", error);
       toast.error(
         error.message ||
-          "Ocorreu um erro ao atualizar o serviço. Tente novamente."
+        "Ocorreu um erro ao atualizar o serviço. Tente novamente."
       );
     },
     onSettled: () => {
@@ -71,7 +73,7 @@ export function useUpdateService(onClose: () => void) {
       console.error("Error deleting service:", error);
       toast.error(
         error.message ||
-          "Ocorreu um erro ao excluir o serviço. Tente novamente."
+        "Ocorreu um erro ao excluir o serviço. Tente novamente."
       );
     },
   });
@@ -84,6 +86,7 @@ export function useUpdateService(onClose: () => void) {
       const updateData: IServiceCreateAndUpdate = {
         serviceName: data.serviceName,
         serviceCategory: data.serviceCategory,
+        weight: data.weight
       };
       updateMutation.mutate(updateData);
     }

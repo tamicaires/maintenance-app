@@ -110,8 +110,10 @@ export default function ServiceEditDialog({
                           <FormControl>
                             {field === "serviceCategory" ? (
                               <Select
-                                onValueChange={formField.onChange}
-                                defaultValue={formField.value}
+                                onValueChange={(value) =>
+                                  formField.onChange(Number(value))
+                                }
+                                defaultValue={String(formField.value)}
                               >
                                 <SelectTrigger>
                                   <SelectValue placeholder="Selecione a categoria" />
