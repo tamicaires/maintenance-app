@@ -13,7 +13,7 @@ import { Service } from "@/app/service/page";
 import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/app/part-manager/pages";
 import CompanySelection from "@/app/SelectCompany";
-import { Trailer } from "@/app/Trailer/pages";
+import { Trailer } from "@/app/trailers/pages";
 import { Checklist } from "@/app/checklist/pages";
 import { Vehicle } from "@/app/Vehicles";
 import { Fleet } from "@/app/fleet/pages";

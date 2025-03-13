@@ -52,7 +52,7 @@ export function Schedule({ showCalendarOnly = false }: ScheduleProps) {
   };
 
   return (
-    <div className="w-[400px] rounded-xl bg-white p-5 shadow-lg">
+    <div className="rounded-xl bg-white p-5 shadow-lg">
       {!showCalendarOnly && (
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

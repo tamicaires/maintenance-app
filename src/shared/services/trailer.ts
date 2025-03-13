@@ -1,5 +1,6 @@
-import { ITrailer, ITrailerCreateAndUpdate } from "@/shared/types/trailer.interface";
+import { ITrailer, ITrailerCreateAndUpdate, ITrailerWithCount } from "@/shared/types/trailer.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
+import { ITrailerFilters } from "@/app/trailers/hooks/use-trailer";
 
 const create = async (
   data: ITrailerCreateAndUpdate
@@ -48,10 +49,13 @@ const getByWorkOrder = async (
 
   return response;
 }
-const getAll = async (): Promise<IApiResponse<ITrailer[]>> => {
-  const response = await handleRequest<ITrailer[]>({
+const getAll = async (
+  filters?: ITrailerFilters
+): Promise<IApiResponse<ITrailerWithCount>> => {
+  const params = new URLSearchParams(filters as Record<string, string>);
+  const response = await handleRequest<ITrailerWithCount>({
     method: "GET",
-    url: "/trailers",
+    url: `/trailers?${params}`,
   });
 
   return response;

@@ -1,5 +1,6 @@
 import { IAxle } from "./axle";
 import { IFleet } from "./fleet.interface";
+import { IQueryCount } from "./query-response";
 
 export interface ITrailer {
   id: string;
@@ -27,4 +28,8 @@ export interface IActiveTrailer {
   isActive: boolean
   axles: Pick<IAxle, 'id' | 'position'>[];
   fleet?: Pick<IFleet, 'id' | 'fleetNumber'>;
+}
+
+export interface ITrailerWithCount extends IQueryCount {
+  trailers: ITrailer[];
 }

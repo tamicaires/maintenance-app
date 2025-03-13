@@ -27,7 +27,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useCreateTrailer } from "@/app/Trailer/hooks/use-create-trailer";
+import { useCreateTrailer } from "@/app/trailers/hooks/use-create-trailer";
 import { useFleet } from "@/app/fleet/hooks/use-fleet";
 import type { IFleet } from "@/shared/types/fleet.interface";
 import { useNotification } from "@/components/notification-card/notification-card";
