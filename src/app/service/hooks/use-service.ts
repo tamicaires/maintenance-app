@@ -1,4 +1,4 @@
-import { IService } from "@/shared/types/service.interface";
+import { IServiceWithCount } from "@/shared/types/service.interface";
 import { IApiResponse } from "@/shared/services/api";
 import { ServicesService } from "@/shared/services/service";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ export interface IServiceFilters {
 }
 
 export function useService(filters?: IServiceFilters) {
-  return useQuery<IApiResponse<IService[]>>({
+  return useQuery<IApiResponse<IServiceWithCount>>({
     queryKey: [QueryKeysEnum.Service, filters],
     queryFn: () => ServicesService.getAll(filters),
     staleTime: 60 * 5 * 1000,

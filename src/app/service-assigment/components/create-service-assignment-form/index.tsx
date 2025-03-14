@@ -22,6 +22,8 @@ import { useToast } from "@/components/Toast/toast";
 import { useCreateServiceAssignment } from "../../hooks/use-create-service-assigment";
 import { IActiveTrailer } from "@/shared/types/trailer.interface";
 import { DateTimePicker } from "@/components/date-time-picker/date-time-picker";
+import { IService, IServiceWithCount } from "@/shared/types/service.interface";
+import { getDataOrDefault } from "@/utils/data";
 
 type ServiceAssignmentCreationDialogProps = {
   workOrderId: string;
@@ -49,7 +51,13 @@ export function ServiceAssignmentCreationDialog({
   } = useCreateServiceAssignment(setIsDialogOpen, workOrderId, addToast);
 
   const { data: services, isLoading: isServicesLoading } = useService();
-
+  const servicesData: IServiceWithCount = useMemo(
+    () => ({
+      services: getDataOrDefault<IService[]>(services?.data, [], "services"),
+      totalCount: getDataOrDefault<number>(services?.data, 0, "totalCount"),
+    }),
+    [services]
+  );
   const { control, watch } = createServiceAssignmentForm;
   const status = watch("status");
   const selectedTrailerId = watch("trailerId");
@@ -62,7 +70,7 @@ export function ServiceAssignmentCreationDialog({
   };
 
   const serviceOptions =
-    services?.data?.map((service) => ({
+    servicesData.services.map((service) => ({
       value: service.id,
       label: service.serviceName,
       description: service.serviceCategory,

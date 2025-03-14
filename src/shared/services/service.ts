@@ -1,6 +1,7 @@
 import {
   IService,
   IServiceCreateAndUpdate,
+  IServiceWithCount,
   IServiceWithEmployee,
 } from "@/shared/types/service.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
@@ -55,10 +56,10 @@ const getByWorkOrder = async (
 
 const getAll = async (
   filters?: IServiceFilters
-): Promise<IApiResponse<IService[]>> => {
+): Promise<IApiResponse<IServiceWithCount>> => {
   const params = new URLSearchParams(filters as Record<string, string>);
 
-  const response = await handleRequest<IService[]>({
+  const response = await handleRequest<IServiceWithCount>({
     method: "GET",
     url: `/services?${params.toString()}`,
   });
