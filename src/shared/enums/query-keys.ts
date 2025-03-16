@@ -14,4 +14,5 @@ export enum QueryKeysEnum {
   Work_Order = "work-orders",
   Fleet = "fleets",
   Employee = "employees",
+  Vehicle = "vehicles",
 }

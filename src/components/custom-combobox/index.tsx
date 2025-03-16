@@ -19,6 +19,7 @@ interface CustomSelectProps {
   isClean?: boolean;
   value?: string;
   disabled?: boolean;
+  className?: string;
 }
 
 export function Select({
@@ -31,6 +32,7 @@ export function Select({
   isClean = false,
   value,
   disabled = false,
+  className,
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -125,12 +127,12 @@ export function Select({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls="select-options"
-        className={`flex items-center justify-between w-full px-3 py-2 text-sm bg-background ${
+        className={`flex items-center justify-between w-full px-3 py-2 text-sm bg-background ${className} ${
           isClean ? "" : "border border-input rounded-md shadow-sm"
         } ${
           disabled
             ? "cursor-not-allowed opacity-50"
-            : "cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            : "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
         }`}
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
         onKeyDown={handleKeyDown}

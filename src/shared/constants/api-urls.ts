@@ -3,7 +3,8 @@ export const SubjectUrl = {
   CHECKLIST: "/checklist",
   CHECKLIST_ITEM: "/checklist-item",
   EVENT: "/event",
-  DASHBOARD: "/work-orders/dashboard"
+  DASHBOARD: "/work-orders/dashboard",
+  VEHICLE: "/vehicle",
 }
 
 export const ApiEndpoints = {
@@ -36,5 +37,12 @@ export const ApiEndpoints = {
   EVENT: {
     LIST: SubjectUrl.EVENT,
     GET_BY_WORK_ORDER: (workOrderId: string) => `${SubjectUrl.EVENT}/work-order/${workOrderId}`
+  },
+  VEHICLE: {
+    LIST: SubjectUrl.VEHICLE,
   }
 };
+
+export const ApiUrls = {
+  VEHICLE: `/vehicles`
+}

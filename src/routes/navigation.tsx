@@ -15,7 +15,7 @@ import { PartsManager } from "@/app/part-manager/pages";
 import CompanySelection from "@/app/SelectCompany";
 import { Trailer } from "@/app/trailers/pages";
 import { Checklist } from "@/app/checklist/pages";
-import { Vehicle } from "@/app/Vehicles";
+import { Vehicle } from "@/app/vehicle/page";
 import { Fleet } from "@/app/fleet/pages";
 import { BoxManagement } from "@/app/boxes";
 import { RootLayout } from "@/components/Layout/root-layout";

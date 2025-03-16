@@ -113,7 +113,7 @@ export function useCreateTrailer({ showNotification }: UseCreateTrailerProps) {
 
   return {
     createTrailerForm,
-    handleSubmit: handleSubmit(submitTrailerData),
+    handleSubmit: submitTrailerData,
     isCreateTrailerDialogOpen,
     setIsCreateTrailerDialogOpen,
     isSubmitting,

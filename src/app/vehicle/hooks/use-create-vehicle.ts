@@ -7,7 +7,7 @@ import { queryClient } from "@/shared/services/query-client";
 import { VehicleService } from "@/shared/services/vehicle";
 import { IApiResponse } from "@/shared/services/api";
 import * as z from "zod";
-import { IVehicle, IVehicleCreateAndUpdate } from "@/shared/types/vehicles.interface";
+import { IVehicle, IVehicleCreateAndUpdate } from "@/app/vehicle/type/vehicles";
 
 const createVehicleSchema = z.object({
   plate: z.string().min(1, "Placa é obrigatória"),
@@ -49,7 +49,7 @@ export function useCreateVehicle() {
     formState: { isSubmitting },
   } = createVehicleForm;
 
-  const mutation = useMutation<
+  const { mutate, isPending } = useMutation<
     IApiResponse<IVehicle>,
     Error,
     IVehicleCreateAndUpdate
@@ -71,7 +71,7 @@ export function useCreateVehicle() {
 
   const submitVehicleData = (data: CreateVehicleData) => {
     data.isActive = true;
-    mutation.mutate(data);
+    mutate(data);
   };
 
   const resetForm = () => {
@@ -83,6 +83,7 @@ export function useCreateVehicle() {
     createVehicleForm,
     handleSubmit: handleSubmit(submitVehicleData),
     isSubmitting,
+    isPending,
     isSuccess,
     resetForm,
   };
