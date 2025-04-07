@@ -1,130 +1,102 @@
-import type React from "react";
+"use client"
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useAuth } from "../auth/auth-provider";
-import apiClient from "../api/api-client";
+import type React from "react"
+import { createContext, useContext, useEffect, useState } from "react"
+import { permissionsService } from "./permissions-service"
+import type { Ability, Action, Subject, PermissionsContextType } from "./types"
+import { useAuth } from "@/core/auth/auth-provider"
 
-export type Resource = "users" | "products" | "orders" | "reports" | string;
-export type Action =
-  | "create"
-  | "read"
-  | "update"
-  | "delete"
-  | "manage"
-  | string;
+// Cria o contexto de permissões
+const PermissionsContext = createContext<PermissionsContextType | undefined>(undefined)
 
-export type Permission = {
-  resource: Resource;
-  actions: Action[];
-};
-
-export type Role = {
-  id: string;
-  name: string;
-  permissions: Permission[];
-};
-
-type PermissionsContextType = {
-  userPermissions: Permission[];
-  userRoles: Role[];
-  can: (action: Action, resource: Resource) => boolean;
-  hasRole: (roleName: string) => boolean;
-  isLoading: boolean;
-};
-
-const PermissionsContext = createContext<PermissionsContextType | undefined>(
-  undefined
-);
-
-export function PermissionsProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { user, isAuthenticated } = useAuth();
-  const [userPermissions, setUserPermissions] = useState<Permission[]>([]);
-  const [userRoles, setUserRoles] = useState<Role[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPermissions = async () => {
-      if (!isAuthenticated || !user) {
-        setUserPermissions([]);
-        setUserRoles([]);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        // Fetch user permissions from API
-        const response = await apiClient.get("/auth/permissions");
-        const { permissions, roles } = response.data;
-
-        setUserPermissions(permissions);
-        setUserRoles(roles);
-      } catch (error) {
-        console.error("Error fetching permissions:", error);
-        // Set default permissions if API fails
-        setUserPermissions([]);
-        setUserRoles([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPermissions();
-  }, [isAuthenticated, user]);
-
-  const can = (action: Action, resource: Resource): boolean => {
-    if (!isAuthenticated) return false;
-
-    // Check if user has wildcard permission
-    const wildcardPermission = userPermissions.find(
-      (p) => p.resource === "*" && p.actions.includes("*")
-    );
-    if (wildcardPermission) return true;
-
-    // Check if user has permission for the specific resource
-    const resourcePermission = userPermissions.find(
-      (p) => p.resource === resource
-    );
-    if (!resourcePermission) return false;
-
-    // Check if user has wildcard action for this resource
-    if (resourcePermission.actions.includes("*")) return true;
-
-    // Check if user has the specific action for this resource
-    return (
-      resourcePermission.actions.includes(action) ||
-      resourcePermission.actions.includes("manage")
-    );
-  };
-
-  const hasRole = (roleName: string): boolean => {
-    return userRoles.some((role) => role.name === roleName);
-  };
-
-  return (
-    <PermissionsContext.Provider
-      value={{
-        userPermissions,
-        userRoles,
-        can,
-        hasRole,
-        isLoading,
-      }}
-    >
-      {children}
-    </PermissionsContext.Provider>
-  );
+interface PermissionsProviderProps {
+  children: React.ReactNode
 }
 
-export const usePermissions = () => {
-  const context = useContext(PermissionsContext);
-  if (context === undefined) {
-    throw new Error(
-      "usePermissions deve ser usado dentro de um PermissionsProvider"
-    );
+/**
+ * Provider para o contexto de permissões
+ */
+export function PermissionsProvider({ children }: PermissionsProviderProps) {
+  const { isAuthenticated, user } = useAuth()
+  const [ability, setAbility] = useState<Ability | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+
+  // Função para buscar permissões
+  const fetchPermissions = async () => {
+    if (!isAuthenticated) {
+      setAbility(null)
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const fetchedAbility = await permissionsService.fetchPermissions()
+      setAbility(fetchedAbility) // Agora pode ser null, o que é aceitável
+    } catch (error) {
+      console.error("Erro ao buscar permissões:", error)
+      setAbility(null)
+    } finally {
+      setLoading(false)
+    }
   }
-  return context;
-};
+
+  // Busca permissões quando o usuário é autenticado
+  useEffect(() => {
+    fetchPermissions()
+  }, [isAuthenticated, user])
+
+  // Atualiza o serviço quando o ability muda
+  useEffect(() => {
+    if (ability) {
+      permissionsService.setAbility(ability)
+    } else {
+      permissionsService.clearPermissions()
+    }
+  }, [ability])
+
+  // Funções de verificação de permissões
+  const can = (action: Action, subject: Subject, data?: any): boolean => {
+    return permissionsService.can(action, subject, data)
+  }
+
+  const canAll = (abilities: Array<[Action, Subject]>, data?: any): boolean => {
+    return permissionsService.canAll(abilities, data)
+  }
+
+  const canAny = (abilities: Array<[Action, Subject]>, data?: any): boolean => {
+    return permissionsService.canAny(abilities, data)
+  }
+
+  const isAdmin = (): boolean => {
+    return permissionsService.isAdmin()
+  }
+
+  // Função para atualizar permissões
+  const refreshPermissions = async (): Promise<void> => {
+    await fetchPermissions()
+  }
+
+  const value: PermissionsContextType = {
+    ability,
+    loading,
+    can,
+    canAll,
+    canAny,
+    isAdmin,
+    refreshPermissions,
+  }
+
+  return <PermissionsContext.Provider value={value}>{children}</PermissionsContext.Provider>
+}
+
+/**
+ * Hook para usar o contexto de permissões
+ */
+export function usePermissions(): PermissionsContextType {
+  const context = useContext(PermissionsContext)
+  if (context === undefined) {
+    throw new Error("usePermissions deve ser usado dentro de um PermissionsProvider")
+  }
+  return context
+}
