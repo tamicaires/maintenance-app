@@ -1,86 +1,61 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Loader2, Plus, Flag } from "lucide-react";
+import { Form } from "@/components/ui/form";
+import { Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  MaintenanceStatus,
-  SeverityLevel,
-  TypeOfMaintenance,
-} from "@/shared/enums/work-order";
-import { Select as CustomSelect } from "@/components/custom-combobox/index";
+import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { useBoxes } from "@/app/boxes/hooks/use-box";
 import { useFleet } from "@/app/fleet/hooks/use-fleet";
 import { useCreateWorkOrder } from "@/app/work-order/hooks/use-create-order";
-import { useToast } from "@/components/Toast/toast";
-
-const severityColors = {
-  [SeverityLevel.BAIXA]: "text-green-500",
-  [SeverityLevel.NORMAL]: "text-gray-500",
-  [SeverityLevel.ALTA]: "text-red-500",
-  [SeverityLevel.URGENTE]: "text-purple-500",
-};
-
-const dateUtil = {
-  formatDate: (date: Date | null | undefined): string => {
-    if (!date) return "";
-    return date.toISOString().slice(0, 16);
-  },
-  parseDate: (dateString: string): Date => {
-    return new Date(dateString);
-  },
-};
+import SelectField from "@/components/forms/select-field";
+import { IOption } from "@/components/custom-combobox";
+import { severityOptions } from "@/shared/constants/options/severity-options";
+import { typeOfMaintenanceOptions } from "@/shared/constants/options/type-of-maintenance-options";
+import { maintenanceStatusOptions } from "@/shared/constants/options/status-options";
+import InputField from "@/components/forms/input-field";
+import { DateTimeField } from "@/components/forms/date-time-field";
 
 export function WorkOrderCreationDialog() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast: addToast, ToastComponent } = useToast();
-
   const {
-    createWorkOrderForm,
+    form,
+    isCreateDialogOpen,
+    setIsCreateDialogOpen,
     handleSubmit,
-    isSubmitting,
-    isError,
-    error,
-    reset,
-  } = useCreateWorkOrder(setIsDialogOpen, addToast);
+    isPending,
+    canSubmit,
+    statusWatcher,
+  } = useCreateWorkOrder();
 
-  const { data: boxes, isLoading: isBoxesLoading } = useBoxes();
+  const { data: boxesData, isLoading: isBoxesLoading } = useBoxes();
   const { data: fleetsData, isLoading: isFleetsLoading } = useFleet();
 
-  const { control, watch } = createWorkOrderForm;
-  const status = watch("status");
-
   const handleOpenChange = (newOpen: boolean) => {
-    setIsDialogOpen(newOpen);
-    if (!newOpen) {
-      reset();
-    }
+    setIsCreateDialogOpen(newOpen);
   };
 
-  const fleetOptions =
+  const fleetOptions: IOption[] =
     fleetsData?.fleets.map((fleet) => ({
       value: fleet.id,
       label: fleet.fleetNumber,
+      description: fleet.carrierName,
     })) || [];
 
+  const boxOptions: IOption[] =
+    boxesData?.data?.map((box) => ({
+      value: box.id,
+      label: `Box ${box.name}`,
+      description: box.description,
+    })) || [];
+
+  const availableStatusesForCreation = maintenanceStatusOptions.filter(
+    (status) =>
+      [MaintenanceStatus.FILA, MaintenanceStatus.MANUTENCAO].includes(
+        status.value
+      )
+  );
+
   return (
-    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={isCreateDialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" /> Criar Nova Ordem de Serviço
@@ -91,209 +66,83 @@ export function WorkOrderCreationDialog() {
           title="Cadastro de Ordem de Serviço"
           subtitle="Preencha os campos abaixo para criar uma nova ordem de serviço"
         />
-        <Form {...createWorkOrderForm}>
+        <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <FormField
-              control={control}
-              name="fleetId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Frota</FormLabel>
-                  <FormControl>
-                    <CustomSelect
-                      options={fleetOptions}
-                      placeholder="Selecione uma frota"
-                      emptyText="Nenhuma frota encontrada"
-                      onChange={field.onChange}
-                      isLoading={isFleetsLoading}
-                      isFiltered={true}
-                      value={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={control}
-                name="severityLevel"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nível de Severidade</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o nível" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.values(SeverityLevel).map((level) => (
-                          <SelectItem key={level} value={level}>
-                            <div className="flex items-center">
-                              <Flag
-                                className={`mr-2 h-4 w-4 ${severityColors[level]}`}
-                              />
-                              {level}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <div className="flex gap-3">
+              <SelectField
+                name="fleetId"
+                options={fleetOptions}
+                label="Frota"
+                placeholder="Selecione uma frota..."
+                isLoading={isFleetsLoading}
+                isFiltered
+                required
               />
-
-              <FormField
-                control={control}
+              <SelectField
                 name="typeOfMaintenance"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tipo de Manutenção</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o tipo" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {Object.values(TypeOfMaintenance).map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={MaintenanceStatus.FILA}>
-                          Fila
-                        </SelectItem>
-                        <SelectItem value={MaintenanceStatus.MANUTENCAO}>
-                          Manutenção
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                options={typeOfMaintenanceOptions}
+                label="Plano de Manutenção"
+                placeholder="Selecione tipo manutenção..."
+                required
               />
             </div>
-
-            {status === MaintenanceStatus.FILA && (
-              <FormField
-                control={control}
-                name="entryQueue"
-                render={({ field: { onChange, value } }) => (
-                  <FormItem>
-                    <FormLabel>Data e Hora de Entrada na Fila</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="datetime-local"
-                        value={dateUtil.formatDate(value)}
-                        onChange={(e) =>
-                          onChange(dateUtil.parseDate(e.target.value))
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <div className="flex gap-3">
+              <SelectField
+                name="severityLevel"
+                options={severityOptions}
+                label="Nivel de Severidade"
+                placeholder="Escolha..."
+                required
               />
-            )}
-
-            {status === MaintenanceStatus.MANUTENCAO && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={control}
+              <SelectField
+                name="status"
+                options={availableStatusesForCreation}
+                label="Status"
+                placeholder="Selecione status..."
+                className="w-full"
+                required
+              />
+              {statusWatcher === MaintenanceStatus.FILA && (
+                <DateTimeField name="entryQueue" label="Entrada Fila" />
+                // <InputField
+                //   name="entryQueue"
+                //   type="datetime-local"
+                //   label="Entrada Fila"
+                //   placeholder="Selecione nivel severidade..."
+                //   className="w-full"
+                // />
+              )}
+            </div>
+            {statusWatcher === MaintenanceStatus.MANUTENCAO && (
+              <div className="flex gap-3">
+                <InputField
                   name="entryMaintenance"
-                  render={({ field: { onChange, value } }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Data e Hora de Entrada em Manutenção
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="datetime-local"
-                          value={dateUtil.formatDate(value)}
-                          onChange={(e) =>
-                            onChange(dateUtil.parseDate(e.target.value))
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  type="datetime-local"
+                  label="Entrada Manutenção"
+                  placeholder="Selecione nivel severidade..."
+                  className="w-full"
                 />
-
-                <FormField
-                  control={control}
+                <SelectField
                   name="boxId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Box</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione o box" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {isBoxesLoading ? (
-                            <SelectItem value="">
-                              Carregando boxes...
-                            </SelectItem>
-                          ) : (
-                            boxes?.data?.map((box) => (
-                              <SelectItem key={box.id} value={box.id}>
-                                {box.name}
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  options={boxOptions}
+                  label="Box"
+                  placeholder="Selecione o Box..."
+                  className="w-full"
+                  isLoading={isBoxesLoading}
+                  isFiltered
                 />
               </div>
             )}
-
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Criando Ordem de Serviço...
-                </>
-              ) : (
-                "Criar Ordem de Serviço"
-              )}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isPending || !canSubmit}
+              isLoading={isPending}
+            >
+              Criar Ordem de Serviço
             </Button>
           </form>
-          <ToastComponent />
         </Form>
-        {isError && <p className="text-red-500 mt-2">Erro: {error?.message}</p>}
       </DialogContent>
     </Dialog>
   );

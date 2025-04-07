@@ -1,94 +1,56 @@
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useMemo, useState } from "react";
 import { createWorkOrderSchema } from "@/validations/create-work-order";
 import { queryClient } from "@/shared/services/query-client";
-import { z } from "zod";
-import { IApiResponse } from "@/shared/services/api";
-import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { WorkOrderService } from "@/shared/services/work-order";
-import {
-  MaintenanceStatus,
-  SeverityLevel,
-  TypeOfMaintenance,
-} from "@/shared/enums/work-order";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
+import { createOrderDefaultValues, CreateWorkOrderSchema } from "../form/create-order-form";
+import { workOrderService } from "@/shared/services/work-order-service/work-order";
+import { useMutation } from "@/core/api/hooks/use-mutation";
 
-type CreateWorkOrderData = z.infer<typeof createWorkOrderSchema>;
 
-export function useCreateWorkOrder(setIsDialogOpen: (open: boolean) => void, addToast: (toast: any) => void) {
-  const defaultValues: CreateWorkOrderData = {
-    severityLevel: SeverityLevel.NORMAL,
-    entryQueue: undefined,
-    entryMaintenance: undefined,
-    exitMaintenance: undefined,
-    status: MaintenanceStatus.FILA,
-    fleetId: "",
-    typeOfMaintenance: TypeOfMaintenance.CORRETIVA,
-    boxId: undefined,
-    isCancelled: false
-  };
 
-  const createWorkOrderForm = useForm<CreateWorkOrderData>({
+export function useCreateWorkOrder() {
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
+
+  const form = useForm({
     resolver: zodResolver(createWorkOrderSchema),
-    defaultValues,
-  });
+    defaultValues: createOrderDefaultValues
+  })
+  const values = form.watch();
+  const statusWatcher = values.status
 
-  const {
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = createWorkOrderForm;
-
-  const {
-    mutate: mutateCreate,
-    isSuccess,
-    isError,
-    data,
-    error,
-  } = useMutation<IApiResponse<IWorkOrder>, Error, CreateWorkOrderData>({
-    mutationFn: WorkOrderService.create,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Work_Order, QueryKeysEnum.Dashboard] });
-      if (response.success && response.data) {
-        addToast({
-          type: "success",
-          title: "Sucesso!",
-          message: "Ordem de serviço criada com sucesso!",
-          duration: 5000,
-        })
-      }
-    },
-    onError: (error) => {
-      console.error("Error in mutation:", error);
-      addToast({
-        type: "error",
-        title: "Erro ao criar ordem de serviço",
-        message: error.message || "Ocorreu um erro ao criar ordem de serviço.",
-        duration: 5000,
-      });
-    },
-  });
-
-  const submitWorkOrderData = (data: CreateWorkOrderData) => {
-    mutateCreate(data);
-    reset();
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setIsDialogOpen(false);
+  const { mutate: createOrder, isPending } = useMutation(
+    (data: CreateWorkOrderSchema) => workOrderService.create(data), {
+    successMessage: "Login efetuado com sucesso.",
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Work_Order] })
+      handleClose()
     }
-  }, [isSuccess]);
+  });
+
+  const handleSubmit = form.handleSubmit(
+    (data) => {
+      createOrder(data)
+    }
+  )
+
+  const handleClose = () => {
+    setIsCreateDialogOpen(false)
+    form.reset()
+  }
+
+  const canSubmit = useMemo(() => {
+    return createWorkOrderSchema.safeParse(values).success;
+  }, [values])
 
   return {
-    createWorkOrderForm,
-    handleSubmit: handleSubmit(submitWorkOrderData),
-    isSubmitting,
-    isError,
-    error,
-    data,
-    reset,
+    form,
+    handleSubmit,
+    isPending,
+    canSubmit,
+    statusWatcher,
+    isCreateDialogOpen,
+    setIsCreateDialogOpen
   };
 }
