@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Card } from "../ui/card";
 import { DynamicIcon } from "../ui/dynamic-icon";
-import { CardSelectionOption } from "./card-selector";
+import { CardSelectionOption } from "./card-selector-dialog";
 
 export interface GridViewItemProps {
   option: CardSelectionOption;

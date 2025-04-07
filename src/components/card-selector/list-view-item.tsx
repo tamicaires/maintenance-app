@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { DynamicIcon } from "../ui/dynamic-icon";
-import { CardSelectionOption } from "./card-selector";
+import { CardSelectionOption } from "./card-selector-dialog";
 
 export interface ListViewItemProps {
   option: CardSelectionOption;
