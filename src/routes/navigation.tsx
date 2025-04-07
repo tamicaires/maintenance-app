@@ -20,6 +20,7 @@ import { Fleet } from "@/app/fleet/pages";
 import { BoxManagement } from "@/app/boxes";
 import { RootLayout } from "@/components/Layout/root-layout";
 import { MaintenanceReport } from "@/app/maintenance/page";
+import LoginPage from "@/app/auth/login/page";
 
 export function Navigation() {
   return (
@@ -39,7 +40,10 @@ export function Navigation() {
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
           <Route path={PrivateRoutes.Box} element={<BoxManagement />} />
-          <Route path={PrivateRoutes.Maintenance} element={<MaintenanceReport />} />
+          <Route
+            path={PrivateRoutes.Maintenance}
+            element={<MaintenanceReport />}
+          />
           <Route
             path={PrivateRoutes.PartsManagement}
             element={<PartsManager />}
@@ -58,7 +62,7 @@ export function Navigation() {
             />
           </Route>
         </Route>
-        <Route path={PublicRoutes.Login} element={<Login />} />
+        <Route path={PublicRoutes.Login} element={<LoginPage />} />
         <Route path={PublicRoutes.Register} element={<div>Register</div>} />
         <Route
           path={PublicRoutes.ForgotPassword}
