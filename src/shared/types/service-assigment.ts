@@ -9,6 +9,7 @@ export interface IServiceAssignment {
     id: string;
     serviceName: string;
     serviceCategory: ServiceCategory;
+    weight: number;
   };
   employees: EmployeeBasicInfo[]
   trailer: {
