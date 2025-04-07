@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "../Toast/toast";
+import { useToast } from "@/shared/providers/toast-provider";
 
 interface ShareContentProps {
   contentId: string;
@@ -46,8 +46,8 @@ export function ShareContent({
   const [isOpen, setIsOpen] = React.useState(false);
   const [copySuccess, setCopySuccess] = React.useState(false);
   const [shareMethod, setShareMethod] = React.useState("link");
-  const { toast: addToast, ToastComponent } = useToast();
-  console.log(contentId)
+  const { addToast } = useToast();
+  console.log(contentId);
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareLink);
@@ -219,7 +219,7 @@ export function ShareContent({
           </DialogFooter>
         </form>
       </DialogContent>
-      <ToastComponent />
+      {/* <ToastComponent /> */}
     </Dialog>
   );
 }
