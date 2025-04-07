@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@/assets/logotipo.png";
-import Img from "../img/img";
+import Image from "@/components/img/img";
 
 export type LogoProps = {
   text?: string;
@@ -15,7 +15,7 @@ export const Logo = ({
 }: LogoProps) => {
   return (
     <div className={`flex items-center space-x-2 ${className}`}>
-      <Img source={logo} alt="Logo" width={32} height={32} />
+      <Image src={logo} alt="Logo" width={32} height={32} />
       <AnimatePresence initial={false}>
         {showText && (
           <motion.span
