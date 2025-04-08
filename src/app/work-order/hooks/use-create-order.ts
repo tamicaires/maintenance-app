@@ -8,8 +8,6 @@ import { createOrderDefaultValues, CreateWorkOrderSchema } from "../form/create-
 import { workOrderService } from "@/shared/services/work-order-service/work-order";
 import { useMutation } from "@/core/api/hooks/use-mutation";
 
-
-
 export function useCreateWorkOrder() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
 
@@ -22,7 +20,7 @@ export function useCreateWorkOrder() {
 
   const { mutate: createOrder, isPending } = useMutation(
     (data: CreateWorkOrderSchema) => workOrderService.create(data), {
-    successMessage: "Login efetuado com sucesso.",
+    successMessage: "Ordem de serviço aberta com sucesso.",
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Work_Order] })
       handleClose()
