@@ -3,6 +3,7 @@ export enum QueryKeysEnum {
   Checklist = "checklists",
   ChecklistItem = "checklist-items",
   ChecklistCategory = "checklist-category",
+  ChecklistTemplate = "checklist-template",
   ChecklistTemplateItem = "checklist-template-item",
   Carrier = "carriers",
   Event = "events",
@@ -15,5 +16,6 @@ export enum QueryKeysEnum {
   Fleet = "fleets",
   Employee = "employees",
   Vehicle = "vehicles",
+  Note = "notes",
   Auth = "auth"
 }

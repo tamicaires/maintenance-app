@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/shared/providers/toast-provider";
+import { useToast } from "@/hooks/use-toast";
 
 interface ShareContentProps {
   contentId: string;
@@ -46,25 +46,24 @@ export function ShareContent({
   const [isOpen, setIsOpen] = React.useState(false);
   const [copySuccess, setCopySuccess] = React.useState(false);
   const [shareMethod, setShareMethod] = React.useState("link");
-  const { addToast } = useToast();
+  const { toast } = useToast();
   console.log(contentId);
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareLink);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
-      addToast({
-        type: "success",
-        title: "Link copiado",
-        message: "O link foi copiado para a área de transferência.",
-        duration: 3000,
+      toast({
+        title: "Link Copiado",
+        description: "O link foi copiado para a área de transferência.",
+        variant: "success",
       });
     } catch (err) {
-      addToast({
-        type: "error",
+      toast({
         title: "Erro ao copiar link",
-        message: "Não foi possível copiar o link para a área de transferência.",
-        duration: 3000,
+        description:
+          "Não foi possível copiar o link para a área de transferência.",
+        variant: "destructive",
       });
     }
   };
@@ -77,19 +76,17 @@ export function ShareContent({
     if (shareMethod === "email" && email && onEmailShare) {
       try {
         await onEmailShare(email);
-        addToast({
-          type: "success",
+        toast({
           title: "E-mail enviado!",
-          message: "Um convite foi enviado para o e-mail informado.",
-          duration: 3000,
+          description: "Um convite foi enviado para o e-mail informado.",
+          variant: "success",
         });
       } catch (error) {
-        addToast({
-          type: "error",
+        toast({
           title: "Erro ao enviar e-mail",
-          message:
+          description:
             "Não foi possível enviar o convite. Por favor, tente novamente.",
-          duration: 3000,
+          variant: "destructive",
         });
       }
     } else if (shareMethod === "link") {
