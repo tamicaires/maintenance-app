@@ -1,10 +1,8 @@
-"use client"
-
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-// import { usePermissions } from "./permissions-provider"
 import { Action, Subject } from "../types"
 import { usePermissions } from "../permissions-provider"
+
 
 interface UsePermissionGuardOptions {
   action: Action
