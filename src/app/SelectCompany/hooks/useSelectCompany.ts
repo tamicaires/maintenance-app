@@ -11,7 +11,7 @@ export function useSelectCompany() {
   const [loading, setLoading] = useState(true);
   const [defaultCompany, setDefaultCompany] = useState<string | null>(null);
   const { data, isLoading } = useCompany();
-  const companyData = data?.data || [];
+  const companyData = data || [];
   const [filteredCompanies, setFilteredCompanies] = useState<ICompany[]>(companyData);
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ export function useSelectCompany() {
 
 
   const hasCompanySelected = !!getCookie(StorageEnum.CompanyId);
-
+  const companySelected = getCookie(StorageEnum.CompanyId)
   return {
     searchTerm,
     setSearchTerm,
@@ -50,5 +50,6 @@ export function useSelectCompany() {
     filteredCompanies,
     handleCompanySelect,
     hasCompanySelected,
+    companySelected,
   };
 }
