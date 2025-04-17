@@ -52,6 +52,8 @@ import { IBox } from "@/shared/types/box";
 import { useBoxes } from "./hooks/use-box";
 import { useUpdateBox } from "./hooks/use-update-box";
 import { BoxCreationDialog } from "./components/create-box/create-box-form";
+import { ActionEnum, SubjectEnum } from "@/core/permissions/enum/ability";
+import { Can } from "@/core/permissions/can";
 
 export function BoxManagement() {
   const [page, setPage] = useState(1);
@@ -64,7 +66,7 @@ export function BoxManagement() {
   );
 
   const { sortedData, sortField, sortOrder, handleSort } =
-    useSortableTable<IBox>(data?.data || [], "name");
+    useSortableTable<IBox>(data || [], "name");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredData, setFilteredData] = useState<IBox[]>([]);
@@ -168,11 +170,11 @@ export function BoxManagement() {
           <TableHead>Ações</TableHead>
         </TableRow>
       </TableHeader>
-        {isLoading && (
-          <div className="flex justify-center w-full">
-            <Spinner />
-          </div>
-        )}
+      {isLoading && (
+        <div className="flex justify-center w-full">
+          <Spinner />
+        </div>
+      )}
       <TableBody>
         {filteredData.map((box) => (
           <TableRow key={box.id}>
@@ -225,77 +227,92 @@ export function BoxManagement() {
 
   return (
     <ScrollArea>
-        <div className="flex min-h-screen flex-col bg-background mt-14">
-          <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
-            <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
-              <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
-                  <Card className="sm:col-span-2 flex flex-wrap justify-between items-center">
-                    <CardHeader>
-                      <CardTitle>Gestão de Boxes</CardTitle>
-                      <CardDescription className="max-w-lg text-balance leading-relaxed">
-                        Gerencie e acompanhe os boxes cadastrados na sua
-                        empresa.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex gap-5">
-                      <Button variant="secondary">Exportar Relatório</Button>
-                      <BoxCreationDialog />
-                    </CardContent>
-                  </Card>
-                  <Card className="pb-4">
-                    <CardHeader className="pb-2">
-                      <CardDescription>Ativos</CardDescription>
-                      <CardTitle className="text-4xl">{activeBoxes}</CardTitle>
-                    </CardHeader>
-                  </Card>
+      <div className="flex min-h-screen flex-col bg-background mt-14">
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:px-4">
+          <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-2">
+            <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 ">
+                <Card className="sm:col-span-2 flex flex-wrap justify-between items-center">
+                  <CardHeader>
+                    <CardTitle>Gestão de Boxesss</CardTitle>
+                    <CardDescription className="max-w-lg text-balance leading-relaxed">
+                      Gerencie e acompanhe os boxes cadastrados na sua empresa.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex gap-5">
+                    <Button variant="secondary">Exportar Relatório</Button>
+                    <Can
+                      action={ActionEnum.Create}
+                      subject={SubjectEnum.Carrier}
+                      fallback={
+                        <Button variant="destructive">
+                          Não Tenho permissão carrier
+                        </Button>
+                      }
+                    >
+                      <Button variant="default">Tenho permissão carrier</Button>
+                    </Can>
+                    <Can
+                      action={ActionEnum.Update}
+                      subject={SubjectEnum.Box}
+                      fallback={
+                        <Button variant="destructive">
+                          Não Tenho permissão box
+                        </Button>
+                      }
+                    >
+                      <Button variant="default">Tenho permissão box</Button>
+                    </Can>
+                    {/* <BoxCreationDialog /> */}
+                  </CardContent>
+                </Card>
+                <Card className="pb-4">
+                  <CardHeader className="pb-2">
+                    <CardDescription>Ativos</CardDescription>
+                    <CardTitle className="text-4xl">{activeBoxes}</CardTitle>
+                  </CardHeader>
+                </Card>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="relative w-64">
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Buscar box"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-8 h-9"
+                  />
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="relative w-64">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Buscar box"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-8 h-9"
-                    />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon" className="h-10 w-10">
+                      <ListFilter className="h-4 w-4" />
+                      <span className="sr-only">Filtrar</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Filtrar</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem checked>
+                      Ativos
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>
+                      Inativos
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button size="icon" variant="outline" className="h-10 w-10">
+                  <File className="h-4 w-4" />
+                  <span className="sr-only">Exportar</span>
+                </Button>
+              </div>
+              <Card className="pt-4">
+                <CardContent>
+                  <div className="hidden md:block">{renderDesktopTable()}</div>
+                  <div className="md:hidden">
+                    {filteredData.map(renderMobileCard)}
                   </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-10 w-10"
-                      >
-                        <ListFilter className="h-4 w-4" />
-                        <span className="sr-only">Filtrar</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Filtrar</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuCheckboxItem checked>
-                        Ativos
-                      </DropdownMenuCheckboxItem>
-                      <DropdownMenuCheckboxItem>
-                        Inativos
-                      </DropdownMenuCheckboxItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <Button size="icon" variant="outline" className="h-10 w-10">
-                    <File className="h-4 w-4" />
-                    <span className="sr-only">Exportar</span>
-                  </Button>
-                </div>
-                <Card className="pt-4">
-                  <CardContent>
-                    <div className="hidden md:block">
-                      {renderDesktopTable()}
-                    </div>
-                    <div className="md:hidden">
-                      {filteredData.map(renderMobileCard)}
-                    </div>
-                    <Pagination className="mt-4">
+                  {/* <Pagination className="mt-4">
                       <PaginationContent>
                         <PaginationItem>
                           <PaginationPrevious
@@ -321,13 +338,13 @@ export function BoxManagement() {
                           />
                         </PaginationItem>
                       </PaginationContent>
-                    </Pagination>
-                  </CardContent>
-                </Card>
-              </div>
-            </main>
-          </div>
+                    </Pagination> */}
+                </CardContent>
+              </Card>
+            </div>
+          </main>
         </div>
+      </div>
     </ScrollArea>
   );
 }
