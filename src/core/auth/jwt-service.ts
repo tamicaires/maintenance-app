@@ -1,8 +1,10 @@
 import apiClient from "@/core/api/api-client"
+import { StorageEnum } from "@/shared/enums/storageEnum"
+import { setCookie } from "@/shared/services/cookie"
 import type { ITokenPayload, IUser } from "@/shared/types/auth"
 import { jwtDecode } from "jwt-decode"
 
-const TOKEN_KEY = "auth_token"
+const TOKEN_KEY = "%40token"
 
 class JwtService {
   getToken(): string | null {
@@ -30,6 +32,7 @@ class JwtService {
       const userData = response.data
 
       if (userData.access_token) {
+        setCookie(StorageEnum.Token, userData.access_token);
         this.setToken(userData.access_token)
       }
 
