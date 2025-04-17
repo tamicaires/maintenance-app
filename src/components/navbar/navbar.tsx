@@ -22,7 +22,7 @@ export function NavBar({ isCompanySelection = false }: NavBarProps) {
   const { user } = useAuth();
 
   const { data } = useCompany();
-  const companyData = data?.data || [];
+  const companyData = data || [];
 
   const location = useLocation();
   const isHome = location.pathname === "/";
