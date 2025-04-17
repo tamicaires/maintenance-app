@@ -10,6 +10,8 @@ import { ReportTable } from "@/components/data-table/data-table";
 import { serviceColumns } from "../data/serviceCollumns";
 import { ServiceCategory } from "@/shared/enums/service";
 import { Button } from "@/components/ui/button";
+import { Can } from "@/core/permissions/can";
+import { ActionEnum, SubjectEnum } from "@/core/permissions/enum/ability";
 
 export function Service() {
   const [filters, setFilters] = useState<IServiceFilters>({});
