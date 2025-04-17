@@ -14,17 +14,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormValues, useAuth } from "./hooks/signIn";
 import { loginSchema } from "@/validations/login";
+import useLogin from "../auth/login/hooks/use-login";
 
 export function Login() {
-  const { handleSubmit, isLoading } = useAuth();
+  // const { handleSubmit, isLoading } = useAuth();
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  // const form = useForm<LoginFormValues>({
+  //   resolver: zodResolver(loginSchema),
+  //   defaultValues: {
+  //     email: "",
+  //     password: "",
+  //   },
+  // });
+
+  const { form, handleSubmit, isPending, canSubmit } = useLogin();
 
   return (
     <div className="w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
@@ -38,7 +41,7 @@ export function Login() {
           </div>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={handleSubmit}
               className="grid gap-4"
             >
               <FormField
@@ -86,7 +89,7 @@ export function Login() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isPending}>
                 Login
               </Button>
               <Button variant="outline" className="w-full">
