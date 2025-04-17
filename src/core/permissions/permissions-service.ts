@@ -1,26 +1,26 @@
 import apiClient from "@/core/api/api-client"
-import type { Ability, Action, Subject, Conditions } from "./types"
+import type { AbilityType, Action, Subject, Conditions, AbilityResponseType } from "./types"
 
 /**
  * Serviço para gerenciar permissões
  */
 class PermissionsService {
-  private ability: Ability | null = null
+  private ability: AbilityType | null = null
 
   /**
    * Busca as permissões do usuário logado
    */
-  async fetchPermissions(): Promise<Ability> {
+  async fetchPermissions(): Promise<AbilityType> {
     try {
-      const response = await apiClient.get<Ability>("/auth/permissions")
+      const response = await apiClient.get<AbilityResponseType>("/auth/permissions")
       const fetchedAbility = response.data
 
       // Garantir que temos um objeto Ability válido
-      if (!fetchedAbility || !Array.isArray(fetchedAbility.rules)) {
+      if (!fetchedAbility || !Array.isArray(fetchedAbility.ability.rules)) {
         // Se não tiver um objeto válido, cria um objeto vazio
         this.ability = { rules: [] }
       } else {
-        this.ability = fetchedAbility
+        this.ability = fetchedAbility.ability
       }
 
       return this.ability
@@ -36,7 +36,7 @@ class PermissionsService {
    * Verifica se o usuário pode realizar uma ação em um sujeito
    */
   can(action: Action, subject: Subject, data?: any): boolean {
-    if (!this.ability) return false
+    if (!this.ability || !this.ability.rules) return false
 
     // Verifica se existe uma regra 'manage' para qualquer sujeito
     const hasManageAll = this.ability.rules.some((rule) => rule.action === "manage" && rule.subject === "all")
@@ -70,6 +70,7 @@ class PermissionsService {
    * Verifica se o usuário pode realizar todas as ações em todos os sujeitos
    */
   canAll(abilities: Array<[Action, Subject]>, data?: any): boolean {
+    if (!this.ability) return false
     return abilities.every(([action, subject]) => this.can(action, subject, data))
   }
 
@@ -77,6 +78,7 @@ class PermissionsService {
    * Verifica se o usuário pode realizar pelo menos uma das ações em pelo menos um dos sujeitos
    */
   canAny(abilities: Array<[Action, Subject]>, data?: any): boolean {
+    if (!this.ability) return false
     return abilities.some(([action, subject]) => this.can(action, subject, data))
   }
 
@@ -92,28 +94,31 @@ class PermissionsService {
    * Verifica se as condições são atendidas pelos dados
    */
   private checkConditions(conditions: Conditions, data: any): boolean {
-    // Implementação simplificada - na prática, você precisaria de uma lógica mais robusta
-    // para verificar condições complexas
-    return Object.entries(conditions).every(([key, value]) => {
-      if (typeof value === "object" && value !== null) {
-        // Para condições aninhadas
-        return this.checkConditions(value, data[key] || {})
-      }
-      return data[key] === value
-    })
+    try {
+      return Object.entries(conditions).every(([key, value]) => {
+        if (typeof value === "object" && value !== null) {
+          // Para condições aninhadas
+          return this.checkConditions(value, data[key] || {})
+        }
+        return data[key] === value
+      })
+    } catch (error) {
+      console.error("Erro ao verificar condições:", error)
+      return false
+    }
   }
 
   /**
    * Obtém a ability atual
    */
-  getAbility(): Ability | null {
+  getAbility(): AbilityType | null {
     return this.ability
   }
 
   /**
    * Define a ability
    */
-  setAbility(ability: Ability): void {
+  setAbility(ability: AbilityType): void {
     this.ability = ability
   }
 
