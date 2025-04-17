@@ -1,6 +1,8 @@
 import type React from "react";
 import { usePermissions } from "./permissions-provider";
 import { Action, Subject } from "./types";
+import { getCookie } from "@/shared/services/cookie";
+import { StorageEnum } from "@/shared/enums/storageEnum";
 
 interface CanProps {
   action: Action;
@@ -21,8 +23,13 @@ export function Can({
   fallback = null,
 }: CanProps) {
   const { can } = usePermissions();
+  const companyId = getCookie(StorageEnum.CompanyId);
 
-  return can(action, subject, data) ? <>{children}</> : <>{fallback}</>;
+  return can(action, subject, { companyId }) ? (
+    <>{children}</>
+  ) : (
+    <>{fallback}</>
+  );
 }
 
 interface CanAllProps {
