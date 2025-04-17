@@ -21,13 +21,18 @@ export interface PermissionRule {
 }
 
 // Ability (conjunto de regras de permissão)
-export interface Ability {
+export type AbilityResponseType = {
+  ability: {
+    rules: PermissionRule[]
+  }
+}
+export type AbilityType = {
   rules: PermissionRule[]
 }
 
 // Tipo para o contexto de permissões
 export interface PermissionsContextType {
-  ability: Ability | null
+  ability: AbilityType | null
   loading: boolean
   can: (action: Action, subject: Subject, data?: any) => boolean
   canAll: (abilities: Array<[Action, Subject]>, data?: any) => boolean
