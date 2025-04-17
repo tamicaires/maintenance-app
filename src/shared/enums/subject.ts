@@ -11,6 +11,8 @@ export enum SubjectEnum {
   Maintenance = "Maintenance",
   WaitingParts = "WaitingParts",
   Template_Checklist = "TemplateChecklist",
+  Box = "Box",
+  Employee = "Employee"
 }
 
 export type TSubject = keyof typeof SubjectEnum;
