@@ -11,28 +11,40 @@ import EmptyState from "@/components/empty-state";
 import { Spinner } from "@/components/Spinner";
 import { useToast } from "@/components/Toast/toast";
 import { DataWrapper } from "@/components/data-wrapper/data-wrapper";
+import { useDialog } from "@/context/dialog";
+import { ChecklistStart } from "../checklist/components/checklist-start";
 
 const LazyChecklistItems = lazy(() => import("./checklist-items"));
 
 export default function ActiveChecklistList() {
   const { ToastComponent } = useToast();
+  const { openDialog } = useDialog();
 
   const { data, isLoading: isActiveChecklistLoading } = useChecklist();
   const activeChecklists = data?.data || [];
+
+  const handleStartChecklist = () => {
+    openDialog({
+      title: "Iniciar Checklist",
+      content: <ChecklistStart />,
+      size: "2xl",
+      onClose: () => {},
+    });
+  };
 
   return (
     <Card className="py-4">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Checklists Ativos</CardTitle>
         <div>
-          <StartChecklistDialog
-            trigger={
-              <Button variant="default">
-                <Play className="w-4 h-4 mr-2" />
-                Iniciar Checklist
-              </Button>
-            }
-          />
+          {/* <StartChecklistDialog
+            trigger={ */}
+          <Button variant="default" onClick={handleStartChecklist}>
+            <Play className="w-4 h-4 mr-2" />
+            Iniciar Checklist
+          </Button>
+          {/* } */}
+          {/* /> */}
         </div>
       </CardHeader>
       <CardContent className="space-y-4 ">
