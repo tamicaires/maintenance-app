@@ -1,6 +1,6 @@
 import {
   CardSelectionOption,
-  CardSelectorDialog,
+  // CardSelectorDialog,
 } from "@/components/card-selector/card-selector";
 import { IChecklistTemplate } from "@/shared/types/checklist";
 
@@ -25,14 +25,15 @@ export function TemplateSelection({
   };
 
   return (
-    <CardSelectorDialog
-      title="Qual template você gostaria de usar?"
-      description="Escolha um template para iniciar uma nova inspeção"
-      options={templatesOptions}
-      value=""
-      onChange={handleTemplateSelect}
-      showFooter={false}
-      dialogMode={false}
-    />
+    "oi"
+    // <CardSelectorDialog
+    //   title="Qual template você gostaria de usar?"
+    //   description="Escolha um template para iniciar uma nova inspeção"
+    //   options={templatesOptions}
+    //   value=""
+    //   onChange={handleTemplateSelect}
+    //   showFooter={false}
+    //   dialogMode={false}
+    // />
   );
 }
