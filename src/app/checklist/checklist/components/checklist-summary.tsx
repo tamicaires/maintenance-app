@@ -1,49 +1,64 @@
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { motion } from "framer-motion"
-import { IChecklistTemplateItem } from "@/shared/types/checklist/checklist-template-item"
-import { useChecklistTemplate } from "../../checklist-template/hooks/use-checklist-templates"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { motion } from "framer-motion";
+import { IChecklistTemplateItem } from "@/shared/types/checklist/checklist-template-item";
+import { useChecklistTemplate } from "../../checklist-template/hooks/use-checklist-templates";
 
-type Trailer = 'Trailer 1' | 'Trailer 2' | 'Trailer 3';
+type Trailer = "Trailer 1" | "Trailer 2" | "Trailer 3";
 
 interface ChecklistSummaryProps {
-  itemStatuses: Record<string, Partial<Record<Trailer, boolean>>>
-  templateId: string
-  workOrderId: string
-  onClose: () => void
+  itemStatuses: Record<string, Partial<Record<Trailer, boolean>>>;
+  templateId: string;
+  workOrderId: string;
+  onClose: () => void;
+  showBackToOrder?: boolean;
 }
 
-export function ChecklistSummary({ itemStatuses, templateId, workOrderId, onClose }: ChecklistSummaryProps) {
-  const { data } = useChecklistTemplate()
-  const [nonConformingItems, setNonConformingItems] = useState<Array<{ item: IChecklistTemplateItem, trailers: Trailer[] }>>([])
+export function ChecklistSummary({
+  itemStatuses,
+  templateId,
+  workOrderId,
+  onClose,
+  showBackToOrder,
+}: ChecklistSummaryProps) {
+  const { data } = useChecklistTemplate();
+  const [nonConformingItems, setNonConformingItems] = useState<
+    Array<{ item: IChecklistTemplateItem; trailers: Trailer[] }>
+  >([]);
 
-  const templateData = data?.data || []
-  const template = templateData.find(t => t.id === templateId)
-  
-  const items = template?.items || []
+  const templateData = data?.data || [];
+  const template = templateData.find((t) => t.id === templateId);
+
+  const items = template?.items || [];
 
   useEffect(() => {
     const nonConforming = items.reduce((acc, item) => {
-      const nonConformingTrailers = (Object.entries(itemStatuses[item.id] || {}) as [Trailer, boolean | undefined][])
+      const nonConformingTrailers = (
+        Object.entries(itemStatuses[item.id] || {}) as [
+          Trailer,
+          boolean | undefined
+        ][]
+      )
         .filter(([_, isConform]) => isConform === false)
-        .map(([trailer]) => trailer)
+        .map(([trailer]) => trailer);
 
       if (nonConformingTrailers.length > 0) {
-        acc.push({ item, trailers: nonConformingTrailers })
+        acc.push({ item, trailers: nonConformingTrailers });
       }
-      return acc
-    }, [] as Array<{ item: IChecklistTemplateItem, trailers: Trailer[] }>)
+      return acc;
+    }, [] as Array<{ item: IChecklistTemplateItem; trailers: Trailer[] }>);
 
-    setNonConformingItems(nonConforming)
-  }, [items, itemStatuses])
+    setNonConformingItems(nonConforming);
+  }, [items, itemStatuses]);
 
-  const totalItems = items.length * 3 // 3 trailers per item
+  const totalItems = items.length * 3; // 3 trailers per item
   const conformingItems = Object.values(itemStatuses).reduce(
-    (acc, trailerStatuses) => acc + Object.values(trailerStatuses).filter(Boolean).length,
+    (acc, trailerStatuses) =>
+      acc + Object.values(trailerStatuses).filter(Boolean).length,
     0
-  )
-  const conformPercentage = (conformingItems / totalItems) * 100
+  );
+  const conformPercentage = (conformingItems / totalItems) * 100;
 
   return (
     <div className="space-y-4">
@@ -57,7 +72,9 @@ export function ChecklistSummary({ itemStatuses, templateId, workOrderId, onClos
           <p className="text-sm text-muted-foreground">Itens Conformes</p>
         </div>
         <div>
-          <p className="text-3xl font-bold text-red-500">{totalItems - conformingItems}</p>
+          <p className="text-3xl font-bold text-red-500">
+            {totalItems - conformingItems}
+          </p>
           <p className="text-sm text-muted-foreground">Itens Não Conformes</p>
         </div>
         <div>
@@ -85,6 +102,5 @@ export function ChecklistSummary({ itemStatuses, templateId, workOrderId, onClos
         Fechar e Iniciar Novo Checklist
       </Button>
     </div>
-  )
+  );
 }
-
