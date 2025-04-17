@@ -10,14 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/custom-combobox";
 import { Loader2, Trash2 } from "lucide-react";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/Form/custom-form";
+// import {
+//   Form,
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/Form/custom-form";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { toast } from "sonner";
@@ -113,7 +113,7 @@ export function BatchPartRequestDialog({
           />
         </DialogHeader>
 
-        <Form onSubmit={(e) => e.preventDefault()} className="max-h-[90vh]">
+        {/* <Form onSubmit={(e) => e.preventDefault()} className="max-h-[90vh]">
           <div className="space-y-6">
             <div className="bg-muted/50 rounded-lg p-4">
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4">
@@ -324,7 +324,7 @@ export function BatchPartRequestDialog({
               </Button>
             </div>
           </div>
-        </Form>
+        </Form> */}
       </DialogContent>
     </Dialog>
   );
