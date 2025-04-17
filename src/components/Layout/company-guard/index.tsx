@@ -1,4 +1,4 @@
-import { useSelectCompany } from "@/app/SelectCompany/hooks/useSelectCompany";
+import { useSelectCompany } from "@/features/SelectCompany/hooks/useSelectCompany";
 import { PrivateRoutes } from "@/shared/enums/routes";
 import { Navigate } from "react-router-dom";
 

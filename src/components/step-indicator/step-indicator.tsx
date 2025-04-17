@@ -1,7 +1,7 @@
 import type React from "react";
 import { CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FormFields } from "@/app/vehicle/hooks/use-create-vehicle";
+import { FormFields } from "@/features/vehicle/hooks/use-create-vehicle";
 
 type Step = {
   id: number;

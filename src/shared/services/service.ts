@@ -5,7 +5,7 @@ import {
   IServiceWithEmployee,
 } from "@/shared/types/service.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
-import { IServiceFilters } from "@/app/service/hooks/use-service";
+import { IServiceFilters } from "@/features/service/hooks/use-service";
 
 const create = async (
   data: IServiceCreateAndUpdate

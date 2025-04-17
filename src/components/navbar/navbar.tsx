@@ -5,13 +5,13 @@ import { CompanyProfile } from "../company-profile";
 import { ICompany } from "@/shared/types/company.interface";
 import { Webhook } from "lucide-react";
 import { MyAccountAvatar } from "../MyAccount";
-import { useCompany } from "@/app/SelectCompany/hooks/useCompany";
+import { useCompany } from "@/features/SelectCompany/hooks/useCompany";
 import { setCookie } from "@/shared/services/cookie";
 import { StorageEnum } from "@/shared/enums/storageEnum";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BreadCrumb } from "../breadcrumb/breadcrumb";
 import { MdOutlineSettings } from "react-icons/md";
-import { useAuth } from "@/app/Login/hooks/signIn";
+import { useAuth } from "@/features/Login/hooks/signIn";
 
 interface NavBarProps {
   isCompanySelection?: boolean;

@@ -1,5 +1,5 @@
-import { IVehicleFilters } from "@/app/vehicle/type/vehicle-hook";
-import { IVehicle, IVehicleCreateAndUpdate, IVehicleWithCount } from "@/app/vehicle/type/vehicles";
+import { IVehicleFilters } from "@/features/vehicle/type/vehicle-hook";
+import { IVehicle, IVehicleCreateAndUpdate, IVehicleWithCount } from "@/features/vehicle/type/vehicles";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
 import { ApiUrls } from "../constants/api-urls";
 

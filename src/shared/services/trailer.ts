@@ -1,6 +1,6 @@
 import { ITrailer, ITrailerCreateAndUpdate, ITrailerWithCount } from "@/shared/types/trailer.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
-import { ITrailerFilters } from "@/app/trailers/hooks/use-trailer";
+import { ITrailerFilters } from "@/features/trailers/hooks/use-trailer";
 
 const create = async (
   data: ITrailerCreateAndUpdate

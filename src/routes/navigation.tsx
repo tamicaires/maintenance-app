@@ -1,35 +1,35 @@
 import { Route, Routes } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "@/shared/enums/routes";
-import { SettingsLayout } from "@/app/Settings";
-import { MyAccount } from "@/app/Settings/components/MyAccount";
-import { Appearance } from "@/app/Settings/components/Appearance";
-import { Subscription } from "@/app/Settings/components/Subscription";
-import { Carrier } from "@/app/carriers/pages/index";
-import { Login } from "@/app/Login";
-import Order from "@/app/work-order/pages";
-import WorkShopDashboard from "@/app/workshop-dashboard/pages";
-import { Employee } from "@/app/employee/page";
-import { Service } from "@/app/service/page";
+import { SettingsLayout } from "@/features/Settings";
+import { MyAccount } from "@/features/Settings/components/MyAccount";
+import { Appearance } from "@/features/Settings/components/Appearance";
+import { Subscription } from "@/features/Settings/components/Subscription";
+import { Carrier } from "@/features/carriers/pages/index";
+import { Login } from "@/features/Login";
+import Order from "@/features/work-order/pages";
+import WorkShopDashboard from "@/features/workshop-dashboard/pages";
+import { Employee } from "@/features/employee/page";
+import { Service } from "@/features/service/page";
 import NotFound from "@/components/NotFound";
-import { PartsManager } from "@/app/part-manager/pages";
-import CompanySelection from "@/app/SelectCompany";
-import { Trailer } from "@/app/trailers/pages";
-import { Checklist } from "@/app/checklist/pages";
-import { Vehicle } from "@/app/vehicle/page";
-import { Fleet } from "@/app/fleet/pages";
-import { BoxManagement } from "@/app/boxes";
+import { PartsManager } from "@/features/part-manager/pages";
+import CompanySelection from "@/features/SelectCompany";
+import { Trailer } from "@/features/trailers/pages";
+import { Checklist } from "@/features/checklist/pages";
+import { Vehicle } from "@/features/vehicle/page";
+import { Fleet } from "@/features/fleet/pages";
+import { BoxManagement } from "@/features/boxes";
 import { RootLayout } from "@/components/Layout/root-layout";
-import { MaintenanceReport } from "@/app/maintenance/page";
+import { MaintenanceReport } from "@/features/maintenance/page";
 import { Suspense } from "react";
 import { Spinner } from "@/components/Spinner";
 import { ProtectedRoute } from "./protected-route";
 import { ActionEnum } from "@/core/permissions/enum/ability";
 import { SubjectEnum } from "@/shared/enums/subject";
-import LoginPage from "@/app/auth/login/page";
-import UnauthorizedPage from "@/app/errors/unauthorized-page";
-import ForbiddenPage from "@/app/errors/forbidden-page";
-import { useSelectCompany } from "@/app/SelectCompany/hooks/useSelectCompany";
-// import LoginPage from "@/app/auth/login/page"
+import LoginPage from "@/features/auth/login/page";
+import UnauthorizedPage from "@/features/errors/unauthorized-page";
+import ForbiddenPage from "@/features/errors/forbidden-page";
+import { useSelectCompany } from "@/features/SelectCompany/hooks/useSelectCompany";
+// import LoginPage from "@/features/auth/login/page"
 
 export function Navigation() {
   const { companySelected } = useSelectCompany();

@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-// import { PartRequestCreationDialog } from "@/app/part-request/components/create-part-request";
+// import { PartRequestCreationDialog } from "@/features/part-request/components/create-part-request";
 
 type Part = {
   id: string;

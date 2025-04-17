@@ -4,7 +4,7 @@ import {
   IEmployeeWithCount,
 } from "@/shared/types/employee.interface";
 import { handleRequest, IApiResponse } from "@/shared/services/api";
-import { EmployeeFiltersType } from "@/app/employee/hooks/use-employee";
+import { EmployeeFiltersType } from "@/features/employee/hooks/use-employee";
 
 const create = async (
   data: IEmployeeCreateAndUpdate

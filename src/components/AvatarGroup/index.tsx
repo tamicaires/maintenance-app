@@ -21,8 +21,8 @@ import { CircleFadingPlus, Plus, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EmployeeBasicInfo } from "@/shared/types/employee.interface";
 import { useToast } from "../Toast/toast";
-import { useAddEmployeeToServiceAssignment } from "@/app/EmployeeServiceAssigment/hooks/use-add-service-employee";
-import { useEmployee } from "@/app/employee/hooks/use-employee";
+import { useAddEmployeeToServiceAssignment } from "@/features/EmployeeServiceAssigment/hooks/use-add-service-employee";
+import { useEmployee } from "@/features/employee/hooks/use-employee";
 import { Select as CustomSelect } from "../custom-combobox";
 import { CustomDialogHeader } from "../CustomDialogHeader";
 

@@ -1,4 +1,4 @@
-import { useAuth } from "@/app/Login/hooks/signIn";
+import { useAuth } from "@/features/Login/hooks/signIn";
 import { PublicRoutes } from "@/shared/enums/routes";
 import { Navigate } from "react-router-dom";
 

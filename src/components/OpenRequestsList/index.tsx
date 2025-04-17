@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { PartRequestDetailsDialog } from "@/app/part-request/components/part-request-details/part-request-details";
+import { PartRequestDetailsDialog } from "@/features/part-request/components/part-request-details/part-request-details";
 import { RequestStatus } from "@/shared/enums/part-request";
 import { ActivityFeed } from "../activity-feed";
 import { ActivityItemProps } from "@/shared/types/activity";
 import { EventActionEnum } from "@/shared/enums/event-action";
 import { SubjectEnum } from "@/shared/enums/subject";
 import { TabValue } from "@/shared/types/event";
-import { usePartRequests } from "@/app/part-request/hooks/use-part-requests";
+import { usePartRequests } from "@/features/part-request/hooks/use-part-requests";
 import { getDataOrDefault } from "@/utils/data";
 import { IPartRequestRelationalData } from "@/shared/types/part-request-relational-data";
 
