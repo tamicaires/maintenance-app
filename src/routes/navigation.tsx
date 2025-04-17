@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "@/shared/enums/routes";
 import { SettingsLayout } from "@/app/Settings";
 import { MyAccount } from "@/app/Settings/components/MyAccount";
@@ -20,11 +20,22 @@ import { Fleet } from "@/app/fleet/pages";
 import { BoxManagement } from "@/app/boxes";
 import { RootLayout } from "@/components/Layout/root-layout";
 import { MaintenanceReport } from "@/app/maintenance/page";
+import { Suspense } from "react";
+import { Spinner } from "@/components/Spinner";
+import { ProtectedRoute } from "./protected-route";
+import { ActionEnum } from "@/core/permissions/enum/ability";
+import { SubjectEnum } from "@/shared/enums/subject";
 import LoginPage from "@/app/auth/login/page";
+import UnauthorizedPage from "@/app/errors/unauthorized-page";
+import ForbiddenPage from "@/app/errors/forbidden-page";
+import { useSelectCompany } from "@/app/SelectCompany/hooks/useSelectCompany";
+// import LoginPage from "@/app/auth/login/page"
 
 export function Navigation() {
+  const { companySelected } = useSelectCompany();
+
   return (
-    <BrowserRouter>
+    <Suspense fallback={<Spinner />}>
       <Routes>
         <Route
           path={PrivateRoutes.CompanySelection}
@@ -35,11 +46,38 @@ export function Navigation() {
           <Route path={PrivateRoutes.WorkOrders} element={<Order />} />
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
-          <Route path={PrivateRoutes.Employees} element={<Employee />} />
+
+          <Route
+            path={PrivateRoutes.Employees}
+            element={
+              <ProtectedRoute
+                requiredPermission={{
+                  action: ActionEnum.Read,
+                  subject: SubjectEnum.Employee,
+                }}
+              >
+                <Employee />
+              </ProtectedRoute>
+            }
+          />
           <Route path={PrivateRoutes.Services} element={<Service />} />
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
-          <Route path={PrivateRoutes.Box} element={<BoxManagement />} />
+          {/* <Route path={PrivateRoutes.Box} element={<BoxManagement />} /> */}
+          <Route
+            path={PrivateRoutes.Box}
+            element={
+              <ProtectedRoute
+                requiredPermission={{
+                  action: ActionEnum.Create,
+                  subject: SubjectEnum.Carrier,
+                  conditions: { companyId: companySelected },
+                }}
+              >
+                <BoxManagement />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path={PrivateRoutes.Maintenance}
             element={<MaintenanceReport />}
@@ -52,7 +90,6 @@ export function Navigation() {
             path={PrivateRoutes.MaintenanceChecklist}
             element={<Checklist />}
           />
-          {/* <Route path={"pneu"} element={<GestaoReboque />} /> */}
           <Route path={PrivateRoutes.Settings} element={<SettingsLayout />}>
             <Route path={PrivateRoutes.Account} element={<MyAccount />} />
             <Route path={PrivateRoutes.Appearance} element={<Appearance />} />
@@ -62,14 +99,17 @@ export function Navigation() {
             />
           </Route>
         </Route>
-        <Route path={PublicRoutes.Login} element={<LoginPage />} />
+        <Route path={PublicRoutes.Login} element={<Login />} />
         <Route path={PublicRoutes.Register} element={<div>Register</div>} />
         <Route
           path={PublicRoutes.ForgotPassword}
           element={<div>Forgot Password</div>}
         />
         <Route path="*" element={<NotFound />} />
+        {/* Error pages */}
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/forbidden" element={<ForbiddenPage />} />
       </Routes>
-    </BrowserRouter>
+    </Suspense>
   );
 }
