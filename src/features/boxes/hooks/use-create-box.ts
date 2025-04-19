@@ -1,77 +1,51 @@
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useMemo } from "react";
 import { queryClient } from "@/shared/services/query-client";
-import { BoxService } from "@/shared/services/box";
-import { toast } from "sonner";
-import { IApiResponse } from "@/shared/services/api";
-import { IBox, IBoxCreateAndUpdate } from "@/shared/types/box";
 import { CreateBoxData, createBoxSchema } from "@/validations/create-box";
+import { createBoxDefaultValues, CreateBoxSchema } from "../forms/create-box-form";
+import { useMutation } from "@/core/api/hooks/use-mutation";
+import { boxService } from "@/shared/services/box-service/box";
+import { QueryKeysEnum } from "@/shared/enums/query-keys";
+import { useDialog } from "@/context/dialog";
 
 export function useCreateBox() {
-  const [step, setStep] = useState<number>(1);
-  const [open, setOpen] = useState<boolean>(false);
-  const defaultValues: CreateBoxData = {
-    name: "",
-    description: null,
-    isActive: true,
-  };
-
-  const createBoxForm = useForm<CreateBoxData>({
+  const { closeDialog } = useDialog();
+  const form = useForm({
     resolver: zodResolver(createBoxSchema),
-    defaultValues,
+    defaultValues: createBoxDefaultValues
+  })
+  const values = form.watch();
+
+  const { mutate: createOrder, isPending } = useMutation(
+    (data: CreateBoxSchema) => boxService.create(data), {
+    successMessage: "Box cadastrado com sucesso.",
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Box] })
+      handleClose()
+    }
   });
 
-  const {
-    handleSubmit,
-    reset,
-    control,
-    formState: { isSubmitting },
-  } = createBoxForm;
+  const handleSubmit = form.handleSubmit(
+    (data) => {
+      createOrder(data)
+    }
+  )
 
-  const {
-    mutate: mutateCreate,
-    isSuccess,
-    isError,
-    isPending,
-    data,
-    error,
-  } = useMutation<IApiResponse<IBox>, Error, IBoxCreateAndUpdate>({
-    mutationFn: BoxService.create,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["boxes"] });
-      if (response.success && response.data) {
-        setStep(2);
-        toast.success("Box criado com sucesso!");
-      }
-    },
-    onError: (error) => {
-      console.error("Error in mutation:", error);
-      toast.error(error.message || "Ocorreu um erro ao criar o box.");
-    },
-  });
+  const handleClose = () => {
+    closeDialog()
+    form.reset()
+  }
 
-  const submitBoxData = (data: CreateBoxData) => {
-    mutateCreate(data);
-    reset();
-  };
+  const canSubmit = useMemo(() => {
+    return createBoxSchema.safeParse(values).success;
+  }, [values])
 
   return {
-    createBoxForm,
-    handleSubmit: handleSubmit(submitBoxData),
-    isSubmitting,
-    isSuccess,
-    isError,
+    form,
+    handleSubmit,
     isPending,
-    error,
-    data,
-    open,
-    setOpen,
-    control,
-    reset,
-    step,
-    setStep,
+    canSubmit,
   };
 }
 
