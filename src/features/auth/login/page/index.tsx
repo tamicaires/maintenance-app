@@ -13,15 +13,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col xl:flex-row max-xl:justify-center">
       <div className="hidden xl:block relative w-full xl:w-3/6 h-64 xl:h-screen overflow-hidden">
-      "oi"
-        {/* <Image
+        <Image
           src={loginImage}
           alt="Tela Oficina Manutenção"
           fill
           className="object-cover object-top"
           priority
           sizes="(max-width: 768px) 100vw, 60vw"
-        /> */}
+        />
       </div>
 
       <div className="w-full lg:w-3/6 flex items-center justify-center p-6 pt-20 sm:pt-0 lgp-12 bg-white mx-auto">

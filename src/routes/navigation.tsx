@@ -8,7 +8,7 @@ import { Carrier } from "@/features/carriers/pages/index";
 import { Login } from "@/features/Login";
 import Order from "@/features/work-order/pages";
 import WorkShopDashboard from "@/features/workshop-dashboard/pages";
-import { Employee } from "@/features/employee/page";
+// import { Employee } from "@/features/employee/page";
 import { Service } from "@/features/service/page";
 import NotFound from "@/components/NotFound";
 import { PartsManager } from "@/features/part-manager/pages";
@@ -29,6 +29,7 @@ import LoginPage from "@/features/auth/login/page";
 import UnauthorizedPage from "@/features/errors/unauthorized-page";
 import ForbiddenPage from "@/features/errors/forbidden-page";
 import { useSelectCompany } from "@/features/SelectCompany/hooks/useSelectCompany";
+import { BoxPage } from "@/features/boxes/pages";
 // import LoginPage from "@/features/auth/login/page"
 
 export function Navigation() {
@@ -47,7 +48,7 @@ export function Navigation() {
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
 
-          <Route
+          {/* <Route
             path={PrivateRoutes.Employees}
             element={
               <ProtectedRoute
@@ -59,7 +60,7 @@ export function Navigation() {
                 <Employee />
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route path={PrivateRoutes.Services} element={<Service />} />
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
@@ -74,7 +75,7 @@ export function Navigation() {
                   conditions: { companyId: companySelected },
                 }}
               >
-                <BoxManagement />
+                <BoxPage />
               </ProtectedRoute>
             }
           />
@@ -99,7 +100,7 @@ export function Navigation() {
             />
           </Route>
         </Route>
-        <Route path={PublicRoutes.Login} element={<Login />} />
+        <Route path={PublicRoutes.Login} element={<LoginPage />} />
         <Route path={PublicRoutes.Register} element={<div>Register</div>} />
         <Route
           path={PublicRoutes.ForgotPassword}
