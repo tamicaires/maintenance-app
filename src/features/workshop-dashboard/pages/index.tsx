@@ -26,7 +26,7 @@ import { QueueChart } from "../components/charts/QueueChart";
 import { TypeMaintenanceChart } from "../components/charts/TypeMaintenaceChart";
 import { ServiceChart } from "../components/charts/ServicesChart";
 import type { IWorkOrder } from "@/shared/types/work-order.interface";
-import { Boxes } from "../../boxes/pages";
+import { BoxesView } from "../../boxes/components/boxes-view/boxes-view";
 import { useDailyWorkOrders } from "../../work-order/hooks/use-daily-work-orders";
 import { dateUtil } from "@/utils/date";
 import { getDataOrDefault } from "@/utils/data";
@@ -177,7 +177,7 @@ export default function MaintenanceDashboard() {
                 Veículos em Manutenção
               </h2>
             </div>
-            <Boxes viewMode={viewMode} />
+            <BoxesView viewMode={viewMode} />
           </TabsContent>
           <TabsContent value={"queue" || "released"}>
             <Card>

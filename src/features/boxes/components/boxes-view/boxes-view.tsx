@@ -1,17 +1,17 @@
 import { EmptyCard } from "@/components/EmptyCard";
-import { useActiveBoxes } from "../hooks/use-active-boxes";
+import { useActiveBoxes } from "../../hooks/use-active-boxes";
 import { IBoxWithRelationalData } from "@/shared/types/box";
 import { MaintenanceCard } from "@/features/workshop-dashboard/components/maintenance-card";
 import { getDataOrDefault } from "@/utils/data";
 import { Spinner } from "@/components/Spinner";
 import { ReportTable } from "@/components/data-table/data-table";
-import { boxesColumns } from "../data/boxes-collums";
+import { boxesColumns } from "../../data/boxes-collums";
 
-interface BoxesSectionProps {
+type BoxesSectionProps = {
   viewMode: "grid" | "list";
-}
+};
 
-export function Boxes({ viewMode }: BoxesSectionProps) {
+export function BoxesView({ viewMode }: BoxesSectionProps) {
   const { data, isLoading } = useActiveBoxes();
   const boxes = getDataOrDefault<IBoxWithRelationalData[]>(data, [], "data");
 
