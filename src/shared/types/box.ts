@@ -45,4 +45,9 @@ export interface IBoxWithRelationalData {
   progress: number;
 }
 
+export interface IBoxWithCount {
+  boxes: IBox[]
+  totalCount: number
+}
+
 export type BoxData = IBoxWithRelationalData[];
