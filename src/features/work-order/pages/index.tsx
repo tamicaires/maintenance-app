@@ -16,7 +16,7 @@ import { MaintenanceStatus } from "@/shared/enums/work-order";
 import EmptyState from "@/components/empty-state";
 import WorkOrderCard from "@/features/work-order/components/work-order-card";
 import WorkOrderRecentActivityFeed from "../components/recent-activity-order/recent-activity-work-order";
-import { QueueChart } from "@/features/workshop-dashboard/components/charts/QueueChart";
+import { QueueChart } from "@/features/workshop-dashboard/components/charts/queue-chart";
 import {
   MaintenanceSummary,
   SummaryItem,
