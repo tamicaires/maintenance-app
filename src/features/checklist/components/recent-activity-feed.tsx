@@ -21,8 +21,7 @@ export default function RecentActivityFeed() {
         ? SubjectEnum.Service
         : undefined,
   });
-  console.log("data");
-  const activities = data?.data || [];
+  const activities = data || [];
   const checklistActivities: ActivityItemProps[] = activities.map(
     (activity) => {
       return {

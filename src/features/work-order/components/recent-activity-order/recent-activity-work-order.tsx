@@ -12,7 +12,7 @@ export default function WorkOrderRecentActivityFeed() {
     subject: SubjectEnum.Work_Order,
   });
 
-  const activities = getDataOrDefault<IEventRelationalData[]>(data, [], "data");
+  const activities = getDataOrDefault<IEventRelationalData[]>(data, []);
   const checklistActivities: ActivityItemProps[] = activities.map(
     (activity) => {
       return {
