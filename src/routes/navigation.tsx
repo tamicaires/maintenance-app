@@ -5,7 +5,6 @@ import { MyAccount } from "@/features/Settings/components/MyAccount";
 import { Appearance } from "@/features/Settings/components/Appearance";
 import { Subscription } from "@/features/Settings/components/Subscription";
 import { Carrier } from "@/features/carriers/pages/index";
-import { Login } from "@/features/Login";
 import Order from "@/features/work-order/pages";
 import WorkShopDashboard from "@/features/workshop-dashboard/pages";
 // import { Employee } from "@/features/employee/page";
@@ -17,7 +16,6 @@ import { Trailer } from "@/features/trailers/pages";
 import { Checklist } from "@/features/checklist/pages";
 import { Vehicle } from "@/features/vehicle/page";
 import { Fleet } from "@/features/fleet/pages";
-import { BoxManagement } from "@/features/boxes";
 import { RootLayout } from "@/components/Layout/root-layout";
 import { MaintenanceReport } from "@/features/maintenance/page";
 import { Suspense } from "react";
@@ -30,7 +28,7 @@ import UnauthorizedPage from "@/features/errors/unauthorized-page";
 import ForbiddenPage from "@/features/errors/forbidden-page";
 import { useSelectCompany } from "@/features/SelectCompany/hooks/useSelectCompany";
 import { BoxPage } from "@/features/boxes/pages";
-// import LoginPage from "@/features/auth/login/page"
+import { Employee } from "@/features/employee/page";
 
 export function Navigation() {
   const { companySelected } = useSelectCompany();
@@ -48,7 +46,7 @@ export function Navigation() {
           <Route path={PrivateRoutes.Carrier} element={<Carrier />} />
           <Route path={PrivateRoutes.Fleet} element={<Fleet />} />
 
-          {/* <Route
+          <Route
             path={PrivateRoutes.Employees}
             element={
               <ProtectedRoute
@@ -60,11 +58,10 @@ export function Navigation() {
                 <Employee />
               </ProtectedRoute>
             }
-          /> */}
+          />
           <Route path={PrivateRoutes.Services} element={<Service />} />
           <Route path={PrivateRoutes.Trailer} element={<Trailer />} />
           <Route path={PrivateRoutes.Vehicle} element={<Vehicle />} />
-          {/* <Route path={PrivateRoutes.Box} element={<BoxManagement />} /> */}
           <Route
             path={PrivateRoutes.Box}
             element={
