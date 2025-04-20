@@ -1,6 +1,6 @@
 import { BaseService } from "@/core/api/base-service"
 import { IBoxFilters } from "@/features/boxes/hooks/use-box";
-import { IBox, IBoxWithCount } from "@/shared/types/box"
+import { IBox, IBoxWithCount, IBoxWithRelationalData } from "@/shared/types/box"
 
 /**
  * Service for managing boxes
@@ -11,7 +11,7 @@ class BoxService extends BaseService<IBox> {
   }
 
   /**
- * Get work order with pagination
+ * Get boxes with pagination
  */
   async getPaginated(
     filters?: Partial<IBoxFilters>
@@ -19,6 +19,12 @@ class BoxService extends BaseService<IBox> {
     const params = new URLSearchParams(filters as Record<string, string>);
 
     return this.get(`?${params.toString()}`)
+  }
+  /**
+ * Get boxes with pagination
+ */
+  async getRelationalData(): Promise<IBoxWithRelationalData[]> {
+    return this.get(`/relational`)
   }
 }
 
