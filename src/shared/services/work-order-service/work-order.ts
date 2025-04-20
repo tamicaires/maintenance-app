@@ -1,4 +1,5 @@
 import { BaseService } from "@/core/api/base-service"
+import { IWorkOrderFilters } from "@/features/work-order/hooks/use-work-order"
 import type {
   IDailyWorkOrdersData,
   IFinishMaintenance,
@@ -36,22 +37,11 @@ class WorkOrderService extends BaseService<IWorkOrder> {
  * Get work order with pagination
  */
   async getPaginated(
-    page = 1,
-    limit = 10,
-  ): Promise<{
-    data: IWorkOrderWithCount[]
-    total: number
-    page: number
-    limit: number
-    totalPages: number
-  }> {
-    return this.get<{
-      data: IWorkOrderWithCount[]
-      total: number
-      page: number
-      limit: number
-      totalPages: number
-    }>(`?page=${page}&limit=${limit}`)
+    filters?: Partial<IWorkOrderFilters>
+  ): Promise<IWorkOrderWithCount> {
+    const params = new URLSearchParams(filters as Record<string, string>);
+
+    return this.get(`?${params.toString()}`)
   }
 
   /**
