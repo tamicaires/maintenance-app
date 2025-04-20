@@ -1,16 +1,9 @@
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { Switch } from "@/components/ui/switch";
+import { Form } from "@/components/ui/form";
 import { useCreateBox } from "../../hooks/use-create-box";
 import { CustomDialogHeader } from "@/components/CustomDialogHeader";
 import InputField from "@/components/forms/input-field";
+import { SwitchField } from "@/components/forms/switch-input";
 
 export function CreateBox() {
   const { form, handleSubmit, isPending, canSubmit } = useCreateBox();
@@ -38,27 +31,12 @@ export function CreateBox() {
             type="text"
             label="Descrição"
             placeholder="ex: Box para corretivas rápidas"
-            required
           />
-          <FormField
-            control={form.control}
+          <SwitchField
             name="isActive"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">Status do Box</FormLabel>
-                  <FormDescription>
-                    Ative ou desative o box conforme necessário
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
+            description="Ative ou desative o box conforme necessário"
+            label="Status do Box"
+            required
           />
           <Button
             type="submit"
