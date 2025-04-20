@@ -1,8 +1,7 @@
 import { IFleetWithCount } from "@/shared/types/fleet.interface";
-import { IApiResponse } from "@/shared/services/api";
-import { FleetService } from "@/shared/services/fleet";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
+import { fleetService } from "@/shared/services/fleet-service/fleet";
 
 export interface IUseFleetHookReturn {
   data: IFleetWithCount | undefined;
@@ -18,16 +17,12 @@ export interface IFleetFilters {
   endDate?: Date;
 }
 
-export function useFleet(filters: IFleetFilters = {}): IUseFleetHookReturn {
-  const { data, isLoading, isSuccess } = useQuery<IApiResponse<IFleetWithCount>>({
+export function useFleet(filters?: IFleetFilters): IUseFleetHookReturn {
+  const { data, isLoading, isSuccess } = useQuery<IFleetWithCount>({
     queryKey: [QueryKeysEnum.Fleet, filters],
-    queryFn: () => FleetService.getAll(filters),
+    queryFn: () => fleetService.getPaginated(filters),
     staleTime: 60 * 5 * 1000,
   });
 
-  return {
-    data: data?.data,
-    isLoading,
-    isSuccess
-  };
+  return { data, isLoading, isSuccess };
 }
