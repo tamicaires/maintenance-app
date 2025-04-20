@@ -35,64 +35,63 @@ export function Notification() {
             </Button>
           </CardHeader>
           <CardContent className="px-0">
-            <div className="bg-gray-100 px-6 py-2 text-sm font-medium text-gray-500">
-              Today
+            <div className="bg-background/30 px-6 py-2 text-sm font-medium text-gray-500">
+              Hoje
             </div>
             <div className="space-y-4 px-6 py-3">
               <div className="flex items-start space-x-4">
-                <div className="mt-1 rounded-full bg-gray-200 p-2">
+                <div className="mt-1 rounded-full bg-gray-500/20 p-2">
                   <Home className="h-4 w-4 text-gray-500" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium">
-                    Maintenance request update
+                    Ordem de serviço finalizada
                   </p>
                   <p className="text-sm text-gray-500">
-                    The maintenance request for John Doe in Apartment 301 has
-                    been{" "}
+                    A manutenção da carreta **TRK-8902** foi{" "}
                     <span className="font-medium text-primary">
-                      Completed
+                      concluída com sucesso
                     </span>
-                    . The issue was a leaking faucet in the kitchen.
+                    . Serviço: troca de pastilhas de freio.
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">5h ago</p>
+                  <p className="mt-1 text-xs text-gray-400">há 5h</p>
                 </div>
               </div>
+
               <div className="flex items-start space-x-4 rounded-lg bg-primary/5 p-3">
                 <div className="mt-1 rounded-full bg-primary/25 p-2">
                   <DollarSign className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium">
-                    Rent Payment Confirmation
+                    Novo lançamento de custo registrado
                   </p>
                   <p className="text-sm text-gray-600">
-                    We have received the rent payment of{" "}
-                    <span className="font-medium">$1,200</span> for Jane Smith
-                    in Apartment 102. The payment was processed{" "}
-                    <span className="font-medium text-primary">
-                      successfully
-                    </span>
-                    .
+                    Despesa no valor de{" "}
+                    <span className="font-medium">R$ 2.350,00</span> registrada
+                    para a frota **FL-301** — compra de pneus.
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">7h ago</p>
+                  <p className="mt-1 text-xs text-gray-400">há 7h</p>
                 </div>
               </div>
+
               <div className="flex items-start space-x-4">
-                <div className="mt-1 rounded-full bg-gray-200 p-2">
+                <div className="mt-1 rounded-full bg-gray-500/20 p-2">
                   <Clock className="h-4 w-4 text-gray-500" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium">Lease Renewal Reminder</p>
-                  <p className="text-sm text-gray-500">
-                    The lease for Esther Howard in Apartment 308 is set to{" "}
-                    <span className="font-medium text-red-600">
-                      expire on October 15, 2023
-                    </span>
-                    . Please take appropriate action to initiate lease renewal
-                    discussions.
+                  <p className="text-sm font-medium">
+                    Manutenção preventiva próxima
                   </p>
-                  <p className="mt-1 text-xs text-gray-400">7h ago</p>
+                  <p className="text-sm text-gray-500">
+                    A carreta **TRK-2201** está com manutenção preventiva
+                    agendada para{" "}
+                    <span className="font-medium text-red-600">
+                      25 de abril
+                    </span>
+                    . Verifique os itens do checklist e providencie agendamento.
+                  </p>
+                  <p className="mt-1 text-xs text-gray-400">há 7h</p>
                 </div>
               </div>
             </div>
@@ -100,9 +99,9 @@ export function Notification() {
           <CardFooter className="justify-center">
             <Button
               variant="link"
-              className="text-blue-600 hover:text-blue-700"
+              className="text-primary hover:text-primary/80"
             >
-              View all notifications
+              Ver todas notificações
             </Button>
           </CardFooter>
         </Card>
