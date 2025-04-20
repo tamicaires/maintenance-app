@@ -59,7 +59,7 @@ export default function MaintenanceDashboard() {
   const dailyWorkOrders = getDataOrDefault<IWorkOrder[]>(
     dailyOsData,
     [],
-    "data.workOrders"
+    "workOrders"
   );
 
   const dailyData: DailyData[] = dailyWorkOrders.map((workOrder) => ({
@@ -73,7 +73,7 @@ export default function MaintenanceDashboard() {
     severityLevel: workOrder.severityLevel,
   }));
   console.log("dailyData", dailyData);
-  const dailyStatistics = dailyOsData?.data?.statistics;
+  const dailyStatistics = dailyOsData?.statistics;
   
   const handleRefresh = () => {
     queryClient.invalidateQueries({

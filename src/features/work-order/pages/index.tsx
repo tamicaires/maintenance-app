@@ -41,7 +41,7 @@ export default function Order() {
   const dailyWorkOrders = getDataOrDefault<IWorkOrder[]>(
     dailyOsData,
     [],
-    "data.workOrders"
+    "workOrders"
   );
   console.log("dailyWorkOrders", dailyWorkOrders);
 
