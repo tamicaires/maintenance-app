@@ -22,7 +22,7 @@ import {
   RefreshCwIcon,
 } from "lucide-react";
 import { AnalyticsCard } from "@/features/workshop-dashboard/components/analytics-card";
-import { QueueChart } from "../components/charts/QueueChart";
+import { QueueChart } from "../components/charts/queue-chart";
 import { TypeMaintenanceChart } from "../components/charts/TypeMaintenaceChart";
 import { ServiceChart } from "../components/charts/ServicesChart";
 import type { IWorkOrder } from "@/shared/types/work-order.interface";
