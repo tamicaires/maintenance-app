@@ -20,10 +20,6 @@ export function ActivityFeed({
   onViewAll,
   emptyStateMessage,
 }: ActivityFeedProps) {
-  if (error) {
-    return <div>Erro ao carregar atividades recentes: {error.message}</div>;
-  }
-
   const isTabActive = tabs && onTabChange && selectedTab;
   return (
     <Card className="shadow-lg">
@@ -56,16 +52,19 @@ export function ActivityFeed({
       <CardContent className="p-0">
         <ScrollArea className="h-[calc(68vh-200px)]">
           <div className="divide-y divide-border">
-            {isLoading && <Spinner />}
-            <Suspense fallback={<Spinner />}>
-              {activities.length > 0 ? (
-                activities.map((activity) => (
-                  <ActivityItem key={activity.id} activity={activity} />
-                ))
-              ) : (
-                <EmptyState message={emptyStateMessage} />
-              )}
-            </Suspense>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Suspense fallback={<Spinner />}>
+                {activities.length > 0 ? (
+                  activities.map((activity) => (
+                    <ActivityItem key={activity.id} activity={activity} />
+                  ))
+                ) : (
+                  <EmptyState message={emptyStateMessage} />
+                )}
+              </Suspense>
+            )}
           </div>
         </ScrollArea>
       </CardContent>
