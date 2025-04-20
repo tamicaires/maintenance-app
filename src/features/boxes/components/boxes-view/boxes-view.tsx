@@ -13,7 +13,7 @@ type BoxesSectionProps = {
 
 export function BoxesView({ viewMode }: BoxesSectionProps) {
   const { data, isLoading } = useActiveBoxes();
-  const boxes = getDataOrDefault<IBoxWithRelationalData[]>(data, [], "data");
+  const boxes = getDataOrDefault<IBoxWithRelationalData[]>(data, []);
 
   if (isLoading) {
     return <Spinner />;

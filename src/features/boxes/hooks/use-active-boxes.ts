@@ -1,13 +1,12 @@
-import { IApiResponse } from "@/shared/services/api";
 import { useQuery } from '@tanstack/react-query';
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { IBoxWithRelationalData } from "@/shared/types/box";
-import { BoxService } from "@/shared/services/box";
+import { boxService } from "@/shared/services/box-service/box";
 
 export function useActiveBoxes() {
-  const { data, isLoading, error } = useQuery<IApiResponse<IBoxWithRelationalData[]>>({
+  const { data, isLoading, error } = useQuery<IBoxWithRelationalData[]>({
     queryKey: [QueryKeysEnum.Box],
-    queryFn: BoxService.getWithRelationalData,
+    queryFn: () => boxService.getRelationalData(),
     staleTime: 60 * 5 * 1000,
   });
 
