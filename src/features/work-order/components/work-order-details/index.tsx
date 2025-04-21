@@ -48,7 +48,7 @@ export function WorkOrderDetails({
   const { data, isLoading } = useWorkOrderById(workOrderId, {
     enabled: shouldFetchData,
   })
-  const workOrder = data?.data
+  const workOrder = data
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
