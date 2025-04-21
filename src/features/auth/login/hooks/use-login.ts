@@ -21,8 +21,8 @@ export default function useLogin() {
   const { mutate: login, isPending } = useMutation((data: LoginFormSchema) => authService.login(data.email, data.password), {
     successMessage: "Login efetuado com sucesso.",
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Auth] })
       navigate(PrivateRoutes.Home)
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Auth] })
     }
   });
 
