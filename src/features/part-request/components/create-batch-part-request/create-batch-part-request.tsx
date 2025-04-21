@@ -53,10 +53,20 @@ export function BatchPartRequestDialog({
   iconButton = false,
 }: BatchPartRequestDialogProps) {
   const { data: partsData } = useParts();
-  const parts = partsData?.data || [];
+  const parts = partsData || [];
 
-  const { isSubmitting, isOpen, setIsOpen, handleCreateRequest, isLoading } =
-    useCreatePartRequestBatch();
+  const {
+    form,
+    handleCreateRequest,
+    canSubmit,
+    isPending,
+    isCreateDialogOpen,
+    setIsCreateDialogOpen,
+    handleAddItem,
+    handleRemoveItem,
+    handleSubmit,
+    totalItems,
+  } = useCreatePartRequestBatch();
 
   const { items, addItem, removeItem } = usePartRequestItems();
 
@@ -89,7 +99,7 @@ export function BatchPartRequestDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary">
           {iconButton ? (
@@ -303,7 +313,7 @@ export function BatchPartRequestDialog({
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setIsOpen(false)}
+                onClick={() => setIsCreateDialogOpen(false)}
                 className="w-full sm:w-auto"
               >
                 Cancelar
@@ -311,16 +321,9 @@ export function BatchPartRequestDialog({
               <Button
                 type="button"
                 onClick={() => handleCreateRequest({ batchData: items })}
-                disabled={isSubmitting}
+                disabled={isPending || !canSubmit}
               >
-                {isSubmitting || isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Processando...
-                  </>
-                ) : (
-                  "Criar Solicitação"
-                )}
+                Criar Solicitação de Peças
               </Button>
             </div>
           </div>
