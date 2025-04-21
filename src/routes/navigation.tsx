@@ -29,6 +29,7 @@ import ForbiddenPage from "@/features/errors/forbidden-page";
 import { useSelectCompany } from "@/features/SelectCompany/hooks/useSelectCompany";
 import { BoxPage } from "@/features/boxes/pages";
 import { Employee } from "@/features/employee/page";
+import { ServiceAssigmentPage } from "@/features/service-assigment/page";
 
 export function Navigation() {
   const { companySelected } = useSelectCompany();
@@ -79,6 +80,10 @@ export function Navigation() {
           <Route
             path={PrivateRoutes.Maintenance}
             element={<MaintenanceReport />}
+          />
+          <Route
+            path={PrivateRoutes.ServicesReports}
+            element={<ServiceAssigmentPage />}
           />
           <Route
             path={PrivateRoutes.PartsManagement}
