@@ -24,7 +24,7 @@ import {
 import { AnalyticsCard } from "@/features/workshop-dashboard/components/analytics-card";
 import { QueueChart } from "../components/charts/queue-chart";
 import { TypeMaintenanceChart } from "../components/charts/type-maintenace-chart";
-import { ServiceChart } from "../components/charts/ServicesChart";
+import { ServiceChart } from "../components/charts/services-chart";
 import type { IWorkOrder } from "@/shared/types/work-order.interface";
 import { BoxesView } from "../../boxes/components/boxes-view/boxes-view";
 import { useDailyWorkOrders } from "../../work-order/hooks/use-daily-work-orders";
