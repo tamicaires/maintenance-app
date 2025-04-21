@@ -21,7 +21,6 @@ export function WorkOrderHistory({ workOrder }: { workOrder: IWorkOrder }) {
   const eventHistory = getDataOrDefault<IEventRelationalData[]>(
     historyData,
     [],
-    "data"
   );
 
   const events: IUpdatesTimeline[] = eventHistory.map(transformEventToUpdate);
