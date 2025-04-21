@@ -17,7 +17,7 @@ type PartRequestsProps = {
 export function WorkOrderParts({ workOrder }: PartRequestsProps) {
   const { data, isLoading } = usePartRequestByWorkOrderId(workOrder.id);
 
-  const partRequests = data?.data || [];
+  const partRequests = data || [];
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
