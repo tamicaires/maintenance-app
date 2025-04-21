@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PartLocation, PartStatus } from "@/shared/enums/part";
-import { usePartCategories } from "@/features/PartCategory/hook/use-part-categories";
+import { usePartCategories } from "@/features/part-category/hook/use-part-categories";
 
 export function PartCreationDialog() {
   const {
@@ -313,7 +313,7 @@ export function PartCreationDialog() {
                             Carregando categorias...
                           </SelectItem>
                         ) : (
-                          categories?.data?.map((category) => (
+                          categories?.map((category) => (
                             <SelectItem key={category.id} value={category.id}>
                               {category.name}
                             </SelectItem>
