@@ -13,6 +13,7 @@ interface ActiveItemPropsObject {
 export function ActivityItem({ activity }: ActiveItemPropsObject) {
   return (
     <div className="px-3 py-4 hover:bg-muted/50 transition-colors">
+      "ooiiii"
       <div className="flex gap-4 justify-between">
         <div className=" flex gap-2">
           <Avatar className="h-10 w-10 border-2 border-white shadow-sm">
