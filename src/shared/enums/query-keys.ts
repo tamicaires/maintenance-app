@@ -7,6 +7,7 @@ export enum QueryKeysEnum {
   ChecklistTemplateItem = "checklist-template-item",
   Carrier = "carriers",
   Event = "events",
+  Part = "parts",
   Part_Request = "part-requests",
   Box = "boxes",
   Service = "services",
