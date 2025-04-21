@@ -19,7 +19,6 @@ import { QueryKeysEnum } from "@/shared/enums/query-keys";
 
 export function useCreatePartRequestBatch() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const partRequestItemHandler = usePartRequestItems();
 
   const form = useForm<CreatePartRequestBatchSchema>({
@@ -31,9 +30,10 @@ export function useCreatePartRequestBatch() {
 
   const { mutate: createPartRequestBatch, isPending } = useMutation(
     (data: CreatePartRequestBatchSchema) => partRequestService.createBatch(data), {
-    successMessage: "Peça criada com sucesso!",
+    successMessage: "Requisição de peças criada com sucesso!",
+    errorMessage: "Erro ao criar requisição de peças.",
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Part] })
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Part_Request] })
       handleClose()
     }
   });
@@ -85,64 +85,4 @@ export function useCreatePartRequestBatch() {
     handleCreateRequest,
     totalItems
   };
-  // const {
-  //   handleSubmit,
-  //   reset,
-  //   control,
-  //   formState: { isSubmitting },
-  // } = form;
-
-  // const { mutate: mutateCreateBatch } = useMutation<IApiResponse<any>, Error, CreatePartRequestBatchData>({
-  //   mutationFn: PartRequestService.createBatch,
-  //   onSuccess: (response) => {
-  //     setIsLoading(true)
-  //     queryClient.invalidateQueries({ queryKey: ["part-requests"] });
-  //     if (response.success) {
-  //       toast.success("Solicitação de peças criada com sucesso!");
-  //       reset(defaultValues);
-  //       partRequestItemHandler.clearItems();
-  //       setIsOpen(false);
-  //       setIsLoading(false)
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.error("Error in mutation:", error);
-  //     toast.error(error.message || "Ocorreu um erro ao criar as solicitações de peças. Por favor, tente novamente.");
-  //   },
-  // });
-
-  // const handleAddItem = (newItem: PartRequestItem) => {
-  //   partRequestItemHandler.addItem(newItem);
-  // };
-
-  // const handleRemoveItem = (index: number) => {
-  //   partRequestItemHandler.removeItem(index);
-  // };
-
-  // const handleCreateRequest = (batchData: CreatePartRequestBatchSchema) => {
-  //   if (batchData.batchData.length === 0) {
-  //     toast.error("Adicione pelo menos um item à solicitação.");
-  //     return;
-  //   }
-  //   createPartRequestBatch(batchData);
-
-  // };
-
-  // const totalItems = partRequestItemHandler.getItems().reduce((acc, item) => acc + (item.quantity || 0), 0);
-
-  // return {
-  //   createPartRequestBatchForm: form,
-  //   handleSubmit,
-  //   isSubmitting,
-  //   isOpen,
-  //   setIsOpen,
-  //   isLoading,
-  //   setIsLoading,
-  //   control,
-  //   reset,
-  //   totalItems,
-  //   handleAddItem,
-  //   handleRemoveItem,
-  //   handleCreateRequest,
-  // };
 }
