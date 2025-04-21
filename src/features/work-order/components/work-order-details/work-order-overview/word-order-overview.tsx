@@ -13,11 +13,11 @@ import { SeverityLevel } from "@/shared/enums/work-order";
 import { cn } from "@/lib/utils";
 import { WorkOrderNotes } from "@/features/note";
 import { WorkOrderStats } from "../work-order-stats/work-order-stats";
-import { useServiceAssigments } from "@/features/service-assigment/hooks/use-service-assigments";
+import { useServiceAssigmentsByWorkOrder } from "@/features/service-assigment/hooks/use-service-assigments-by-order";
 
 export function WorkOrderOverview({ workOrder }: { workOrder: IWorkOrder }) {
-  const { data } = useServiceAssigments(workOrder.id);
-  const serviceAssignments = data?.data || [];
+  const { data } = useServiceAssigmentsByWorkOrder(workOrder.id);
+  const serviceAssignments = data || [];
   return (
     <div className="min-h-screen bg-background p-1">
       <div className="gap-1">

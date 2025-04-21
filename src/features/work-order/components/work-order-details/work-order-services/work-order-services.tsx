@@ -8,7 +8,7 @@ import {
 import { IWorkOrder } from "@/shared/types/work-order.interface";
 import { ServiceAssignmentCreationDialog } from "@/features/service-assigment/components/create-service-assignment-form";
 import { Spinner } from "../../../../../components/Spinner";
-import { useServiceAssigments } from "@/features/service-assigment/hooks/use-service-assigments";
+import { useServiceAssigmentsByWorkOrder } from "@/features/service-assigment/hooks/use-service-assigments-by-order";
 import ServiceAssigmentList from "@/features/service-assigment/components/service-assigment-list/service-assigment-list";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 
@@ -17,8 +17,8 @@ type WorkOrderServicesProps = {
 };
 
 export function WorkOrderServices({ workOrder }: WorkOrderServicesProps) {
-  const { data, isLoading } = useServiceAssigments(workOrder.id);
-  const serviceAssigments = data?.data || [];
+  const { data, isLoading } = useServiceAssigmentsByWorkOrder(workOrder.id);
+  const serviceAssigments = data || [];
 
   const isStatusClosed =
     workOrder.status === MaintenanceStatus.FINALIZADA ||
