@@ -19,10 +19,10 @@ export function Service() {
   const { data, error, isLoading: isServicesLoading } = useService(filters);
   const services: IServiceWithCount = React.useMemo(
     () => ({
-      services: getDataOrDefault<IService[]>(data?.data, [], "services"),
-      totalCount: getDataOrDefault<number>(data?.data, 0, "totalCount"),
+      services: getDataOrDefault<IService[]>(data, [], "services"),
+      totalCount: getDataOrDefault<number>(data, 0, "totalCount"),
     }),
-    [data?.data]
+    [data]
   );
 
   const filterOptions: ITableFilterOption[] = [

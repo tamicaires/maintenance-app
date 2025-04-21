@@ -1,11 +1,10 @@
 import { IServiceWithCount } from "@/shared/types/service.interface";
-import { IApiResponse } from "@/shared/services/api";
-import { ServicesService } from "@/shared/services/service";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { ServiceCategory } from "@/shared/enums/service";
+import { servicesService } from "@/shared/services/service-service/service";
 
-export interface IServiceFilters {
+export type IServiceFilters = {
   page?: string;
   perPage?: string;
   serviceName?: string;
@@ -13,9 +12,9 @@ export interface IServiceFilters {
 }
 
 export function useService(filters?: IServiceFilters) {
-  return useQuery<IApiResponse<IServiceWithCount>>({
+  return useQuery<IServiceWithCount>({
     queryKey: [QueryKeysEnum.Service, filters],
-    queryFn: () => ServicesService.getAll(filters),
+    queryFn: () => servicesService.getPaginated(filters),
     staleTime: 60 * 5 * 1000,
   });
 }
