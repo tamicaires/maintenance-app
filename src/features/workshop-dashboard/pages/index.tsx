@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { AnalyticsCard } from "@/features/workshop-dashboard/components/analytics-card";
 import { QueueChart } from "../components/charts/queue-chart";
-import { TypeMaintenanceChart } from "../components/charts/TypeMaintenaceChart";
+import { TypeMaintenanceChart } from "../components/charts/type-maintenace-chart";
 import { ServiceChart } from "../components/charts/ServicesChart";
 import type { IWorkOrder } from "@/shared/types/work-order.interface";
 import { BoxesView } from "../../boxes/components/boxes-view/boxes-view";
@@ -179,7 +179,7 @@ export default function MaintenanceDashboard() {
             </div>
             <BoxesView viewMode={viewMode} />
           </TabsContent>
-          <TabsContent value={"queue" || "released"}>
+          <TabsContent value={"queue"}>
             <Card>
               <CardHeader>
                 <CardTitle>Frotas em Fila</CardTitle>
