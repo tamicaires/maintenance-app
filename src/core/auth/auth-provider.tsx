@@ -11,6 +11,7 @@ import type { IUser } from "@/shared/types/auth";
 import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 import { clearUser, setUser } from "@/store/features/auth-slice";
+import { PrivateRoutes } from "@/shared/enums/routes";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUserState(userData);
       dispatch(setUser(userData));
       setIsAuthenticated(true);
-      router("/dashboard");
+      router(PrivateRoutes.Home);
     } catch (error) {
       console.error("Login error:", error);
       throw error;
