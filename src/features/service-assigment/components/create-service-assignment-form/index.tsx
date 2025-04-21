@@ -38,35 +38,37 @@ export function ServiceAssignmentCreationDialog({
   isDisabled,
   iconButton,
 }: ServiceAssignmentCreationDialogProps) {
-  const { ToastComponent, toast: addToast } = useToast();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const { ToastComponent, toast: addToast } = useToast();
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
-    createServiceAssignmentForm,
+    form,
     handleSubmit,
     isPending,
-    isError,
-    error,
-    reset,
-  } = useCreateServiceAssignment(setIsDialogOpen, workOrderId, addToast);
+    statusWatcher,
+    trailerIdWatcher,
+    canSubmit,
+    isCreateDialogOpen,
+    setIsCreateDialogOpen,
+  } = useCreateServiceAssignment(workOrderId);
 
   const { data: services, isLoading: isServicesLoading } = useService();
   const servicesData: IServiceWithCount = useMemo(
     () => ({
-      services: getDataOrDefault<IService[]>(services?.data, [], "services"),
-      totalCount: getDataOrDefault<number>(services?.data, 0, "totalCount"),
+      services: getDataOrDefault<IService[]>(services, [], "services"),
+      totalCount: getDataOrDefault<number>(services, 0, "totalCount"),
     }),
     [services]
   );
-  const { control, watch } = createServiceAssignmentForm;
-  const status = watch("status");
-  const selectedTrailerId = watch("trailerId");
+  // const { control, watch } = createServiceAssignmentForm;
+  // const status = watch("status");
+  // const selectedTrailerId = watch("trailerId");
 
   const handleOpenChange = (newOpen: boolean) => {
-    setIsDialogOpen(newOpen);
-    if (!newOpen) {
-      reset();
-    }
+    setIsCreateDialogOpen(newOpen);
+    // if (!newOpen) {
+    //   reset();
+    // }
   };
 
   const serviceOptions =
@@ -98,7 +100,7 @@ export function ServiceAssignmentCreationDialog({
 
   const axleOptions: IOption[] = useMemo(() => {
     const selectedTrailer = trailers.find(
-      (trailer) => trailer.id === selectedTrailerId
+      (trailer) => trailer.id === trailerIdWatcher
     );
     if (!selectedTrailer) return [];
 
@@ -106,11 +108,11 @@ export function ServiceAssignmentCreationDialog({
       value: axle.id,
       label: `Eixo ${axle.position}`,
     }));
-  }, [selectedTrailerId, trailers]);
+  }, [trailerIdWatcher, trailers]);
 
   return (
     <>
-      <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+      <Dialog open={isCreateDialogOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           <Button disabled={isDisabled}>
             {iconButton ? (
@@ -128,11 +130,11 @@ export function ServiceAssignmentCreationDialog({
             title="Adicionar Serviço"
             subtitle="Preencha os campos abaixo para criar uma nova atribuição de serviço"
           />
-          <Form {...createServiceAssignmentForm}>
+          <Form {...form}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex gap-3 w-full">
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="serviceId"
                   render={({ field }) => (
                     <FormItem className="w-3/5">
@@ -153,7 +155,7 @@ export function ServiceAssignmentCreationDialog({
                   )}
                 />
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="status"
                   render={({ field }) => (
                     <FormItem className="w-2/5">
@@ -175,7 +177,7 @@ export function ServiceAssignmentCreationDialog({
               </div>
               <div className="flex gap-3 w-full">
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="trailerId"
                   render={({ field }) => (
                     <FormItem className="w-1/2">
@@ -195,7 +197,7 @@ export function ServiceAssignmentCreationDialog({
                   )}
                 />
                 <FormField
-                  control={control}
+                  control={form.control}
                   name="axleId"
                   render={({ field }) => (
                     <FormItem className="w-1/2">
@@ -208,7 +210,7 @@ export function ServiceAssignmentCreationDialog({
                           onChange={field.onChange}
                           isFiltered={true}
                           value={field.value || undefined}
-                          disabled={!selectedTrailerId}
+                          disabled={!trailerIdWatcher}
                         />
                       </FormControl>
                       <FormMessage />
@@ -218,7 +220,7 @@ export function ServiceAssignmentCreationDialog({
               </div>
 
               <AnimatePresence>
-                {status === ServiceAssigmentStatus.IN_PROGRESS && (
+                {statusWatcher === ServiceAssigmentStatus.IN_PROGRESS && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -228,7 +230,7 @@ export function ServiceAssignmentCreationDialog({
                   >
                     <div className="w-full">
                       <FormField
-                        control={control}
+                        control={form.control}
                         name="startAt"
                         render={({ field }) => (
                           <FormItem>
@@ -251,36 +253,23 @@ export function ServiceAssignmentCreationDialog({
               </AnimatePresence>
 
               <FormField
-                control={control}
+                control={form.control}
                 name="workOrderId"
                 render={({ field }) => <input type="hidden" {...field} />}
               />
 
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Adicionando Serviço...
-                  </>
-                ) : (
-                  "Adicionar Serviço"
-                )}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isPending || !canSubmit}
+                isLoading={isPending}
+              >
+                Adicionar Serviço
               </Button>
             </form>
           </Form>
-          {isError && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-red-500 mt-2"
-            >
-              Erro: {error?.message}
-            </motion.p>
-          )}
         </DialogContent>
       </Dialog>
-      <ToastComponent />
     </>
   );
 }
