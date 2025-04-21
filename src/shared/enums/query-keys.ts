@@ -9,6 +9,7 @@ export enum QueryKeysEnum {
   Event = "events",
   Part = "parts",
   Part_Request = "part-requests",
+  Part_Category = "part-categories",
   Box = "boxes",
   Service = "services",
   Service_Assigment = "service-assignments",
