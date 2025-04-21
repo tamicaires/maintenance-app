@@ -15,7 +15,7 @@ import {
   Play,
 } from "lucide-react";
 import { TableCell, TableRow } from "../../../../components/ui/table";
-import EmployeeAvatarGroup from "../../../../components/AvatarGroup";
+import EmployeeServiceManager from "../../../employee/components/employee-service-manager";
 import { Badge } from "../../../../components/ui/badge";
 import { getServiceAssigmentStatusInfo } from "@/utils/service-assigment";
 
@@ -58,7 +58,7 @@ export default function ServiceAssigmentItem({
         </div>
       </TableCell>
       <TableCell>
-        <EmployeeAvatarGroup
+        <EmployeeServiceManager
           serviceAssignmentId={serviceAssigment.id}
           employees={serviceAssigment.employees}
           onAddEmployee={() => console.log("added o employee")}

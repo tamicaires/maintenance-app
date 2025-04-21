@@ -8,7 +8,7 @@ import { ServiceAssigmentStatus } from "@/shared/enums/service-assigment";
 import { getServiceAssigmentStatusInfo } from "@/utils/service-assigment";
 import { dateUtil } from "@/utils/date";
 import { ServiceActionDialog } from "@/features/service-assigment/components/service-assingment-action/service-action-dialog";
-import EmployeeAvatarGroup from "@/components/AvatarGroup";
+import EmployeeServiceManager from "@/features/employee/components/employee-service-manager";
 
 type ServiceOrderCardProps = {
   serviceAssignment: IServiceAssignment;
@@ -89,7 +89,7 @@ export function ServiceOrderCard({
                   Responsáveis
                 </p>
                 <div className="flex -space-x-2">
-                  <EmployeeAvatarGroup
+                  <EmployeeServiceManager
                     serviceAssignmentId={serviceAssignment.id}
                     employees={serviceAssignment.employees}
                     onAddEmployee={() => console.log("added o employee")}
