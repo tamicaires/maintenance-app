@@ -44,11 +44,11 @@ const chartData = [
 
 export function PartsManager() {
   // const [search, setSearch] = useState("");
-  const [isConsumptionCollapsed, setIsConsumptionCollapsed] = useState(true);
+  const [isConsumptionCollapsed, setIsConsumptionCollapsed] = useState<boolean>(true);
 
   const { data, error, isLoading } = useParts();
 
-  const parts = data?.data || [];
+  const parts = data || [];
 
   const totalParts = parts.length;
   const lowStockParts = parts.filter((part) => part.stockQuantity < 10).length;
