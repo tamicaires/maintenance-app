@@ -21,7 +21,7 @@ export function OpenRequestsList() {
   const { data, isLoading: isPartRequestLoading } = usePartRequests({
     status: RequestStatus.PENDING,
   });
-  const requestData = data?.data?.partRequests || [];
+  const requestData = data?.partRequests || [];
 
   const partRequestData: IPartRequestRelationalData[] = requestData
     ? requestData.map((request) => {

@@ -31,13 +31,13 @@ export function PartRequestTable() {
       perPage: itemsPerPage.toString(),
     });
 
-  const partRequestObjects = partRequestData?.data;
+  const partRequestObjects = partRequestData;
   const requests: IPartRequestsRelationalDataList = {
-    partRequests: getDataOrDefault(partRequestObjects, [], "data"),
-    total: partRequestData?.data?.total || 0,
+    partRequests: getDataOrDefault(partRequestObjects, []),
+    total: partRequestData?.total || 0,
   };
 
-  const totalRequests = partRequestData?.data?.total || 0;
+  const totalRequests = partRequestData?.total || 0;
 
   useEffect(() => {
     if (requests.partRequests.length > 0) {
@@ -56,7 +56,7 @@ export function PartRequestTable() {
     setItemsPerPage(pageSize);
   };
   const partRequests =
-    partRequestData?.data?.partRequests.map((request) => {
+    partRequestData?.partRequests.map((request) => {
       return {
         ...request,
       };

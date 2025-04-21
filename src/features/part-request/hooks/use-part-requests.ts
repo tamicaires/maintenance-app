@@ -1,10 +1,9 @@
-import type { IApiResponse } from "@/shared/services/api"
-import { PartRequestService } from "@/shared/services/part-request"
 import { useQuery } from "@tanstack/react-query"
 import { QueryKeysEnum } from "@/shared/enums/query-keys"
 import { queryClient } from "@/shared/services/query-client"
 import { IPartRequestsRelationalDataList } from "@/shared/types/part-request-relational-data"
 import { RequestStatus } from "@/shared/enums/part-request"
+import { partRequestService } from "@/shared/services/part-request-service/part-request"
 
 export interface IPartRequestFilters {
   page?: string
@@ -15,9 +14,9 @@ export interface IPartRequestFilters {
 }
 
 export function usePartRequests(filters: IPartRequestFilters = {}) {
-  const { data, isLoading, error } = useQuery<IApiResponse<IPartRequestsRelationalDataList>>({
+  const { data, isLoading, error } = useQuery<IPartRequestsRelationalDataList>({
     queryKey: [QueryKeysEnum.Part_Request, filters],
-    queryFn: () => PartRequestService.getAll(filters),
+    queryFn: () => partRequestService.getPaginated(filters),
     staleTime: 60 * 5 * 1000,
   })
 
