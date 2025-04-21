@@ -1,8 +1,7 @@
-import { IApiResponse } from "@/shared/services/api";
-import { EmployeeService } from "@/shared/services/employee";
 import { useQuery } from "@tanstack/react-query";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
 import { IEmployeeWithCount } from "@/shared/types/employee.interface";
+import { employeeService } from "@/shared/services/employee-service/employee";
 
 export type EmployeeFiltersType = {
   page?: string;
@@ -14,9 +13,9 @@ export type EmployeeFiltersType = {
 }
 
 export function useEmployee(filters?: EmployeeFiltersType) {
-  return useQuery<IApiResponse<IEmployeeWithCount>>({
+  return useQuery<IEmployeeWithCount>({
     queryKey: [QueryKeysEnum.Employee, filters],
-    queryFn: () => EmployeeService.getAll(filters),
+    queryFn: () => employeeService.getPaginated(filters),
     staleTime: 60 * 5 * 1000,
   });
 }
