@@ -56,7 +56,7 @@ export default function EmployeeAvatarGroup({
   const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
   const { data, isLoading: isEmployeeLoading } = useEmployee();
 
-  const employeesData = data?.data?.employees || [];
+  const employeesData = data?.employees || [];
 
   const unassignedEmployeesOptions = employeesData
     .filter((person) => !employees.some((emp) => emp.id === person.id))

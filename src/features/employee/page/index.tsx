@@ -21,10 +21,10 @@ export function Employee() {
   const { data, error, isLoading: isEmployeeLoading } = useEmployee(filters);
   const employees: IEmployeeWithCount = useMemo(
     () => ({
-      employees: getDataOrDefault<IEmployee[]>(data?.data, [], "employees"),
-      totalCount: getDataOrDefault<number>(data?.data, 0, "totalCount"),
+      employees: getDataOrDefault<IEmployee[]>(data, [], "employees"),
+      totalCount: getDataOrDefault<number>(data, 0, "totalCount"),
     }),
-    [data?.data]
+    [data]
   );
 
   if (error) {

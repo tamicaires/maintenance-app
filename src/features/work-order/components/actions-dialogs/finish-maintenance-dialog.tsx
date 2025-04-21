@@ -47,10 +47,10 @@ export function FinishMaintenanceDialog({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast: addToast, ToastComponent } = useToast();
   const { data: employees, isLoading: isEmployeesLoading } = useEmployee({
-    jobTitle: "Supervisor"
+    jobTitle: "Supervisor",
   });
 
-  const supervisors = getDataOrDefault<IEmployee[]>(employees?.data, [], "employees")
+  const supervisors = getDataOrDefault<IEmployee[]>(employees, [], "employees");
 
   const {
     control,
