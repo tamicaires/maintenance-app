@@ -30,6 +30,7 @@ import WorkOrderStatusBadge from "../work-order-status-badge";
 import { WorkOrderDetails } from "@/features/work-order/components/work-order-details";
 import { Profile } from "../../../../components/Profile";
 import { DurationCard } from "./duration-card";
+import { useDialog } from "@/core/providers/dialog";
 
 type DurationInfoType = {
   title: string;
@@ -48,6 +49,8 @@ export default function WorkOrderCard({
   workOrder,
   highlightMatch,
 }: WorkOrderCardProps) {
+  const { openDialog } = useDialog();
+
   const hasEntryQueue = workOrder.entryQueue !== null;
   const hasEntryMaintenance = workOrder.entryMaintenance !== null;
   const hasWaitingParts = workOrder.startWaitingParts !== null;
@@ -75,6 +78,14 @@ export default function WorkOrderCard({
       icon: Pause,
     },
   ];
+
+  const handleOpenDetails = () => {
+    openDialog({
+      title: "Ordem de Serviço - Detalhes",
+      content: <WorkOrderDetails workOrderId={workOrder.id} />,
+      size: "4xl",
+    });
+  };
 
   return (
     <motion.div
@@ -180,15 +191,15 @@ export default function WorkOrderCard({
                   )
               )}
             </div>
-            <WorkOrderDetails
-              workOrderId={workOrder.id}
-              trigger={
-                <Button variant="default" size="sm" className="ml-auto">
-                  <Eye className="h-4 w-4 mr-2" />
-                  VER DETALHES
-                </Button>
-              }
-            />
+            <Button
+              variant="default"
+              size="sm"
+              className="ml-auto"
+              onClick={handleOpenDetails}
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              VER DETALHES
+            </Button>
           </div>
         </CardFooter>
       </Card>
