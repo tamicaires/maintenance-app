@@ -10,7 +10,7 @@ import { IChecklistTemplate } from "@/shared/types/checklist";
 import { AnimatePresence } from "framer-motion";
 import { MotionWrapper } from "@/components/motion-wrapper";
 import { CardSelector } from "@/components/card-selector/card-selector";
-import ChecklistItems from "../../checklist-item/components/checklist-items";
+import ChecklistDetails from "./checklist-details";
 import { useDialog } from "@/core/providers/dialog";
 import { LoadingOverlay } from "@/components/loading-overlay";
 
@@ -34,7 +34,7 @@ export function ChecklistStart({ workOrderId }: ChecklistDialogProps) {
     if (startedChecklist) {
       openDialog({
         title: "Iniciar Checklist Items",
-        content: <ChecklistItems checklistId={startedChecklist.id} />,
+        content: <ChecklistDetails checklistId={startedChecklist.id} />,
         size: "3xl",
       });
     }

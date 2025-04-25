@@ -8,7 +8,7 @@ import { DataWrapper } from "@/components/data-wrapper/data-wrapper";
 import { useDialog } from "@/core/providers/dialog";
 import { ChecklistStart } from "../components/checklist-start";
 import { Profile } from "@/components/Profile";
-import ChecklistItems from "../../checklist-item/components/checklist-items";
+import ChecklistDetails from "../components/checklist-details";
 
 export default function ActiveChecklistList() {
   const { openDialog } = useDialog();
@@ -28,7 +28,7 @@ export default function ActiveChecklistList() {
   const handleOpenChecklistItems = (checklistId: string) => {
     openDialog({
       title: "Checklist Items",
-      content: <ChecklistItems checklistId={checklistId} />,
+      content: <ChecklistDetails checklistId={checklistId} />,
       size: "4xl",
     });
   };

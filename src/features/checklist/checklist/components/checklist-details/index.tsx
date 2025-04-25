@@ -1,15 +1,17 @@
 import { CardHeader } from "@/components/card-header/card-header";
-import { useChecklistWithRelationalData } from "../../checklist/hooks/use-checklist-with-relational-data";
-import { ChecklistAccordionList } from "./checklist-accordion-list";
-import { ChecklistQuickActions } from "../../checklist/components/checklist-quick-actions";
+import { useChecklistWithRelationalData } from "../../hooks/use-checklist-with-relational-data";
+import { ChecklistAccordionList } from "../../../checklist-item/components/checklist-accordion-list";
+import { ChecklistQuickActions } from "../checklist-quick-actions";
 import { LoadingOverlay } from "@/components/loading-overlay";
 import ErrorState from "@/components/states/error-state";
 
-type ChecklistItemsProps = {
+type ChecklistDetailsProps = {
   checklistId: string;
 };
 
-export default function ChecklistItems({ checklistId }: ChecklistItemsProps) {
+export default function ChecklistDetails({
+  checklistId,
+}: ChecklistDetailsProps) {
   const { data: checklist, isLoading } =
     useChecklistWithRelationalData(checklistId);
 
