@@ -6,14 +6,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IWorkOrder } from "@/shared/types/work-order.interface";
-import { ServiceAssignmentCreationDialog } from "@/features/service-assigment/components/create-service-assignment-form";
-import { Spinner } from "../../../../../components/Spinner";
+import { ServiceAssignmentCreation } from "@/features/service-assigment/components/create-service-assignment";
 import { useServiceAssigmentsByWorkOrder } from "@/features/service-assigment/hooks/use-service-assigments-by-order";
 import ServiceAssigmentList from "@/features/service-assigment/components/service-assigment-list/service-assigment-list";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
 import { useDialog } from "@/core/providers/dialog";
 import { Button } from "@/components/ui/button";
 import { Wrench } from "lucide-react";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 type WorkOrderServicesProps = {
   workOrder: IWorkOrder;
@@ -33,10 +33,9 @@ export function WorkOrderServices({ workOrder }: WorkOrderServicesProps) {
     openDialog({
       title: "Criar Desginação de serviços",
       content: (
-        <ServiceAssignmentCreationDialog
+        <ServiceAssignmentCreation
           workOrderId={workOrder.id}
           trailers={workOrder.fleet.trailers}
-          isDisabled={isStatusClosed}
         />
       ),
       stackable: true,
@@ -58,11 +57,9 @@ export function WorkOrderServices({ workOrder }: WorkOrderServicesProps) {
         )}
       </CardHeader>
       <CardContent>
-        {isLoading ? (
-          <Spinner size="medium" />
-        ) : (
+        <LoadingOverlay isLoading={isLoading}>
           <ServiceAssigmentList serviceAssigments={serviceAssigments} />
-        )}
+        </LoadingOverlay>
       </CardContent>
     </Card>
   );
