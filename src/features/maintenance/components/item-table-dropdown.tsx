@@ -8,7 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import { Eye, MoreHorizontal } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { WorkOrderDetails } from "@/features/work-order/components/work-order-details";
+import { DropdownDialogItem } from "@/components/dialog-helper/dropdown-dialog-item";
 
 type DropDownItemTableProps = {
   workOrderId: string;
@@ -25,19 +27,20 @@ export function DropDownItemTable({ workOrderId }: DropDownItemTableProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Ações</DropdownMenuLabel>
-        <WorkOrderDetails
-          workOrderId={workOrderId}
-          trigger={
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <Eye className="mr-2 h-4 w-4 text-muted-foreground" />
-              Detalhes Ordem de Serviço
-            </DropdownMenuItem>
-          }
-        />
+        <Separator />
         <DropdownMenuItem onClick={() => {}}>
           <FaArrowRotateLeft className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
           Reabrir Ordem de Serviço
         </DropdownMenuItem>
+        <DropdownDialogItem
+          dialogOptions={{
+            content: <WorkOrderDetails workOrderId={workOrderId} />,
+            size: "4xl",
+          }}
+        >
+          <Eye className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
+          Ver detalhes
+        </DropdownDialogItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
