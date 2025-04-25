@@ -9,14 +9,24 @@ import { motion } from "framer-motion";
 import { formatDuration } from "@/utils/time";
 import { IBoxWithRelationalData } from "@/shared/types/box";
 import { WorkOrderDetails } from "@/features/work-order/components/work-order-details";
+import { useDialog } from "@/core/providers/dialog";
 
 interface MaintenanceCardProps {
   box: IBoxWithRelationalData;
 }
 
 export function MaintenanceCard({ box }: MaintenanceCardProps) {
+  const { openDialog } = useDialog();
+
   const maintenanceDuration = calculateDuration(box.workOrder.entryMaintenance);
 
+  const handleOpenDetails = () => {
+    openDialog({
+      title: "Detalhes Ordem de Serviço",
+      content: <WorkOrderDetails workOrderId={box.workOrder.id} />,
+      size: "4xl",
+    });
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -85,23 +95,21 @@ export function MaintenanceCard({ box }: MaintenanceCardProps) {
           <div className="space-y-2 mb-4">
             <div className="flex justify-between text-xs">
               <span className="font-medium">Progresso</span>
-              <span className="text-muted-foreground">{box.progress.toFixed()}%</span>
+              <span className="text-muted-foreground">
+                {box.progress.toFixed()}%
+              </span>
             </div>
             <Progress value={box.progress} className="h-1" />
           </div>
-          <WorkOrderDetails
-            workOrderId={box.workOrder.id}
-            trigger={
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full transition-all hover:bg-primary hover:text-primary-foreground"
-              >
-                <Eye className="h-4 w-4 mr-2" />
-                Detalhes
-              </Button>
-            }
-          />
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={handleOpenDetails}
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            Detalhes
+          </Button>
         </CardContent>
       </Card>
     </motion.div>
