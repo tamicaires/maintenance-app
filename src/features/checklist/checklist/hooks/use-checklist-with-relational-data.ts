@@ -1,20 +1,14 @@
-import type { IApiResponse } from "@/shared/services/api"
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query"
-import { ChecklistService } from "@/shared/services/checklist/checklist"
+import { useQuery } from "@tanstack/react-query"
 import { QueryKeysEnum } from "@/shared/enums/query-keys"
 import type { IChecklistWithRelationalData } from "@/shared/types/checklist/checklist"
+import { checklistService } from "@/shared/services/checklist/checklist-service"
 
-type UseChecklistWithRelationalDataOptions = Omit<
-  UseQueryOptions<IApiResponse<IChecklistWithRelationalData>, Error>,
-  "queryKey" | "queryFn"
->
-
-export function useChecklistWithRelationalData(checklistId: string, options?: UseChecklistWithRelationalDataOptions) {
-  const { data, isLoading, error, isError, isSuccess } = useQuery<IApiResponse<IChecklistWithRelationalData>, Error>({
+export function useChecklistWithRelationalData(checklistId: string) {
+  const { data, isLoading, error, isError, isSuccess } = useQuery<IChecklistWithRelationalData>({
     queryKey: [QueryKeysEnum.Checklist, checklistId],
-    queryFn: () => ChecklistService.getWithRelationalData(checklistId),
+    queryFn: () => checklistService.getWithRelationalData(checklistId),
     staleTime: 60 * 5 * 1000,
-    ...options,
+    // enabled
   })
 
   return { data, isLoading, isError, isSuccess, error }
