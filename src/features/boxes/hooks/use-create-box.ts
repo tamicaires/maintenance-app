@@ -7,7 +7,7 @@ import { createBoxDefaultValues, CreateBoxSchema } from "../forms/create-box-for
 import { useMutation } from "@/core/api/hooks/use-mutation";
 import { boxService } from "@/shared/services/box-service/box";
 import { QueryKeysEnum } from "@/shared/enums/query-keys";
-import { useDialog } from "@/context/dialog";
+import { useDialog } from "@/core/providers/dialog";
 
 export function useCreateBox() {
   const { closeDialog } = useDialog();
