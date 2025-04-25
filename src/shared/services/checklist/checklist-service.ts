@@ -24,7 +24,7 @@ class ChecklistService extends BaseService<IChecklist> {
    * @returns Checklist with relational data
    */
   async getWithRelationalData(checklistId: string): Promise<IChecklistWithRelationalData> {
-    return this.get<IChecklistWithRelationalData>(`/with-relational-data/${checklistId}`)
+    return this.get<IChecklistWithRelationalData>(`/${checklistId}`)
   }
 
   /**
