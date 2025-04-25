@@ -1,97 +1,61 @@
-import { useState, useCallback } from "react"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { WorkOrderHeader } from "@/features/work-order/components/work-order-details/work-order-header/work-order-header"
-import { WorkOrderOverview } from "@/features/work-order/components/work-order-details/work-order-overview/word-order-overview"
-import { WorkOrderServices } from "@/features/work-order/components/work-order-details/work-order-services/work-order-services"
-import { WorkOrderHistory } from "@/features/work-order/components/work-order-details/work-order-history/work-order-history"
-import { WorkOrderQuickActions } from "@/features/work-order/components/work-order-details/work-order-quick-actions/work-order-quick-actions"
-import { WorkOrderParts } from "@/features/work-order/components/work-order-details/work-order-parts/work-order-parts"
-import { useWorkOrderById } from "../../hooks/use-work-order-by-id"
-import { WorkOrderSkeleton } from "./work-order-skeleton/work-order-skeleton"
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { WorkOrderHeader } from "@/features/work-order/components/work-order-details/work-order-header/work-order-header";
+import { WorkOrderOverview } from "@/features/work-order/components/work-order-details/work-order-overview/word-order-overview";
+import { WorkOrderServices } from "@/features/work-order/components/work-order-details/work-order-services/work-order-services";
+import { WorkOrderHistory } from "@/features/work-order/components/work-order-details/work-order-history/work-order-history";
+import { WorkOrderQuickActions } from "@/features/work-order/components/work-order-details/work-order-quick-actions/work-order-quick-actions";
+import { WorkOrderParts } from "@/features/work-order/components/work-order-details/work-order-parts/work-order-parts";
+import { useWorkOrderById } from "../../hooks/use-work-order-by-id";
+import { WorkOrderSkeleton } from "./work-order-skeleton/work-order-skeleton";
+import ErrorState from "@/components/states/error-state";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 type WorkOrderDetailsProps = {
-  workOrderId: string
-  isDialogOpen?: boolean
-  setIsDialogOpen?: (isOpen: boolean) => void
-  trigger?: React.ReactNode
-}
+  workOrderId: string;
+};
 
-export function WorkOrderDetails({
-  workOrderId,
-  trigger,
-  isDialogOpen: externalIsDialogOpen,
-  setIsDialogOpen: externalSetIsDialogOpen,
-}: WorkOrderDetailsProps) {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [internalIsDialogOpen, setInternalIsDialogOpen] = useState(false)
-  const [shouldFetchData, setShouldFetchData] = useState(false)
+export function WorkOrderDetails({ workOrderId }: WorkOrderDetailsProps) {
+  const [activeTab, setActiveTab] = useState<string>("overview");
 
-  const isControlled = externalIsDialogOpen !== undefined
-  const isOpen = isControlled ? externalIsDialogOpen : internalIsDialogOpen
-
-  const onOpenChange = useCallback(
-    (open: boolean) => {
-      if (open) {
-        setShouldFetchData(true)
-      }
-      if (isControlled) {
-        externalSetIsDialogOpen?.(open)
-      } else {
-        setInternalIsDialogOpen(open)
-      }
-    },
-    [isControlled, externalSetIsDialogOpen],
-  )
-  
-  const { data, isLoading } = useWorkOrderById(workOrderId, {
-    enabled: shouldFetchData,
-  })
-  const workOrder = data
+  const { data, isLoading } = useWorkOrderById(workOrderId);
+  const workOrder = data;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger className="w-full">{trigger}</DialogTrigger>
-      <DialogContent className="max-w-4xl h-[95vh] p-0 gap-0">
-        <ScrollArea className="h-full">
-          {isLoading ? (
-            <div className="p-6">
-              <WorkOrderSkeleton />
+    <ScrollArea className="h-[85vh] rounded-lg">
+      <LoadingOverlay isLoading={isLoading} fallback={<WorkOrderSkeleton />}>
+        {workOrder ? (
+          <div className="flex flex-col h-full">
+            <WorkOrderHeader workOrder={workOrder} />
+            <div className="flex-1 px-6 py-3 pb-32">
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className="mb-1">
+                  <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+                  <TabsTrigger value="services">Serviços</TabsTrigger>
+                  <TabsTrigger value="parts">Peças</TabsTrigger>
+                  <TabsTrigger value="history">Histórico</TabsTrigger>
+                </TabsList>
+                <TabsContent value="overview">
+                  <WorkOrderOverview workOrder={workOrder} />
+                </TabsContent>
+                <TabsContent value="services">
+                  <WorkOrderServices workOrder={workOrder} />
+                </TabsContent>
+                <TabsContent value="parts">
+                  <WorkOrderParts workOrder={workOrder} />
+                </TabsContent>
+                <TabsContent value="history">
+                  <WorkOrderHistory workOrder={workOrder} />
+                </TabsContent>
+              </Tabs>
             </div>
-          ) : workOrder ? (
-            <div className="flex flex-col h-full">
-              <WorkOrderHeader workOrder={workOrder} />
-              <div className="flex-1 px-6 py-3 pb-32">
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList className="mb-1">
-                    <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-                    <TabsTrigger value="services">Serviços</TabsTrigger>
-                    <TabsTrigger value="parts">Peças</TabsTrigger>
-                    <TabsTrigger value="history">Histórico</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="overview">
-                    <WorkOrderOverview workOrder={workOrder} />
-                  </TabsContent>
-                  <TabsContent value="services">
-                    <WorkOrderServices workOrder={workOrder} />
-                  </TabsContent>
-                  <TabsContent value="parts">
-                    <WorkOrderParts workOrder={workOrder} />
-                  </TabsContent>
-                  <TabsContent value="history">
-                    <WorkOrderHistory workOrder={workOrder} />
-                  </TabsContent>
-                </Tabs>
-              </div>
-              <WorkOrderQuickActions workOrder={workOrder} onClose={() => onOpenChange(false)} />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-full">Nenhum dado encontrado</div>
-          )}
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
-  )
+            <WorkOrderQuickActions workOrder={workOrder} onClose={() => {}} />
+          </div>
+        ) : (
+          <ErrorState icon="critical" message="Nenhum dado encontrado" />
+        )}
+      </LoadingOverlay>
+    </ScrollArea>
+  );
 }
-
