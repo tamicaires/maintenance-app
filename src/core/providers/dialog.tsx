@@ -1,5 +1,3 @@
-"use client";
-
 import {
   createContext,
   useState,
@@ -9,12 +7,14 @@ import {
   Suspense,
   useCallback,
   useMemo,
+  useEffect,
 } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 
@@ -28,8 +28,9 @@ export type DialogSize =
   | "4xl"
   | "full";
 
-interface DialogOptions {
+export interface DialogOptions {
   title?: string;
+  description?: string;
   content: ReactElement;
   onClose?: () => void;
   // Predefined size options for better Tailwind compatibility
@@ -49,6 +50,8 @@ interface DialogContextProps {
   openDialog: (options: DialogOptions) => string; // Returns dialog ID
   closeDialog: (id?: string) => void; // Close specific dialog or most recent
   closeAllDialogs: () => void; // Close all dialogs
+  // Method to schedule a dialog to open after current event loop
+  scheduleDialog: (options: DialogOptions) => void;
 }
 
 const DialogContext = createContext<DialogContextProps | undefined>(undefined);
@@ -62,6 +65,23 @@ const DialogLoadingFallback = () => (
 
 export const DialogProvider = ({ children }: { children: ReactNode }) => {
   const [dialogs, setDialogs] = useState<DialogInstance[]>([]);
+  const [scheduledDialog, setScheduledDialog] = useState<DialogOptions | null>(
+    null
+  );
+
+  // Handle scheduled dialogs
+  useEffect(() => {
+    if (scheduledDialog) {
+      // Use setTimeout with a small delay to ensure this runs after the dropdown closes
+      // This helps avoid conflicts with DropdownMenu closing
+      const timeoutId = setTimeout(() => {
+        openDialog(scheduledDialog);
+        setScheduledDialog(null);
+      }, 50); // Small delay to ensure dropdown has time to close
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [scheduledDialog]);
 
   // Memoize open dialogs to prevent unnecessary re-renders
   const openDialogs = useMemo(() => {
@@ -100,6 +120,11 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return id;
+  }, []);
+
+  // Schedule a dialog to open after the current event loop
+  const scheduleDialog = useCallback((options: DialogOptions) => {
+    setScheduledDialog(options);
   }, []);
 
   // Close a specific dialog by ID or the most recent one
@@ -172,8 +197,9 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
       openDialog,
       closeDialog,
       closeAllDialogs,
+      scheduleDialog,
     }),
-    [openDialog, closeDialog, closeAllDialogs]
+    [openDialog, closeDialog, closeAllDialogs, scheduleDialog]
   );
 
   const topMostDialogId = getTopMostDialogId();
@@ -211,6 +237,10 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
               {dialog.title && (
                 <DialogHeader>
                   <DialogTitle className="sr-only">{dialog.title}</DialogTitle>
+                  {/* Add hidden description to fix accessibility warning */}
+                  <DialogDescription className="sr-only">
+                    {dialog.description || dialog.title || "Dialog content"}
+                  </DialogDescription>
                 </DialogHeader>
               )}
 
