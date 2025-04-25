@@ -1,5 +1,6 @@
 import type React from "react";
-import { Loader2 } from "lucide-react";
+import EmptyState from "../states/empty-state";
+import { Spinner } from "../Spinner";
 
 interface DataWrapperProps<T> {
   data: T[] | null | undefined;
@@ -8,6 +9,7 @@ interface DataWrapperProps<T> {
   LoadingComponent?: React.ComponentType;
   children: (data: T[]) => React.ReactNode;
   emptyMessage?: string;
+  emptyDescription?: string;
 }
 
 export function DataWrapper<T>({
@@ -17,6 +19,7 @@ export function DataWrapper<T>({
   LoadingComponent,
   children,
   emptyMessage = "Nenhum dado disponível",
+  emptyDescription,
 }: DataWrapperProps<T>) {
   if (isLoading) {
     return LoadingComponent ? <LoadingComponent /> : <DefaultLoading />;
@@ -26,7 +29,7 @@ export function DataWrapper<T>({
     return EmptyComponent ? (
       <EmptyComponent message={emptyMessage} />
     ) : (
-      <DefaultEmpty message={emptyMessage} />
+      <EmptyState message={emptyMessage} description={emptyDescription} />
     );
   }
 
@@ -36,15 +39,7 @@ export function DataWrapper<T>({
 function DefaultLoading() {
   return (
     <div className="flex justify-center items-center p-4">
-      <Loader2 className="w-6 h-6 animate-spin" />
-    </div>
-  );
-}
-
-function DefaultEmpty({ message }: { message: string }) {
-  return (
-    <div className="text-center p-4">
-      <p className="text-muted-foreground">{message}</p>
+      <Spinner />
     </div>
   );
 }
