@@ -45,7 +45,6 @@ export function ChecklistStart({ workOrderId }: ChecklistDialogProps) {
     perPage: "100",
   });
 
-  console.log("currentStep", currentStepName);
   const workOrdersData: IWorkOrder[] = getDataOrDefault<IWorkOrder[]>(
     workOrderData,
     [],
@@ -97,20 +96,22 @@ export function ChecklistStart({ workOrderId }: ChecklistDialogProps) {
   const currentConfig =
     selectorConfig[currentStepName as keyof typeof selectorConfig];
   return (
-    <AnimatePresence mode="wait">
-      <MotionWrapper key={currentStepName}>
-        <LoadingOverlay isLoading={isPending}>
-          <CardSelector
-            title={currentConfig.title}
-            description={currentConfig.description}
-            options={currentConfig.options}
-            value=""
-            onChange={currentConfig.onChange}
-            showFooter={currentConfig.showFooter}
-            variant={currentConfig.variant as any}
-          />
-        </LoadingOverlay>
-      </MotionWrapper>
-    </AnimatePresence>
+    <div className="p-6">
+      <AnimatePresence mode="wait">
+        <MotionWrapper key={currentStepName}>
+          <LoadingOverlay isLoading={isPending}>
+            <CardSelector
+              title={currentConfig.title}
+              description={currentConfig.description}
+              options={currentConfig.options}
+              value=""
+              onChange={currentConfig.onChange}
+              showFooter={currentConfig.showFooter}
+              variant={currentConfig.variant as any}
+            />
+          </LoadingOverlay>
+        </MotionWrapper>
+      </AnimatePresence>
+    </div>
   );
 }
