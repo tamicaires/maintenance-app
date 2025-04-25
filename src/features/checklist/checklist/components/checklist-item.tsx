@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Check, X, AlertCircle } from "lucide-react";
+import { Check, X, AlertCircle, Wrench } from "lucide-react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type {
   IChecklistItemTemplate,
@@ -15,10 +15,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { BatchPartRequestDialog } from "@/features/part-request/components/create-batch-part-request/create-batch-part-request";
-import { ServiceAssignmentCreationDialog } from "@/features/service-assigment/components/create-service-assignment-form";
+import { ServiceAssignmentCreation } from "@/features/service-assigment/components/create-service-assignment";
 import { useChecklistItems } from "../../checklist-item/hooks/use-checklist-items";
-import { useToast } from "@/components/Toast/toast";
 import { useChangeItemConformity } from "../../checklist-item/hooks/use-change-item-conformity";
+import { useDialog } from "@/core/providers/dialog";
+import { Spinner } from "@/components/Spinner";
+import EmptyState from "@/components/states/empty-state";
 
 type TChecklistItemProps = {
   categoryId: string;
@@ -35,14 +37,27 @@ export default function ChecklistItem({
   templateItem,
   trailers,
 }: TChecklistItemProps) {
-  const { toast: toast, ToastComponent } = useToast();
-  categoryId
+  const { openDialog } = useDialog();
+
+  const handleOpenCreateService = () => {
+    openDialog({
+      content: (
+        <ServiceAssignmentCreation
+          workOrderId={workOrderId}
+          trailers={trailers}
+        />
+      ),
+      stackable: true,
+    });
+  };
+
+  categoryId;
   const {
     updateItemConformity,
     updatedItem,
     updateSuccess,
     isLoading: isUpdating,
-  } = useChangeItemConformity(checklistId, toast);
+  } = useChangeItemConformity(checklistId);
 
   const {
     data: checklistItemsData,
@@ -53,9 +68,9 @@ export default function ChecklistItem({
   const [localItems, setLocalItems] = useState<IChecklistItem[]>([]);
 
   useEffect(() => {
-    if (checklistItemsData?.data) {
+    if (checklistItemsData) {
       setLocalItems(
-        checklistItemsData.data.filter(
+        checklistItemsData.filter(
           (item) => item.itemTemplateId === templateItem.id
         )
       );
@@ -83,9 +98,7 @@ export default function ChecklistItem({
     return (
       <TableRow>
         <TableCell colSpan={trailers.length + 2}>
-          <div className="flex justify-center items-center h-12">
-            Carregando...
-          </div>
+          <Spinner size="small" />
         </TableCell>
       </TableRow>
     );
@@ -114,8 +127,14 @@ export default function ChecklistItem({
       </TableCell>
       {trailers.map((trailer) => {
         const item = localItems.find((item) => item.trailerId === trailer.id);
-        console.log("localItems", localItems);
-        console.log("trailers", trailers);
+        if (trailers.length === 0) {
+          return (
+            <EmptyState
+              message="Ops, parece que você não tem reboques cadastrados"
+              description="Para adicionar um reboque, acesse a aba de reboques"
+            />
+          );
+        }
         return (
           <TableCell key={trailer.id}>
             <div className="flex gap-1">
@@ -213,11 +232,9 @@ export default function ChecklistItem({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <ServiceAssignmentCreationDialog
-                    trailers={trailers}
-                    workOrderId={workOrderId}
-                    iconButton
-                  />
+                  <Button onClick={handleOpenCreateService}>
+                    <Wrench className="h-4 w-4" />
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Adicionar Serviço</p>
@@ -226,7 +243,6 @@ export default function ChecklistItem({
             </TooltipProvider>
           </div>
         )}
-        <ToastComponent />
       </TableCell>
     </TableRow>
   );
