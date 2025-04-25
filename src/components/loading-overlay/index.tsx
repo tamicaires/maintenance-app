@@ -6,29 +6,27 @@ type LoadingOverlayProps = {
   isLoading: boolean;
   children: ReactNode;
   className?: string;
-  overlayClassName?: string;
+  fallback?: ReactNode;
 };
 
 export function LoadingOverlay({
   isLoading,
   children,
   className,
-  overlayClassName,
+  fallback,
 }: LoadingOverlayProps) {
-  return (
-    <div className={cn("relative", className)}>
-      {children}
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          "relative flex items-center justify-center w-full",
+          className
+        )}
+      >
+        {fallback ?? <Spinner />}
+      </div>
+    );
+  }
 
-      {isLoading && (
-        <div
-          className={cn(
-            "absolute inset-0 bg-white/40 dark:bg-black/40 flex items-center justify-center z-50 rounded-md",
-            overlayClassName
-          )}
-        >
-          <Spinner />
-        </div>
-      )}
-    </div>
-  );
+  return <div className={cn("relative", className)}>{children}</div>;
 }
