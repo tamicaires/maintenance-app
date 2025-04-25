@@ -13,5 +13,6 @@ export enum SubjectEnum {
   Carrier = "Carrier",
   Fleet = "Fleet",
   Box = "Box",
-  Service = "Service"
+  Service = "Service",
+  Work_Order = "Work Order"
 }
