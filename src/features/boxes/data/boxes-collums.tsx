@@ -1,11 +1,11 @@
 import { WorkOrderDetails } from "@/features/work-order/components/work-order-details";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { IBoxWithRelationalData } from "@/shared/types/box";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Eye } from "lucide-react";
+import { DialogButtonTrigger } from "@/components/dialog-button-trigger";
 
 export const boxesColumns: ColumnDef<IBoxWithRelationalData>[] = [
   {
@@ -19,7 +19,9 @@ export const boxesColumns: ColumnDef<IBoxWithRelationalData>[] = [
     accessorKey: "workOrder.fleet.fleetNumber",
     header: "Frota",
     cell: ({ row }) => (
-      <div className="font-medium">{row.original.workOrder?.fleet.fleetNumber || "N/A"}</div>
+      <div className="font-medium">
+        {row.original.workOrder?.fleet.fleetNumber || "N/A"}
+      </div>
     ),
   },
   {
@@ -48,15 +50,13 @@ export const boxesColumns: ColumnDef<IBoxWithRelationalData>[] = [
   {
     id: "actions",
     cell: ({ row }) => (
-      <WorkOrderDetails
-        workOrderId={row.original.workOrder?.id}
-        trigger={
-          <Button variant="ghost" size="sm" className="text-muted-foreground">
-            <Eye className="h-4 w-4 mr-2" />
-            Detalhes
-          </Button>
-        }
-      />
+      <DialogButtonTrigger
+        title="Detalhes da Ordem"
+        content={<WorkOrderDetails workOrderId={row.original.workOrder?.id} />}
+        size="4xl"
+      >
+        <Eye className="h-4 w-4 mr-2" /> Detalhes
+      </DialogButtonTrigger>
     ),
   },
 ];
