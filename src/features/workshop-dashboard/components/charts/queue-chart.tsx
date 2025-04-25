@@ -15,8 +15,6 @@ import {
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { useQueueChart } from "../../hooks/use-queue-chart";
-import { Spinner } from "@/components/Spinner";
-import EmptyState from "@/components/empty-state";
 import { LoadingOverlay } from "@/components/loading-overlay";
 
 export function QueueChart() {

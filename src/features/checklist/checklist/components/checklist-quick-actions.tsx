@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { useDialog } from "@/context/dialog";
+import { useDialog } from "@/core/providers/dialog";
 
 type QuickActionsProps = {
   lastUpdate?: string;

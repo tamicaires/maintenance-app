@@ -11,7 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import { MotionWrapper } from "@/components/motion-wrapper";
 import { CardSelector } from "@/components/card-selector/card-selector";
 import ChecklistItems from "../../checklist-item/components/checklist-items";
-import { useDialog } from "@/context/dialog";
+import { useDialog } from "@/core/providers/dialog";
 import { LoadingOverlay } from "@/components/loading-overlay";
 
 type ChecklistDialogProps = {

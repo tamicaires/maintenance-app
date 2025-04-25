@@ -8,7 +8,7 @@ import { IBoxFilters, useBoxes } from "../hooks/use-box";
 import { IBox, IBoxWithCount } from "@/shared/types/box";
 import { getDataOrDefault } from "@/utils/data";
 import { CreateBox } from "../components/create-box/create-box";
-import { useDialog } from "@/context/dialog";
+import { useDialog } from "@/core/providers/dialog";
 
 export function BoxPage() {
   const { openDialog } = useDialog();
