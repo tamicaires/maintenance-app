@@ -1,63 +1,34 @@
-import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/shared/services/query-client"
-import { IApiResponse } from "@/shared/services/api"
 import { useState } from "react"
-import { ChecklistItemService } from "@/shared/services/checklist/checklist-item"
 import { IChecklistItem } from "@/shared/types/checklist"
 import { QueryKeysEnum } from "@/shared/enums/query-keys"
+import { useMutation } from "@/core/api/hooks/use-mutation"
+import { checklistItemService } from "@/shared/services/checklist/checklist-item-service"
 
-interface ChangeItemConformityData {
+type ChangeItemConformityData = {
   itemId: string;
   isConform: boolean;
 }
 
-export function useChangeItemConformity(
-  checklistId: string,
-  toast: (toast: any) => void,
-  onSuccessCallback?: () => void,
-) {
+export function useChangeItemConformity(checklistId: string) {
   const [updatedItem, setUpdatedItem] = useState<IChecklistItem | null>(null);
   const [updateSuccess, setUpdateSuccess] = useState<boolean | null>(null);
 
-  const {
-    mutate: mutateChangeItemConformity,
-    isSuccess,
-    isError,
-    isPending,
-    data,
-    error,
-  } = useMutation<IApiResponse<IChecklistItem>, Error, ChangeItemConformityData>({
-    mutationFn: ({ itemId, isConform }) => ChecklistItemService.changeConformity(itemId, isConform),
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.ChecklistItem, checklistId] })
-      if (response.success && response.data) {
-        // toast({
-        //   type: "success",
-        //   title: "Sucesso!",
-        //   message: `Status de conformidade do item atualizado com sucesso.`,
-        //   duration: 2000,
-        // })
-        setUpdatedItem(response.data);
-        setUpdateSuccess(true);
-        if (onSuccessCallback) {
-          onSuccessCallback();
-        }
-      }
+  const { mutate: changeItemConformity, isPending } = useMutation(
+    (data: ChangeItemConformityData) => checklistItemService.changeConformity(data.itemId, data.isConform), {
+    successMessage: "Status de conformidade do item atualizado com sucesso!",
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeysEnum.Service_Assigment, checklistId] })
+      setUpdatedItem(data);
+      setUpdateSuccess(true);
     },
-    onError: (error) => {
-      console.error("Error in mutation:", error)
-      toast({
-        type: "error",
-        title: "Ops, algo deu errado!",
-        message: error.message || "Ocorreu um erro ao atualizar o status de conformidade do item.",
-        duration: 3000,
-      })
+    onError: () => {
       setUpdateSuccess(false);
-    },
-  })
+    }
+  });
 
   const updateItemConformity = (itemId: string, isConform: boolean) => {
-    mutateChangeItemConformity({ itemId, isConform })
+    changeItemConformity({ itemId, isConform })
   }
 
   return {
@@ -65,10 +36,6 @@ export function useChangeItemConformity(
     updatedItem,
     updateSuccess,
     isLoading: isPending,
-    isError,
-    error,
-    data,
-    isSuccess,
   }
 }
 
