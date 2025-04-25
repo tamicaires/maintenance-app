@@ -60,7 +60,8 @@ import { StartChecklistDialog } from "@/features/checklist/components/start-chec
 import { useChecklistByWorkOrder } from "@/features/checklist/checklist/hooks/use-checklist-by-work-order";
 import { IChecklistWithRelationalData } from "@/shared/types/checklist/checklist";
 import { Spinner } from "@/components/Spinner";
-import ChecklistItems from "@/features/checklist/components/checklist-items";
+import ChecklistItemsToRemove from "@/features/checklist/components/checklist-items";
+import { format } from "date-fns";
 
 export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
   const { toast: addToast, ToastComponent } = useToast();
@@ -72,7 +73,6 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
     workOrder.id
   );
   const checklist = data?.data;
-
 
   const statusInfo = getMaintenanceStatusInfo(workOrder.status);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
@@ -117,7 +117,7 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
     }
 
     return (
-      <ChecklistItems
+      <ChecklistItemsToRemove
         checklistId={checklist.id}
         checklistData={checklist}
         trigger={<Button>Ver Checklist</Button>}
@@ -148,8 +148,7 @@ export function WorkOrderHeader({ workOrder }: { workOrder: IWorkOrder }) {
               <div className="flex items-center gap-1 text-muted-foreground">
                 <Calendar className="w-4 h-4" />
                 <span>
-                  {/* {format(new Date(workOrder.createdAt), "dd/MM/yyyy HH:mm")} */}{" "}
-                  12/02/2024 15:00
+                  {format(new Date(workOrder.createdAt), "dd/MM/yyyy HH:mm")}{" "}
                 </span>
               </div>
             </div>
