@@ -6,11 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { MoreVertical, CheckCircle, Play } from "lucide-react";
 import { useChecklist } from "../hooks/use-checklist";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import { Spinner } from "@/components/Spinner";
 import { useToast } from "@/components/Toast/toast";
 import { DataWrapper } from "@/components/data-wrapper/data-wrapper";
-import { useDialog } from "@/context/dialog";
+import { useDialog } from "@/core/providers/dialog";
 import { ChecklistStart } from "../checklist/components/checklist-start";
 
 const LazyChecklistItems = lazy(() => import("./checklist-items"));

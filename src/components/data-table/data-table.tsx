@@ -17,7 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableToolbar, type ITableFilterOption } from "./data-table-toolbar"
 import { DataTableTabs } from "./data-table-tabs"
-import EmptyState from "../empty-state"
+import EmptyState from "../states/empty-state"
 import { Spinner } from "../Spinner"
 
 interface DataTableWithFiltersProps<TData, TValue> {

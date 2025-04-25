@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import ChecklistItemsList from "../checklist/components/checklist-items-list";
 import { IChecklistTemplateCategoryWithRelationalData } from "@/shared/types/checklist/template-category";
 import { IActiveTrailer } from "@/shared/types/trailer.interface";

@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 
 interface IPartRequestListProps {
   partRequests: IPartRequest[];

@@ -13,7 +13,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { WorkOrderCreationDialog } from "@/features/work-order/components/create-order-dialog";
 import { MaintenanceStatus } from "@/shared/enums/work-order";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import WorkOrderCard from "@/features/work-order/components/work-order-card";
 import WorkOrderRecentActivityFeed from "../components/recent-activity-order/recent-activity-work-order";
 import { QueueChart } from "@/features/workshop-dashboard/components/charts/queue-chart";

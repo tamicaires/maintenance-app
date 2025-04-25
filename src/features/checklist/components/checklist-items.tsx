@@ -15,7 +15,7 @@ import { ChecklistAccordionList } from "../checklist-item/components/checklist-a
 import { useLoader } from "@/store/hook/use-loader";
 import { RootLoader } from "@/components/loader";
 import { Spinner } from "@/components/Spinner";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 
 type ChecklistItemsProps = {
   checklistId: string;

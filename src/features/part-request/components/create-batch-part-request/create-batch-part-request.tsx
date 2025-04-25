@@ -33,7 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import { useParts } from "@/features/part-manager/hooks/use-parts";
 import { useCreatePartRequestBatch } from "@/features/part-request/hooks/use-create-part-request-batch";
 import { usePartRequestItems } from "../../hooks/use-handle-item";

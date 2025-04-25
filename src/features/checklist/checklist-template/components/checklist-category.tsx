@@ -11,7 +11,7 @@ import {
   IChecklistItemTemplate,
 } from "@/shared/types/checklist";
 import { Separator } from "@/components/ui/separator";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 
 interface ChecklistCategoryProps {
   category: IChecklistCategory;

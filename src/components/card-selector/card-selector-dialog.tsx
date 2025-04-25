@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { GridViewItem } from "./grid-view-item";
-import EmptyState from "../empty-state";
+import EmptyState from "../states/empty-state";
 import { ListViewItem } from "./list-view-item";
 
 export interface CardSelectionOption {

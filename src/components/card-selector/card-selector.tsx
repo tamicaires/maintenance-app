@@ -4,7 +4,7 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { GridViewItem } from "./grid-view-item"
-import EmptyState from "../empty-state"
+import EmptyState from "../states/empty-state"
 import { ListViewItem } from "./list-view-item"
 import { Search } from "lucide-react"
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import EmptyState from "../empty-state";
+import EmptyState from "../states/empty-state";
 import { Spinner } from "../Spinner";
 
 export type IOption = {

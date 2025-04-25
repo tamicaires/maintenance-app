@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChecklistCategory } from "./checklist-category";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChecklistCategory } from "../../hooks/use-checklist-category";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import { AddTemplateCategory } from "../../components/add-template-category";
 import { Spinner } from "@/components/Spinner";
 

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import {
   IChecklistItemTemplate,
 } from "@/shared/types/checklist";

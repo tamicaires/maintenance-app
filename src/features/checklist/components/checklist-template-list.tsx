@@ -8,7 +8,7 @@ import * as Icons from "lucide-react";
 import { ChecklistTemplateDetailsDialog } from "./checklist-template-details";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import CreateTemplateDialog from "../checklist-template/components/create-template-dialog";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 
 export default function ChecklistTemplateList() {
   const [selectedTemplate, setSelectedTemplate] =

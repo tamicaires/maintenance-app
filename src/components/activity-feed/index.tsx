@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FaHistory } from "react-icons/fa";
 import { Spinner } from "@/components/Spinner";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import { ActivityFeedProps } from "@/shared/types/activity";
 import { ActivityTabs } from "./activity-tabs";
 import { ActivityItem } from "./activity-item";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, Check, Search } from "lucide-react";
 import { Spinner } from "@/components/Spinner";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 
 export interface IOption {
   value: string;

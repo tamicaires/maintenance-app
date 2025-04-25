@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import { ServiceCategory } from "@/shared/enums/service";
 import { IServiceAssignment } from "@/shared/types/service-assigment";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 
 interface WorkOrderStatsProps {
   serviceAssignments: IServiceAssignment[];

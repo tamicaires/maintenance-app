@@ -11,7 +11,7 @@ import {
 import type { IChecklistWithRelationalData } from "@/shared/types/checklist/checklist";
 import { useLoader } from "@/store/hook/use-loader";
 import { Spinner } from "@/components/Spinner";
-import EmptyState from "@/components/empty-state";
+import EmptyState from "@/components/states/empty-state";
 import { useChecklistWithRelationalData } from "../../checklist/hooks/use-checklist-with-relational-data";
 import { ChecklistAccordionList } from "./checklist-accordion-list";
 import { ChecklistQuickActions } from "../../checklist/components/checklist-quick-actions";
